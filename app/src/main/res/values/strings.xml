@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Home Doctor</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="arrow"><![CDATA[>]]></string>
+    <string name="info_app_name">Home Doctor</string>
+    <string name="info_app_description">Приложение для помощи в приеме лекарств</string>
+    <string name="info_version_placeholder">1.2.3</string>
+    <string name="info_hse">Приложение создано как дипломный проект ПИ ФКН НИУ ВШЭ под начнуым руководством Песоцкой Е.Ю.</string>
+    <string name="info_owner">Разработчик: Зубарев Алексей @akzubarev</string>
+    <string name="link">github.com/akzubarev</string>
+    <string name="no_internet">Кажется, ваше устройство сейчас не подключено к интернету.\n         Нажмите еще раз на ссылку \"Поддержать проект,\" когда будете в сети, или заходите на сайт math-trainer.ru,         там вы сможете сделать пожертвование на развитие проекта</string>
+    <string name="stats_button">a</string>
+    <string name="main_stat_placeholder">a</string>
+    <string name="settings_button">a</string>
+    <string name="main_settings_placeholder">a</string>
+    <string name="start_button">a</string>
+    <string name="main_goal_placeholder">a</string>
+    <string name="action_info">Info</string>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_info.xml" value="0.1793478260869565" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_list.xml" value="0.1793478260869565" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_medication.xml" value="0.264" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_web.xml" value="0.20833333333333334" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_web_no_internet.xml" value="0.20833333333333334" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/app_bar_main.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/content_main.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/fragment_gallery.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/fragment_slideshow.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/main.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/medicationBlock.xml" value="0.1793478260869565" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/medication_block.xml" value="0.1793478260869565" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/nav_header_main.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/sign_in.xml" value="0.1793478260869565" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/spinner_row.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/spinner_row_unfolded.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/activities/layout/activity_info.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/activities/layout/activity_list.xml" value="0.125" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/activities/layout/activity_web_no_internet.xml" value="0.125" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/fragments/layout/fragment_gallery.xml" value="0.125" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.125" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/fragments/layout/fragment_slideshow.xml" value="0.125" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/menu/activity_main_drawer.xml" value="0.125" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/menu/main.xml" value="0.125" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
