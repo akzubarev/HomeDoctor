@@ -2,14 +2,14 @@
     <string name="app_name">Home Doctor</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Home Doctor</string>
+    <string name="nav_header_subtitle">Приложение для эффективного менеджмента лекарств</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_users">Пользователи</string>
+    <string name="menu_list">Список лекарств</string>
+    <string name="menu_medication">Лекарство</string>
     <string name="arrow"><![CDATA[>]]></string>
     <string name="info_app_name">Home Doctor</string>
     <string name="info_app_description">Приложение для помощи в приеме лекарств</string>

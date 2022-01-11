@@ -1,5 +1,9 @@
 package com.akzubarev.homedoctor.data.models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -75,7 +79,8 @@ public class Medication {
     public Medication() {
     }
 
-    public Medication(String name, String courceLength, int dailyFrequency, ArrayList<Date> consumptionTimes) {
+    public Medication(String name, String courceLength,
+                      int dailyFrequency, ArrayList<Date> consumptionTimes) {
         this.name = name;
         this.courceLength = courceLength;
         this.dailyFrequency = dailyFrequency;
@@ -85,24 +90,24 @@ public class Medication {
 
     public String serialize() {
         String json = "";
-//        try {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            json = objectMapper.writeValueAsString(this);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            json = objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return json;
     }
 
     public static Medication deserialize(String json) {
-//        if (!json.isEmpty()) {
-//            try {
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                return objectMapper.readValue(json, Medication.class);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if (!json.isEmpty()) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                return objectMapper.readValue(json, Medication.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return null;
     }
 }

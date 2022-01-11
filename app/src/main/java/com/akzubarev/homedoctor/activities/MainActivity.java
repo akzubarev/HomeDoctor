@@ -3,8 +3,11 @@ package com.akzubarev.homedoctor.activities;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.models.User;
+import com.akzubarev.homedoctor.ui.home.UserAdapter;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -14,8 +17,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.databinding.ActivityMainBinding;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,12 +50,30 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_list, R.id.nav_medication)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        fill();
+    }
+
+    private void fill() {
+        RecyclerView userList = findViewById(R.id.user_list);
+        userList.setHasFixedSize(true);
+        userList.addItemDecoration(new DividerItemDecoration(
+                userList.getContext(), DividerItemDecoration.VERTICAL));
+        LinearLayoutManager userLayoutManager = new LinearLayoutManager(this);
+        ArrayList<User> users = new ArrayList<>();
+        users.add(new User("Бабушка", new ArrayList<>()));
+        users.add(new User("Мама", new ArrayList<>()));
+        users.add(new User("Дочь", new ArrayList<>()));
+
+        UserAdapter userAdapter = new UserAdapter(users, this);
+        userList.setLayoutManager(userLayoutManager);
+        userList.setAdapter(userAdapter);
     }
 
     @Override

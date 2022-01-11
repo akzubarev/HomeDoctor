@@ -1,16 +1,16 @@
-package com.akzubarev.homedoctor.ui.slideshow;
+package com.akzubarev.homedoctor.ui.list;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class ListViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public ListViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is list fragment");
     }
 
     public LiveData<String> getText() {

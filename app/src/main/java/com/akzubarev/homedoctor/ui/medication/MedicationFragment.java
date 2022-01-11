@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.ui.home;
+package com.akzubarev.homedoctor.ui.medication;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,20 +12,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.databinding.FragmentHomeBinding;
+import com.akzubarev.homedoctor.databinding.FragmentMedicationBinding;
 
-public class HomeFragment extends Fragment {
+public class MedicationFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
-    private FragmentHomeBinding binding;
+    private MedicationViewModel medicationViewModel;
+    private FragmentMedicationBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        medicationViewModel =
+                new ViewModelProvider(this).get(MedicationViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentMedicationBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

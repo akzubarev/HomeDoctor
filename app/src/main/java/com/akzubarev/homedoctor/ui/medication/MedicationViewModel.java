@@ -1,16 +1,16 @@
-package com.akzubarev.homedoctor.ui.gallery;
+package com.akzubarev.homedoctor.ui.medication;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class MedicationViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public MedicationViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("This is slideshow fragment");
     }
 
     public LiveData<String> getText() {

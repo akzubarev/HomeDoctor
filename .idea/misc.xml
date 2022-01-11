@@ -5,14 +5,23 @@
       <map>
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_info.xml" value="0.1793478260869565" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_list.xml" value="0.1793478260869565" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_main.xml" value="0.1453804347826087" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_medication.xml" value="0.264" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_web.xml" value="0.20833333333333334" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/activity_web_no_internet.xml" value="0.20833333333333334" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/app_bar_list.xml" value="0.2427536231884058" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/app_bar_main.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/app_bar_medication.xml" value="0.2427536231884058" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/block_medication.xml" value="0.264" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/block_user.xml" value="0.13958333333333334" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/content_list.xml" value="0.2427536231884058" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/content_main.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/content_medication.xml" value="0.2427536231884058" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/fragment_gallery.xml" value="0.25" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/fragment_list.xml" value="0.15260416666666668" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/fragment_medication.xml" value="0.15260416666666668" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/fragment_slideshow.xml" value="0.25" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/main.xml" value="0.25" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/medicationBlock.xml" value="0.1793478260869565" />
@@ -21,13 +30,14 @@
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/sign_in.xml" value="0.1793478260869565" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/spinner_row.xml" value="0.25" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/spinner_row_unfolded.xml" value="0.25" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layout/user_block.xml" value="0.2" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/activities/layout/activity_info.xml" value="0.25" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/activities/layout/activity_list.xml" value="0.125" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/activities/layout/activity_web_no_internet.xml" value="0.125" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/fragments/layout/fragment_gallery.xml" value="0.125" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.125" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/fragments/layout/fragment_slideshow.xml" value="0.125" />
-        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/menu/activity_main_drawer.xml" value="0.125" />
+        <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/menu/activity_main_drawer.xml" value="0.4" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/menu/main.xml" value="0.125" />
       </map>
     </option>

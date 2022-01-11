@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.ui;
+package com.akzubarev.homedoctor.ui.list;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -48,7 +48,7 @@ public class MedicationAdapter
     @Override
     public MedicationViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.medication_block, viewGroup, false);
+                .inflate(R.layout.block_medication, viewGroup, false);
         return new MedicationViewHolder(view, listener);
     }
 
@@ -85,8 +85,8 @@ public class MedicationAdapter
 
         public MedicationViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
             super(itemView);
-            medicationNextTime = itemView.findViewById(R.id.medicationNextTime);
-            medicationName = itemView.findViewById(R.id.medicationName);
+            medicationNextTime = itemView.findViewById(R.id.next_consumption);
+            medicationName = itemView.findViewById(R.id.medication_name);
             arrow = itemView.findViewById(R.id.arrow);
 
             itemView.setOnClickListener(v -> {
