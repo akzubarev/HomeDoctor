@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color2"
     android:orientation="vertical"
-    tools:context=".activities.SignInActivity">
+    tools:context=".ui.activities.SignInActivity">
 
     <ImageView
         android:layout_width="150dp"

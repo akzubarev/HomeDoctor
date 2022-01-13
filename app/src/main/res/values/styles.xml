@@ -1,7 +1,7 @@
 <resources xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Spinner">
-        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">30dp</item>
         <item name="android:gravity">center_horizontal|end</item>
         <item name="android:layout_gravity">center_horizontal|end</item>
@@ -16,5 +16,38 @@
         <item name="android:textSize">@dimen/dimen1</item>
         <item name="android:textFontWeight" tools:targetApi="p">300</item>
         <item name="fontWeight">300</item>
+    </style>
+
+    <style name="WeekButtons" parent="@style/Widget.AppCompat.Button">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/color3</item>
+        <item name="android:textSize">@dimen/dimen5</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+    </style>
+
+    <style name="EditText" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_horizontal|end</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:textColorHint">@color/shadowed</item>
+        <item name="android:dropDownVerticalOffset">30dp</item>
+    </style>
+
+    <style name="LinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin
+        </item>
+<!--        <item name="android:paddingTop">@dimen/activity_horizontal_margin-->
+<!--        </item>-->
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin
+        </item>
+<!--        <item name="android:paddingBottom">@dimen/activity_horizontal_margin-->
+<!--        </item>-->
     </style>
 </resources>

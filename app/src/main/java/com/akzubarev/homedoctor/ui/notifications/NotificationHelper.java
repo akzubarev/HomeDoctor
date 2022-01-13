@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.notifications;
+package com.akzubarev.homedoctor.ui.notifications;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -16,8 +16,8 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.activities.MainActivity;
-import com.akzubarev.homedoctor.data.DataReader;
+import com.akzubarev.homedoctor.ui.activities.MainActivity;
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -115,7 +115,7 @@ public class NotificationHelper {
     }
 
     public void repeat() {
-        String[] time = DataReader.GetString(DataReader.REMINDER_TIME, context).split(":");
+        String[] time = DataHandler.getInstance().get("14:00", context).toString().split(":"); //TODO: fix data handling
         int hour = Integer.parseInt(time[0]);
         int minute = Integer.parseInt(time[0]);
 

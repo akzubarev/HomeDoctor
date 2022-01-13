@@ -1,23 +1,19 @@
-package com.akzubarev.homedoctor.ui.home;
+package com.akzubarev.homedoctor.ui.fragments.home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHost;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.activities.ListActivity;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.User;
 
@@ -104,12 +100,8 @@ public class UserAdapter
                 itemView.setOnClickListener(v -> {
                             NavController navController = Navigation.findNavController(itemView);
                             Bundle bundle = new Bundle();
-                            bundle.putString("Activity", "Users");
+                            bundle.putInt("User", position);
                             navController.navigate(R.id.nav_list, bundle);
-//                            Intent intent = new Intent(context, ListActivity.class);
-//                            if (position != RecyclerView.NO_POSITION)
-//                                intent.putExtra("Name", position);
-//                            context.startActivity(intent);
                         }
                 );
             }

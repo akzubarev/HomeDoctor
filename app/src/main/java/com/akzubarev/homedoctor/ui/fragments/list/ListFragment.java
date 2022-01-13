@@ -1,11 +1,9 @@
-package com.akzubarev.homedoctor.ui.list;
+package com.akzubarev.homedoctor.ui.fragments.list;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,10 +12,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.databinding.FragmentListBinding;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +24,7 @@ public class ListFragment extends Fragment {
 
     private ListViewModel listViewModel;
     private FragmentListBinding binding;
+    private ArrayList<Medication> medications = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,16 +37,6 @@ public class ListFragment extends Fragment {
     }
 
     private void fill() {
-        ArrayList<Date> dates = new ArrayList<>();
-        dates.add(Calendar.getInstance().getTime());
-        ArrayList<Medication> medications = new ArrayList<>();
-        medications.add(new Medication("Парацетамол",
-                "2 недели", 2, dates));
-        medications.add(new Medication("Ибупрофен",
-                "1 неделя", 3, dates));
-        medications.add(new Medication("Феназепам",
-                "1 месяц", 1, dates));
-
         RecyclerView medicationsList = binding.medicationsList;
         medicationsList.setHasFixedSize(true);
         medicationsList.addItemDecoration(new DividerItemDecoration(

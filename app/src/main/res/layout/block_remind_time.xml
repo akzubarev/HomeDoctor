@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_marginTop="@dimen/default_gap"
+        android:layout_marginBottom="@dimen/default_gap"
+        android:background="@color/color2"
+        tools:context=".ui.activities.MainActivity"
+        android:id="@+id/remind_time_block"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
+        style="@style/LinearLayout">
+
+    <TextView
+            android:id="@+id/remind_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:text="Первое напоминание"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+    <TextView
+            android:id="@+id/remind_time"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"
+            android:tag="1"
+            android:text="14:00"
+            android:textColor="@color/additional"
+            android:textSize="@dimen/dimen4" />
+</LinearLayout>

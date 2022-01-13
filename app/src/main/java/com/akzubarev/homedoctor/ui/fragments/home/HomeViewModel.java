@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.ui.home;
+package com.akzubarev.homedoctor.ui.fragments.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="layout_dropdown">a</string-array>
+    <string-array name="duration_dropdown">
+        <item>дней</item>
+        <item>недель</item>
+        <item>месяцев</item>
+    </string-array>
 </resources>

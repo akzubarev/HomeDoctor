@@ -1,13 +1,16 @@
-package com.akzubarev.homedoctor.activities;
+package com.akzubarev.homedoctor.ui.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Toast;
 
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.models.User;
-import com.akzubarev.homedoctor.ui.home.UserAdapter;
+import com.akzubarev.homedoctor.ui.fragments.home.UserAdapter;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -56,25 +59,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        fill();
     }
 
-    private void fill() {
-        RecyclerView userList = findViewById(R.id.user_list);
-        userList.setHasFixedSize(true);
-        userList.addItemDecoration(new DividerItemDecoration(
-                userList.getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager userLayoutManager = new LinearLayoutManager(this);
-        ArrayList<User> users = new ArrayList<>();
-        users.add(new User("Бабушка", new ArrayList<>()));
-        users.add(new User("Мама", new ArrayList<>()));
-        users.add(new User("Дочь", new ArrayList<>()));
-
-        UserAdapter userAdapter = new UserAdapter(users, this);
-        userList.setLayoutManager(userLayoutManager);
-        userList.setAdapter(userAdapter);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,6 +68,20 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_info:
+                Context context = this;
+                Intent intent = new Intent(context, InfoActivity.class);
+                context.startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {

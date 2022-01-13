@@ -80,6 +80,13 @@ public class Medication {
     }
 
     public Medication(String name, String courceLength,
+                      int dailyFrequency) {
+        this.name = name;
+        this.courceLength = courceLength;
+        this.dailyFrequency = dailyFrequency;
+    }
+
+    public Medication(String name, String courceLength,
                       int dailyFrequency, ArrayList<Date> consumptionTimes) {
         this.name = name;
         this.courceLength = courceLength;

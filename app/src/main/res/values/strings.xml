@@ -1,28 +1,28 @@
 <resources>
+    <!-- App -->
     <string name="app_name">Home Doctor</string>
+    <string name="arrow"><![CDATA[>]]></string>
+
+    <!-- Navigation -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Home Doctor</string>
     <string name="nav_header_subtitle">Приложение для эффективного менеджмента лекарств</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
+    <!-- Menu -->
     <string name="menu_users">Пользователи</string>
     <string name="menu_list">Список лекарств</string>
     <string name="menu_medication">Лекарство</string>
-    <string name="arrow"><![CDATA[>]]></string>
+
+    <!-- InfoActivity -->
     <string name="info_app_name">Home Doctor</string>
     <string name="info_app_description">Приложение для помощи в приеме лекарств</string>
-    <string name="info_version_placeholder">1.2.3</string>
-    <string name="info_hse">Приложение создано как дипломный проект ПИ ФКН НИУ ВШЭ под начнуым руководством Песоцкой Е.Ю.</string>
-    <string name="info_owner">Разработчик: Зубарев Алексей @akzubarev</string>
+    <string name="info_version_placeholder">Версия: 1.2.3</string>
+    <string name="info_hse">Приложение создано как дипломный проект ПИ ФКН НИУ ВШЭ.</string>
+    <string name="info_science_manager">Песоцкая Е.Ю.</string>
+    <string name="info_owner">Зубарев Алексей\ntg: @PackageMan</string>
     <string name="link">github.com/akzubarev</string>
-    <string name="no_internet">Кажется, ваше устройство сейчас не подключено к интернету.\n         Нажмите еще раз на ссылку \"Поддержать проект,\" когда будете в сети, или заходите на сайт math-trainer.ru,         там вы сможете сделать пожертвование на развитие проекта</string>
-    <string name="stats_button">a</string>
-    <string name="main_stat_placeholder">a</string>
-    <string name="settings_button">a</string>
-    <string name="main_settings_placeholder">a</string>
-    <string name="start_button">a</string>
-    <string name="main_goal_placeholder">a</string>
-    <string name="action_info">Info</string>
+    <string name="action_info">info</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.activities;
+package com.akzubarev.homedoctor.ui.activities;
 
 import android.os.Build;
 import android.os.Bundle;

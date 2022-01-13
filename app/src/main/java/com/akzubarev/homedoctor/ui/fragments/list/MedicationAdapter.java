@@ -1,10 +1,9 @@
-package com.akzubarev.homedoctor.ui.list;
+package com.akzubarev.homedoctor.ui.fragments.list;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,23 +52,15 @@ public class MedicationAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MedicationViewHolder MedicationViewHolder, int MedicationNumber) {
-        Medication Medication = medications.get(MedicationNumber);
-        String info = Medication.getName();
-        String datetime = Medication.nextConsumption().toString();
+    public void onBindViewHolder(@NonNull MedicationViewHolder medicationViewHolder, int medicationNumber) {
+        Medication Medication = medications.get(medicationNumber);
 
-        TextView medicationNextTime = MedicationViewHolder.medicationNextTime;
-        medicationNextTime.setId(MedicationNumber + 1);
-        medicationNextTime.setText(datetime);
-        medicationNextTime.setTag(MedicationNumber);
+        TextView medicationName = medicationViewHolder.medicationName;
+        medicationName.setText(Medication.getName());
 
-        TextView medicationName = MedicationViewHolder.medicationName;
-        medicationName.setId(MedicationNumber);
-        medicationName.setText(info);
-        medicationName.setTag(MedicationNumber);
+        TextView medicationNextTime = medicationViewHolder.medicationNextTime;
+        medicationNextTime.setText(Medication.nextConsumption().toString());
 
-        Button arrow = MedicationViewHolder.arrow;
-        arrow.setTag(MedicationNumber);
     }
 
     @Override
@@ -81,13 +72,11 @@ public class MedicationAdapter
 
         TextView medicationNextTime;
         TextView medicationName;
-        Button arrow;
 
         public MedicationViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
             super(itemView);
             medicationNextTime = itemView.findViewById(R.id.next_consumption);
             medicationName = itemView.findViewById(R.id.medication_name);
-            arrow = itemView.findViewById(R.id.arrow);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {

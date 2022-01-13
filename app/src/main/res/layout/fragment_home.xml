@@ -5,12 +5,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color1"
-        tools:context=".ui.home.HomeFragment">
+        tools:context=".ui.fragments.home.HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/user_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="4dp"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            tools:listitem="@layout/block_user"
+            tools:itemCount="3" />
+
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.notifications;
+package com.akzubarev.homedoctor.ui.notifications;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
