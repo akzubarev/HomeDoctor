@@ -40,10 +40,16 @@
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/layouts/fragments/layout/fragment_slideshow.xml" value="0.125" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/menu/activity_main_drawer.xml" value="0.4" />
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/menu/main.xml" value="0.125" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/activity_info.xml" value="0.23958333333333334" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/activity_main.xml" value="0.23958333333333334" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_remind_time.xml" value="0.2755208333333333" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_home.xml" value="0.23958333333333334" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medication.xml" value="0.33" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/time_selector.xml" value="0.67" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

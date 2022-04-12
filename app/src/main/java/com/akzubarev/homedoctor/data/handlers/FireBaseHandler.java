@@ -3,6 +3,7 @@ package com.akzubarev.homedoctor.data.handlers;
 import android.content.Context;
 
 import com.akzubarev.homedoctor.data.models.Medication;
+import com.akzubarev.homedoctor.data.models.Prescription;
 import com.akzubarev.homedoctor.data.models.User;
 
 import java.util.ArrayList;
@@ -30,6 +31,11 @@ public class FireBaseHandler implements DataHandler {
 
     @Override
     public ArrayList<Medication> getAllMedications() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Prescription> getPrescriptionsForUser(String userId) {
         return null;
     }
 

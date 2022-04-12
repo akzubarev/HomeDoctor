@@ -1,178 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/color2">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color2"
+    android:orientation="vertical">
 
     <LinearLayout style="@style/LinearLayout">
 
         <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:layout_weight="1"
-                android:gravity="center_vertical|start"
-                android:text="Название"
-                android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:text="Название"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
 
         <EditText
-                android:id="@+id/name_edit_text"
-                android:hint="Название"
-                style="@style/EditText"
-                android:textSize="@dimen/dimen4" />
+            android:id="@+id/name_edit_text"
+            style="@style/EditText"
+            android:hint="Название"
+            android:textSize="@dimen/dimen4"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
 
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout">
+    <LinearLayout style="@style/LinearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <TextView
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:gravity="center_vertical|start"
-                android:text="Длительность курса"
-                android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:gravity="center_vertical|start"
+            android:text="Длительность курса"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
 
         <EditText
-                android:id="@+id/duration_edit_text"
-                android:hint="Длительность"
-                style="@style/EditText" />
+            android:id="@+id/duration_edit_text"
+            style="@style/EditText"
+            android:width="50dp"
+            android:layout_weight="1"
+            android:hint="4"
+            android:inputType="number"
+            android:imeOptions="actionDone"/>
 
         <Spinner
-                android:id="@+id/duration_spinner"
-                android:entries="@array/duration_dropdown"
-                style="@style/Spinner"
-                tools:listitem="@layout/spinner_row" />
+            android:id="@+id/duration_spinner"
+            style="@style/Spinner"
+            android:layout_height="match_parent"
+
+            android:entries="@array/duration_dropdown"
+            tools:listitem="@layout/spinner_row" />
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout">
+    <LinearLayout style="@style/LinearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
-        <androidx.appcompat.widget.SwitchCompat
-                android:text="пн"
-                style="@style/WeekButtons" />
+        <ToggleButton
+            style="@style/WeekButtons"
+            android:id="@+id/days_mon"
+            android:textOff="пн"
+            android:textOn="пн"
+            android:buttonTint="@color/additional"/>
 
-        <Button
-                android:text="вт"
-                style="@style/WeekButtons" />
+        <ToggleButton
+            style="@style/WeekButtons"
+            android:id="@+id/days_tue"
+            android:textOff="вт"
+            android:textOn="вт" />
 
-        <Button
-                android:text="ср"
-                style="@style/WeekButtons" />
+        <ToggleButton
+            style="@style/WeekButtons"
+            android:id="@+id/days_wed"
+            android:textOff="ср"
+            android:textOn="ср" />
 
-        <Button
-                android:text="чт"
-                style="@style/WeekButtons" />
+        <ToggleButton
+            style="@style/WeekButtons"
+            android:id="@+id/days_thu"
+            android:textOff="чт"
+            android:textOn="чт" />
 
-        <Button
-                android:text="пт"
-                style="@style/WeekButtons" />
+        <ToggleButton
+            style="@style/WeekButtons"
+            android:id="@+id/days_fri"
+            android:textOff="пт"
+            android:textOn="пт" />
 
-        <Button
-                android:text="сб"
-                style="@style/WeekButtons" />
+        <ToggleButton
+            style="@style/WeekButtons"
+            android:id="@+id/days_sat"
+            android:textOff="сб"
+            android:textOn="сб" />
 
-        <Button
-                android:text="вс"
-                style="@style/WeekButtons" />
+        <ToggleButton
+            style="@style/WeekButtons"
+            android:id="@+id/days_sun"
+            android:textOff="вс"
+            android:textOn="вс" />
+
 
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout">
+    <LinearLayout style="@style/LinearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:layout_weight="1"
-                android:gravity="center_vertical|start"
-                android:text="Приемов в день"
-                android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:text="Приемов в день"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
 
         <EditText
-                android:id="@+id/frequency_edit_text"
-                style="@style/EditText"
-                android:hint="Частота приемов" />
+            android:id="@+id/frequency_edit_text"
+            style="@style/EditText"
+            android:hint="4"
+            android:text="3"
+            android:imeOptions="actionDone"
+            android:inputType="number"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/remind_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/block_remind_time"
-            tools:itemCount="3" />
+        android:id="@+id/remind_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        tools:itemCount="3"
+        tools:listitem="@layout/block_remind_time" />
 
-    <LinearLayout
-            android:id="@+id/account_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin">
 
-        <TextView
-                android:id="@+id/account_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical|start"
-                android:text="Аккаунт"
-                android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
-
-        <LinearLayout style="@style/LinearLayout">
-
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|start"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|start"
-                    android:text="E-mail"
-                    android:textColor="@color/main"
-                    android:textSize="@dimen/dimen4" />
-
-            <TextView
-                    android:id="@+id/email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|end"
-                    android:gravity="center_vertical|end"
-                    android:text="example@gmail.com"
-                    android:textColor="@color/shadowed"
-                    android:textSize="@dimen/dimen4" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/LinearLayout">
-
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|start"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|start"
-                    android:text="ID"
-                    android:textColor="@color/main"
-                    android:textSize="@dimen/dimen4" />
-
-            <TextView
-                    android:id="@+id/id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|end"
-                    android:gravity="center_vertical|end"
-                    android:text="zd;gfkjnnawer;aoiwe;j12"
-                    android:textColor="@color/shadowed"
-                    android:textSize="@dimen/dimen4" />
-
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

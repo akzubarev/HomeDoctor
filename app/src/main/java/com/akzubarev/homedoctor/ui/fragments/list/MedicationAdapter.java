@@ -1,12 +1,15 @@
 package com.akzubarev.homedoctor.ui.fragments.list;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
@@ -78,14 +81,16 @@ public class MedicationAdapter
             medicationNextTime = itemView.findViewById(R.id.next_consumption);
             medicationName = itemView.findViewById(R.id.medication_name);
 
-            itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onUserClick(position);
-                    }
-                }
-            });
+            int position = getAdapterPosition();
+            if (listener == null) {
+                itemView.setOnClickListener(v -> {
+                            NavController navController = Navigation.findNavController(itemView);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("User", position);
+                            navController.navigate(R.id.nav_medication, bundle);
+                        }
+                );
+            }
         }
     }
 }

@@ -18,6 +18,9 @@ public class Medication {
     public Date nextConsumption() {
         Calendar now = Calendar.getInstance();
         Calendar comparing = Calendar.getInstance();
+        if (consumptionTimes.size() == 0)
+            return new Date(); //TODO: fix that
+
         for (Date time : consumptionTimes) {
             if (now.getTime().compareTo(time) < 0)
                 return time;

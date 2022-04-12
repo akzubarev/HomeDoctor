@@ -1,19 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color1"
-        tools:context=".ui.fragments.home.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color1"
+    tools:context=".ui.fragments.home.HomeFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
+        android:id="@+id/account_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/account_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|start"
+            android:text="Аккаунт"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <LinearLayout style="@style/LinearLayout">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="E-mail"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="center_vertical|end"
+                android:text="example@gmail.com"
+                android:textColor="@color/shadowed"
+                android:textSize="@dimen/dimen4" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LinearLayout">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="ID"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <TextView
+                android:id="@+id/id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="center_vertical|end"
+                android:text="zd;gfkjnnawer;aoiwe;j12"
+                android:textColor="@color/shadowed"
+                android:textSize="@dimen/dimen4" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/user_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="4dp"
             android:scrollbars="vertical"
-            tools:listitem="@layout/block_user"
-            tools:itemCount="3" />
+            tools:itemCount="3"
+            tools:listitem="@layout/block_user" />
 
+    </LinearLayout>
 </LinearLayout>

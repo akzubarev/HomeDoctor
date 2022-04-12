@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.databinding.FragmentListBinding;
 
@@ -32,6 +33,7 @@ public class ListFragment extends Fragment {
                 new ViewModelProvider(this).get(ListViewModel.class);
 
         binding = FragmentListBinding.inflate(inflater, container, false);
+        medications = DataHandler.getInstance().getAllMedications();
         fill();
         return binding.getRoot();
     }
@@ -42,8 +44,8 @@ public class ListFragment extends Fragment {
         medicationsList.addItemDecoration(new DividerItemDecoration(
                 medicationsList.getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
-        MedicationAdapter medicationsAdapter = new MedicationAdapter(medications, getContext());
 
+        MedicationAdapter medicationsAdapter = new MedicationAdapter(medications, getContext());
         medicationsList.setLayoutManager(medicationsLayoutManager);
         medicationsList.setAdapter(medicationsAdapter);
     }

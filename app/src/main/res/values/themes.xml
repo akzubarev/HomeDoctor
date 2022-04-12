@@ -10,10 +10,15 @@
         <item name="colorSecondaryVariant">@color/color2</item>
         <item name="colorOnSecondary">@color/additional</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">
-            ?attr/colorPrimaryVariant
-        </item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/main</item>
+        <item name="android:textColorSecondary">@color/additional</item>
+        <item name="fontFamily">sans-serif-light</item>
     </style>
 
     <style name="Theme.HomeDoctor.NoActionBar">

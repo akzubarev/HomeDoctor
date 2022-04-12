@@ -1,18 +1,25 @@
 package com.akzubarev.homedoctor.ui.fragments.medication;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -64,8 +71,9 @@ public class RemindTimeAdapter
         remindText.setText(text);
 
         TextView dateName = dateViewHolder.remindTime;
-        dateName.setText(datetime);
+//        dateName.setText(datetime);
     }
+
 
     @Override
     public int getItemCount() {
@@ -77,20 +85,48 @@ public class RemindTimeAdapter
         TextView remindText;
         TextView remindTime;
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        public void reminderDropDown(View v) {
+            TimePicker timePicker = (TimePicker) TimePicker.inflate(v.getContext(),
+                    R.layout.time_selector, null);
+//        timePicker.setIs24HourView(DateFormat.is24HourFormat(context));
+            timePicker.setIs24HourView(true);
+
+            AlertDialog dialog = new AlertDialog.Builder(v.getContext())
+                    .setTitle("Введите время напоминания").setView(timePicker)
+                    .setPositiveButton("Ок", (dialog1, which) ->
+                            setAlarm(timePicker.getHour(), timePicker.getMinute())
+                    ).setNegativeButton("Отмена", (dialog1, which) -> {
+                    })
+                    .show();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        private void setAlarm(int hour, int minute) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            String timetext = sdf.format(calendar.getTime());
+            remindTime.setText(timetext);
+//        DataReader.SaveString(timetext, DataReader.REMINDER_TIME, context);
+
+            new NotificationHelper(remindTime.getContext()).setReminder(hour, minute, NotificationHelper.MAKE);
+        }
+
         public DateViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
             super(itemView);
             remindText = itemView.findViewById(R.id.remind_text);
             remindTime = itemView.findViewById(R.id.remind_time);
 
-            remindTime.setOnClickListener(v -> {
-                if (listener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onUserClick(position);
-                    }
-                }
-            });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                remindTime.setOnClickListener(this::reminderDropDown);
+            }
         }
+
     }
+
+
 }
 
