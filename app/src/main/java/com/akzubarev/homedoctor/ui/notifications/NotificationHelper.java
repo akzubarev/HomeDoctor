@@ -115,7 +115,7 @@ public class NotificationHelper {
     }
 
     public void repeat() {
-        String[] time = DataHandler.getInstance().get("14:00", context).toString().split(":"); //TODO: fix data handling
+        String[] time = DataHandler.getInstance(context).get("14:00", context).toString().split(":"); //TODO: fix data handling
         int hour = Integer.parseInt(time[0]);
         int minute = Integer.parseInt(time[0]);
 

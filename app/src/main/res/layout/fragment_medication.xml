@@ -23,13 +23,14 @@
             android:id="@+id/name_edit_text"
             style="@style/EditText"
             android:hint="Название"
-            android:textSize="@dimen/dimen4"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:imeOptions="actionDone"/>
+            android:textSize="@dimen/dimen4" />
 
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout"
+    <LinearLayout
+        style="@style/LinearLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <TextView
@@ -44,11 +45,11 @@
         <EditText
             android:id="@+id/duration_edit_text"
             style="@style/EditText"
-            android:width="50dp"
             android:layout_weight="1"
+            android:width="50dp"
             android:hint="4"
-            android:inputType="number"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:inputType="number" />
 
         <Spinner
             android:id="@+id/duration_spinner"
@@ -59,56 +60,58 @@
             tools:listitem="@layout/spinner_row" />
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout"
+    <LinearLayout
+        style="@style/LinearLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <ToggleButton
-            style="@style/WeekButtons"
             android:id="@+id/days_mon"
+            style="@style/WeekButtons"
+            android:buttonTint="@color/additional"
             android:textOff="пн"
-            android:textOn="пн"
-            android:buttonTint="@color/additional"/>
+            android:textOn="пн" />
 
         <ToggleButton
-            style="@style/WeekButtons"
             android:id="@+id/days_tue"
+            style="@style/WeekButtons"
             android:textOff="вт"
             android:textOn="вт" />
 
         <ToggleButton
-            style="@style/WeekButtons"
             android:id="@+id/days_wed"
+            style="@style/WeekButtons"
             android:textOff="ср"
             android:textOn="ср" />
 
         <ToggleButton
-            style="@style/WeekButtons"
             android:id="@+id/days_thu"
+            style="@style/WeekButtons"
             android:textOff="чт"
             android:textOn="чт" />
 
         <ToggleButton
-            style="@style/WeekButtons"
             android:id="@+id/days_fri"
+            style="@style/WeekButtons"
             android:textOff="пт"
             android:textOn="пт" />
 
         <ToggleButton
-            style="@style/WeekButtons"
             android:id="@+id/days_sat"
+            style="@style/WeekButtons"
             android:textOff="сб"
             android:textOn="сб" />
 
         <ToggleButton
-            style="@style/WeekButtons"
             android:id="@+id/days_sun"
+            style="@style/WeekButtons"
             android:textOff="вс"
             android:textOn="вс" />
 
 
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout"
+    <LinearLayout
+        style="@style/LinearLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <TextView
@@ -125,9 +128,9 @@
             android:id="@+id/frequency_edit_text"
             style="@style/EditText"
             android:hint="4"
-            android:text="3"
             android:imeOptions="actionDone"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:text="3" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -139,5 +142,20 @@
         tools:itemCount="3"
         tools:listitem="@layout/block_remind_time" />
 
+    <View
+        android:id="@+id/empty_space"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/color3"
+        android:text="Сохранить изменения"
+        android:textColor="@color/additional" />
 
 </LinearLayout>

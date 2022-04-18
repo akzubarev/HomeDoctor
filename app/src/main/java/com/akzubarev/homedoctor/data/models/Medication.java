@@ -7,44 +7,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
-public class Medication {
+public class Medication extends BaseModel {
     private String name = "";
     private String courceLength = "1 месяц";
     private int dailyFrequency = 1;
-    private ArrayList<Date> consumptionTimes = new ArrayList<>();
 
-    public Date nextConsumption() {
-        Calendar now = Calendar.getInstance();
-        Calendar comparing = Calendar.getInstance();
-        if (consumptionTimes.size() == 0)
-            return new Date(); //TODO: fix that
-
-        for (Date time : consumptionTimes) {
-            if (now.getTime().compareTo(time) < 0)
-                return time;
-        }
-        return consumptionTimes.get(0);
-    }
-
-    public void setCourseLength(int quantity, String modifier) {
-        courceLength = String.format(Locale.UK, "%d %s", quantity, modifier);
-    }
-
-    public void setBasicFrequency(int frequency) {
-        dailyFrequency = frequency;
-        Calendar calendar = Calendar.getInstance();
-        for (int i = 0; i < dailyFrequency; i++) {
-            calendar.set(Calendar.HOUR_OF_DAY, 10 + i * (12 / dailyFrequency));
-            calendar.set(Calendar.MINUTE, 0);
-            consumptionTimes.add(calendar.getTime());
-        }
-    }
 
     public void setFrequency(ArrayList<Date> consDates) {
         dailyFrequency = consDates.size();
-        consumptionTimes = consDates;
     }
 
     public String getName() {
@@ -71,14 +45,6 @@ public class Medication {
         this.dailyFrequency = dailyFrequency;
     }
 
-    public ArrayList<Date> getConsumptionTimes() {
-        return consumptionTimes;
-    }
-
-    public void setConsumptionTimes(ArrayList<Date> consumptionTimes) {
-        this.consumptionTimes = consumptionTimes;
-    }
-
     public Medication() {
     }
 
@@ -87,14 +53,6 @@ public class Medication {
         this.name = name;
         this.courceLength = courceLength;
         this.dailyFrequency = dailyFrequency;
-    }
-
-    public Medication(String name, String courceLength,
-                      int dailyFrequency, ArrayList<Date> consumptionTimes) {
-        this.name = name;
-        this.courceLength = courceLength;
-        this.dailyFrequency = dailyFrequency;
-        this.consumptionTimes = consumptionTimes;
     }
 
 
@@ -119,5 +77,16 @@ public class Medication {
             }
         }
         return null;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+
+        result.put("name", name);
+        result.put("courceLength", courceLength);
+        result.put("dailyFrequency", dailyFrequency);
+
+        return result;
     }
 }

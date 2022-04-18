@@ -1,25 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/mobile_navigation"
-        app:startDestination="@+id/nav_home">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/SignInFragment">
 
     <fragment
-            android:id="@+id/nav_home"
-            android:name="com.akzubarev.homedoctor.ui.fragments.home.HomeFragment"
-            android:label="@string/menu_users"
-            tools:layout="@layout/fragment_home" />
+        android:id="@+id/SignInFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.SignInFragment"
+        android:label="@string/menu_users"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_SignInFragment_to_nav_home"
+            app:destination="@id/HomeFragment" />
+    </fragment>
 
     <fragment
-            android:id="@+id/nav_list"
-            android:name="com.akzubarev.homedoctor.ui.fragments.list.ListFragment"
-            android:label="@string/menu_list"
-            tools:layout="@layout/fragment_list" />
+        android:id="@+id/InfoFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.InfoFragment"
+        android:label="@string/menu_users"
+        tools:layout="@layout/fragment_info" />
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.home.HomeFragment"
+        android:label="@string/menu_users"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_nav_list"
+            app:destination="@id/MedicationsListFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_InfoFragment"
+            app:destination="@id/InfoFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_medicationsListFragment"
+            app:destination="@id/PrescriptionListFragment" />
+    </fragment>
 
     <fragment
-            android:id="@+id/nav_medication"
-            android:name="com.akzubarev.homedoctor.ui.fragments.medication.MedicationFragment"
-            android:label="@string/menu_medication"
-            tools:layout="@layout/fragment_medication" />
+        android:id="@+id/MedicationsListFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.list.MedicationListFragment"
+        android:label="@string/menu_list"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_nav_list_to_nav_medication"
+            app:destination="@id/MedicationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PrescriptionListFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.list.PrescriptionListFragment"
+        android:label="@string/menu_list"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_nav_list_to_nav_medication"
+            app:destination="@id/MedicationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/MedicationFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.medication.MedicationFragment"
+        android:label="@string/menu_medication"
+        tools:layout="@layout/fragment_medication" />
 </navigation>

@@ -12,12 +12,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.adapters.UserAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
-import com.akzubarev.homedoctor.data.models.User;
 import com.akzubarev.homedoctor.databinding.FragmentHomeBinding;
-
-import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -43,7 +40,7 @@ public class HomeFragment extends Fragment {
                 userList.getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager userLayoutManager = new LinearLayoutManager(getContext());
 
-        DataHandler handler = DataHandler.getInstance();
+        DataHandler handler = DataHandler.getInstance(getContext());
         UserAdapter userAdapter = new UserAdapter(handler.getUsers(), getContext());
         userList.setLayoutManager(userLayoutManager);
         userList.setAdapter(userAdapter);

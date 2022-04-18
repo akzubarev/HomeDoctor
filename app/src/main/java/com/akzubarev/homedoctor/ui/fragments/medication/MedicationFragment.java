@@ -1,10 +1,6 @@
 package com.akzubarev.homedoctor.ui.fragments.medication;
 
-import android.app.AlertDialog;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,11 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -28,18 +22,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.adapters.RemindTimeAdapter;
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
+import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationBinding;
-import com.akzubarev.homedoctor.ui.fragments.list.MedicationAdapter;
-import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
-import com.akzubarev.homedoctor.utils.Utils;
 
-import java.sql.DataTruncation;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
-public class MedicationFragment extends Fragment {
+public class MedicationFragment extends Fragment implements View.OnClickListener {
 
     private MedicationViewModel medicationViewModel;
     private FragmentMedicationBinding binding;
@@ -107,6 +98,9 @@ public class MedicationFragment extends Fragment {
         remindList.setLayoutManager(remindersLayoutManager);
         remindList.setAdapter(remindersAdapter);
         changeRemindersNum();
+
+
+        binding.saveButton.setOnClickListener(this);
         return view;
     }
 
@@ -120,6 +114,7 @@ public class MedicationFragment extends Fragment {
             while (consTimes < remindTimes.size())
                 remindTimes.remove(remindTimes.size() - 1);
     }
+
 
     public interface SpinnerCallback {
         void onCallback(int choice);
@@ -151,6 +146,21 @@ public class MedicationFragment extends Fragment {
 
     }
 
+    private void saveMedication() {
+        String name = binding.nameEditText.getText().toString();
+        String courceLength = binding.durationEditText.getText().toString();
+        int dailyFrequency = Integer.parseInt(binding.frequencyEditText.getText().toString());
+
+        Medication med = new Medication(name, courceLength, dailyFrequency);
+        DataHandler dataBaseHandler = DataHandler.getInstance(getContext());
+        dataBaseHandler.addMedication(med);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        saveMedication();
+    }
 
     @Override
     public void onDestroyView() {

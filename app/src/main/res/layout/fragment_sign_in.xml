@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color2"
-    android:orientation="vertical"
-    tools:context=".ui.activities.SignInActivity">
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="150dp"
@@ -54,7 +53,6 @@
         android:textAllCaps="false"
         android:background="@color/color3"
         android:padding="5dp"
-        android:onClick="signUp"
         android:text="Создать аккаунт" />
 
     <TextView

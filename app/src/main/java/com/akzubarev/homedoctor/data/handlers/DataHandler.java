@@ -9,12 +9,13 @@ import com.akzubarev.homedoctor.data.models.User;
 import java.util.ArrayList;
 
 public interface DataHandler {
-    static DataHandler getInstance() {
-        FireBaseHandler fireBaseHandler = new FireBaseHandler();
-        if (fireBaseHandler.initialized())
-            return new FireBaseHandler();
-        else
-            return new LocalHandler();
+    static DataHandler getInstance(Context context) {
+        FireBaseHandler fireBaseHandler = new FireBaseHandler(context);
+        return fireBaseHandler;
+//        if (fireBaseHandler.initialized())
+//            return fireBaseHandler;
+//        else
+//            return new LocalHandler();
     }
 
     void save(Object value, String name, Context context);
@@ -31,10 +32,8 @@ public interface DataHandler {
 
     ArrayList<Medication> getMedicationsForUser(String userId);
 
-    void addUser(String userId);
+    void addMedication(Medication medication) ;
 
-    void addMedication(String userId);
-
-    void addMedicationForUser(String userId);
+    void addMedicationForUser(User user, Medication medication);
 
 }

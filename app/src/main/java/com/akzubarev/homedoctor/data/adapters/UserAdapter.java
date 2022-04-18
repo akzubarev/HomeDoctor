@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.ui.fragments.home;
+package com.akzubarev.homedoctor.data.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -61,13 +61,13 @@ public class UserAdapter
     public void onBindViewHolder(@NonNull UserViewHolder UserViewHolder, int UserNumber) {
         User User = users.get(UserNumber);
         String info = User.getName();
-        Medication nextConsumption = User.nextConsumption();
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM");
-        String nextConsumptionText = String.format("%s %s",
-                nextConsumption.getName(), sdf.format(nextConsumption.nextConsumption()));
+//        Medication nextConsumption = User.nextConsumption();
+//        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM");
+//        String nextConsumptionText = String.format("%s %s",
+//                nextConsumption.getName(), sdf.format(nextConsumption.nextConsumption()));
 
         TextView userNextTime = UserViewHolder.userNextTime;
-        userNextTime.setText(nextConsumptionText);
+//        userNextTime.setText(nextConsumptionText);
 
         TextView userName = UserViewHolder.userName;
         userName.setText(info);
@@ -101,7 +101,7 @@ public class UserAdapter
                             NavController navController = Navigation.findNavController(itemView);
                             Bundle bundle = new Bundle();
                             bundle.putInt("User", position);
-                            navController.navigate(R.id.nav_list, bundle);
+                            navController.navigate(R.id.MedicationsListFragment, bundle);
                         }
                 );
             }

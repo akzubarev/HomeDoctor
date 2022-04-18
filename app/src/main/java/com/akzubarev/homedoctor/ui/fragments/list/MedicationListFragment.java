@@ -12,16 +12,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.akzubarev.homedoctor.data.adapters.MedicationAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.databinding.FragmentListBinding;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
-public class ListFragment extends Fragment {
+public class MedicationListFragment extends Fragment {
 
     private ListViewModel listViewModel;
     private FragmentListBinding binding;
@@ -33,7 +31,7 @@ public class ListFragment extends Fragment {
                 new ViewModelProvider(this).get(ListViewModel.class);
 
         binding = FragmentListBinding.inflate(inflater, container, false);
-        medications = DataHandler.getInstance().getAllMedications();
+        medications = DataHandler.getInstance(getContext()).getAllMedications();
         fill();
         return binding.getRoot();
     }

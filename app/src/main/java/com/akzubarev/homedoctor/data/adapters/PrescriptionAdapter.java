@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.ui.fragments.list;
+package com.akzubarev.homedoctor.data.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,8 +17,8 @@ import com.akzubarev.homedoctor.data.models.Medication;
 
 import java.util.ArrayList;
 
-public class MedicationAdapter
-        extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
+public class PrescriptionAdapter
+        extends RecyclerView.Adapter<PrescriptionAdapter.MedicationViewHolder> {
 
     private ArrayList<Medication> medications;
     private OnUserClickListener listener;
@@ -41,7 +41,7 @@ public class MedicationAdapter
         this.listener = listener;
     }
 
-    public MedicationAdapter(ArrayList<Medication> medications, Context context) {
+    public PrescriptionAdapter(ArrayList<Medication> medications, Context context) {
         this.medications = medications;
         this.context = context;
     }
@@ -62,7 +62,7 @@ public class MedicationAdapter
         medicationName.setText(Medication.getName());
 
         TextView medicationNextTime = medicationViewHolder.medicationNextTime;
-        medicationNextTime.setText(Medication.nextConsumption().toString());
+//        medicationNextTime.setText(Medication.nextConsumption().toString());
 
     }
 
@@ -87,7 +87,7 @@ public class MedicationAdapter
                             NavController navController = Navigation.findNavController(itemView);
                             Bundle bundle = new Bundle();
                             bundle.putInt("User", position);
-                            navController.navigate(R.id.nav_medication, bundle);
+                            navController.navigate(R.id.MedicationFragment, bundle);
                         }
                 );
             }

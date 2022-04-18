@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "55780551236",
+    "firebase_url": "https://home-doctor-7c200-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "home-doctor-7c200",
+    "storage_bucket": "home-doctor-7c200.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55780551236:android:e71cfabeabbdc32bb4aa11",
+        "android_client_info": {
+          "package_name": "com.akzubarev.homedoctor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55780551236-f03dv9l6gb5hlq13crqnir96lnrvcap9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbb4LCJC9cNImEhhLU6c0ABRjIa-iQFKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55780551236-f03dv9l6gb5hlq13crqnir96lnrvcap9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

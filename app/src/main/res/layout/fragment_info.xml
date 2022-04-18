@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_authors"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color2"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        style="@style/LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color2"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="@string/info_app_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info_app_description"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/dimen5" />
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info_version_placeholder"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/dimen5" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen5" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Разработчик"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/dimen4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info_owner"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+
+        <TextView
+            android:id="@+id/github"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:gravity="center"
+            android:onClick="goToWeb"
+            android:text="@string/link"
+            android:textColorLink="@color/additional"
+            android:textSize="@dimen/dimen4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="Дисклеймер"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/dimen4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:text="@string/info_hse"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="Научный руководитель"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/dimen4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:text="@string/info_science_manager"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+    </LinearLayout>
+</LinearLayout>
