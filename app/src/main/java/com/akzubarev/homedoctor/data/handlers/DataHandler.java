@@ -1,12 +1,21 @@
 package com.akzubarev.homedoctor.data.handlers;
 
 import android.content.Context;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
+
+import com.akzubarev.homedoctor.data.models.BaseModel;
 import com.akzubarev.homedoctor.data.models.Medication;
+import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.data.models.Prescription;
+import com.akzubarev.homedoctor.data.models.Profile;
+import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.data.models.User;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public interface DataHandler {
     static DataHandler getInstance(Context context) {
@@ -23,17 +32,78 @@ public interface DataHandler {
     Object get(String name, Context context);
 
 
-    ArrayList<User> getUsers();
+    void saveProfile(Profile profile);
 
-    ArrayList<Medication> getAllMedications();
+    void getProfiles(ProfilesCallback callback);
 
 
-    ArrayList<Prescription> getPrescriptionsForUser(String userId);
+    void getPrescriptions(PrescriptionsCallback callback, String profileID);
 
-    ArrayList<Medication> getMedicationsForUser(String userId);
+    void getMedications(MedicationsCallback callback, String profileID);
 
-    void addMedication(Medication medication) ;
+    void getTreatments(TreatmentsCallback callback, String prescriptionID);
 
-    void addMedicationForUser(User user, Medication medication);
+    void getMedicationStats(MedicationStatsCallback callback);
+
+    void getProfile(String name, ProfileCallback callback);
+
+
+    void getPrescription(PrescriptionCallback callback, String profileID, String id);
+
+    void getMedication(String medicationName, MedicationCallback callback);
+
+    void getMedicationStat(String id, MedicationStatCallback callback);
+
+    interface MedicationCallback {
+        void onCallback(Medication medication);
+    }
+
+    interface MedicationsCallback {
+        void onCallback(ArrayList<Medication> medications);
+    }
+
+    interface MedicationStatsCallback {
+        void onCallback(ArrayList<MedicationStats> medicationStats);
+    }
+
+    interface MedicationStatCallback {
+        void onCallback(MedicationStats medicationStat);
+    }
+
+    interface PrescriptionCallback {
+        void onCallback(Prescription prescription);
+    }
+
+    interface TreatmentsCallback {
+        void onCallback(ArrayList<Treatment> treatments);
+    }
+
+    interface PrescriptionsCallback {
+        void onCallback(ArrayList<Prescription> prescriptions);
+    }
+
+    interface ProfileCallback {
+        void onCallback(Profile profile);
+    }
+
+    interface ProfilesCallback {
+        void onCallback(ArrayList<Profile> profiles);
+    }
+
+    interface UserCallback {
+        void onCallback(User user);
+    }
+
+    default ArrayList<Medication> filter(ArrayList<Medication> query, ArrayList<String> targets) {
+        ArrayList<Medication> intersect = new ArrayList<>();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+            intersect = (ArrayList<Medication>) query.stream().filter(x -> targets.contains(x.getDBID())).collect(Collectors.toList());
+        else
+            for (Medication model : query)
+                if (targets.contains(model.getDBID()))
+                    intersect.add(model);
+
+        return intersect;
+    }
 
 }

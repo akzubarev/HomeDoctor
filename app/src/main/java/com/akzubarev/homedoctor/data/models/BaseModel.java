@@ -13,9 +13,11 @@ import java.util.Locale;
 import java.util.Map;
 
 public abstract class BaseModel {
-
     public BaseModel() {
     }
+
+    @Exclude
+    public abstract String getDBID();
 
     public String serialize() {
         String json = "";

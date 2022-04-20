@@ -13,14 +13,16 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.models.Medication;
+import com.akzubarev.homedoctor.data.models.Prescription;
+import com.akzubarev.homedoctor.data.models.Profile;
 
 import java.util.ArrayList;
 
 public class PrescriptionAdapter
-        extends RecyclerView.Adapter<PrescriptionAdapter.MedicationViewHolder> {
+        extends RecyclerView.Adapter<PrescriptionAdapter.PrescriptionViewHolder> {
 
-    private ArrayList<Medication> medications;
+    private ArrayList<Prescription> prescriptions;
+    private Profile profile;
     private OnUserClickListener listener;
     private Context context;
 
@@ -41,56 +43,55 @@ public class PrescriptionAdapter
         this.listener = listener;
     }
 
-    public PrescriptionAdapter(ArrayList<Medication> medications, Context context) {
-        this.medications = medications;
+    public PrescriptionAdapter(ArrayList<Prescription> prescriptions, Profile profile, Context context) {
+        this.prescriptions = prescriptions;
         this.context = context;
+        this.profile = profile;
     }
 
     @NonNull
     @Override
-    public MedicationViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public PrescriptionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.block_medication, viewGroup, false);
-        return new MedicationViewHolder(view, listener);
+                .inflate(R.layout.block_prescription, viewGroup, false);
+        return new PrescriptionViewHolder(view, listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MedicationViewHolder medicationViewHolder, int medicationNumber) {
-        Medication Medication = medications.get(medicationNumber);
+    public void onBindViewHolder(@NonNull PrescriptionViewHolder viewHolder, int PrescriptionNumber) {
+        Prescription prescription = prescriptions.get(PrescriptionNumber);
 
-        TextView medicationName = medicationViewHolder.medicationName;
-        medicationName.setText(Medication.getName());
+        TextView prescriptionName = viewHolder.prescriptionName;
+        prescriptionName.setText(prescription.getName());
 
-        TextView medicationNextTime = medicationViewHolder.medicationNextTime;
-//        medicationNextTime.setText(Medication.nextConsumption().toString());
-
+        TextView prescriptionNextTime = viewHolder.prescriptionNextTime;
+//        PrescriptionNextTime.setText(Prescription.nextConsumption().toString());
+        if (listener == null) {
+            viewHolder.itemView.setOnClickListener(v -> {
+                        NavController navController = Navigation.findNavController(viewHolder.itemView);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Profile", profile.getDBID());
+                        bundle.putString("Prescription", prescription.getDBID());
+                        navController.navigate(R.id.PrescriptionFragment, bundle);
+                    }
+            );
+        }
     }
 
     @Override
     public int getItemCount() {
-        return medications.size();
+        return prescriptions.size();
     }
 
-    public static class MedicationViewHolder extends RecyclerView.ViewHolder {
+    public static class PrescriptionViewHolder extends RecyclerView.ViewHolder {
 
-        TextView medicationNextTime;
-        TextView medicationName;
+        TextView prescriptionNextTime;
+        TextView prescriptionName;
 
-        public MedicationViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+        public PrescriptionViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
             super(itemView);
-            medicationNextTime = itemView.findViewById(R.id.next_consumption);
-            medicationName = itemView.findViewById(R.id.medication_name);
-
-            int position = getAdapterPosition();
-            if (listener == null) {
-                itemView.setOnClickListener(v -> {
-                            NavController navController = Navigation.findNavController(itemView);
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("User", position);
-                            navController.navigate(R.id.MedicationFragment, bundle);
-                        }
-                );
-            }
+            prescriptionNextTime = itemView.findViewById(R.id.next_consumption);
+            prescriptionName = itemView.findViewById(R.id.prescription_name);
         }
     }
 }

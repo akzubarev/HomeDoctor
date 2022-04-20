@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color2"
+    android:orientation="vertical">
+
+    <LinearLayout style="@style/LinearLayout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:labelFor="@id/name"
+            android:text="Имя"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <EditText
+            android:id="@+id/name"
+            style="@style/EditText"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:text="Валентина Павловна"
+            android:textSize="@dimen/dimen4" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/LinearLayout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:labelFor="@id/gender"
+            android:text="Пол"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <EditText
+            android:id="@+id/gender"
+            style="@style/EditText"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:text="Женский"
+            android:textSize="@dimen/dimen4" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/LinearLayout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:labelFor="@id/birthday"
+            android:text="Дата рождения"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <EditText
+            android:id="@+id/birthday"
+            style="@style/EditText"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:text="01.01.1968"
+            android:textSize="@dimen/dimen4" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LinearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:gravity="center_vertical|start"
+        android:labelFor="@id/prescriptions_list"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="Рецепты"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/prescriptions_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        tools:itemCount="2"
+        tools:listitem="@layout/block_prescription" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_gravity="center_vertical|start"
+        android:gravity="center_vertical|start"
+        android:labelFor="@id/medications_list"
+        android:text="Лекарства"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/medications_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        tools:itemCount="3"
+        tools:listitem="@layout/block_medication" />
+
+    <View
+        android:id="@+id/empty_space"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/color3"
+        android:text="Сохранить изменения"
+        android:textColor="@color/additional" />
+
+</LinearLayout>

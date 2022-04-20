@@ -1,14 +1,20 @@
 package com.akzubarev.homedoctor.data.handlers;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
+import com.akzubarev.homedoctor.data.models.BaseModel;
 import com.akzubarev.homedoctor.data.models.Medication;
+import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.data.models.Prescription;
+import com.akzubarev.homedoctor.data.models.Profile;
+import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.data.models.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,19 +23,51 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FireBaseHandler implements DataHandler {
 
     private static final String TAG = "NewPostFragment";
     private static final String MEDICATIONS = "medications";
-    private DatabaseReference mDatabase;
-    private Context context;
+    private static final String USERS = "users";
+    private static final String PROFILES = "profiles";
+    private static final String PRESCRIPTIONS = "prescriptions";
+    private static final String TREATMENTS = "treatments";
+    private final DatabaseReference mDatabase;
+    private final FirebaseAuth mAuth;
 
-    FireBaseHandler(Context context) {
-        //TODO:implement Firebase
+    public FireBaseHandler(Context context) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        this.context = context;
+        mAuth = FirebaseAuth.getInstance();
+        init();
+    }
+
+    private void init() {
+        MedicationStats ms = new MedicationStats("Парацетамол", "30 дней", 2);
+//        saveMedicationStats(ms);
+
+//        saveProfile(new Profile("Мама", "Женщина", "01.01.1968"));
+//        saveProfile(new Profile("Дочь", "Женщина", "01.01.2000"));
+
+        Medication paracetamol = new Medication("Парацетамол", "Парацетамол", 1);
+        paracetamol.addAllowed_profile("Дочь");
+//        saveMedication(paracetamol);
+
+
+        Prescription angina = new Prescription("Ангина Весна 2022", "2 месяца");
+//        savePrescription(angina, "Дочь");
+
+
+        ArrayList<Treatment> treatmetsPara = new ArrayList<>();
+        Treatment treatment = new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "14:00", 1);
+        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "11:00", 1));
+        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "17:00", 2));
+        DatabaseReference treatmentDBR = getUserDBR().child(TREATMENTS);
+        writeObject(treatmentDBR, treatment);
+        writeObjects(treatmentDBR, treatmetsPara);
+
     }
 
     public void save(Object value, String name, Context context) {
@@ -40,107 +78,293 @@ public class FireBaseHandler implements DataHandler {
         return 1;
     }
 
-    @Override
-    public ArrayList<User> getUsers() {
-//        DatabaseReference usersRef = mDatabase.child("users");
-//        usersRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot child: dataSnapshot.getChildren()) {
-//                    String key = child.getKey();
-//                    String value = child.getValue().toString();
-//                    // do what you want with key and value
-//                    return;
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-        ArrayList<User> users = new ArrayList<>();
-//        users.add(new User("Бабушка", getMedicationsForUser("stub")));
-        users.add(new User("Мама", "mama@gmail.com", new ArrayList<>()));
-        users.add(new User("Дочь", "mama@gmail.com", new ArrayList<>()));
-        return users;
-    }
-
-    @Override
-    public ArrayList<Medication> getAllMedications() {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Prescription> getPrescriptionsForUser(String userId) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Medication> getMedicationsForUser(String userId) {
-        return null;
-    }
-
-
-    @Override
-    public void addMedication(Medication medication) {
-        mDatabase.child(MEDICATIONS).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        writeMedication(mDatabase.child("medications"), medication);
-                    }
-
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                    }
-                });
-    }
-
-
-    private void writeMedication(DatabaseReference databaseref, Medication medication) {
-//        String key = mDatabase.child("medications").push().getKey();
-
+    private void writeStr(DatabaseReference dbr, String str) {
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(medication.getName(), medication.toMap());
+        childUpdates.put(str, null);
 
-        databaseref.updateChildren(childUpdates);
+        dbr.updateChildren(childUpdates);
     }
 
-    @Override
-    public void addMedicationForUser(User user, Medication medication) {
-        DatabaseReference usersRef = mDatabase.child("users").child(user.getEmail());
-        usersRef.addListenerForSingleValueEvent(
+    private void writeStrs(DatabaseReference dbr, ArrayList<String> strs) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        for (String str : strs)
+            childUpdates.put(str, null);
+
+        dbr.updateChildren(childUpdates);
+    }
+
+    private void writeObject(DatabaseReference dbr, BaseModel obj) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(obj.getDBID(), obj);
+
+        dbr.updateChildren(childUpdates);
+    }
+
+    private void writeObjects(DatabaseReference dbr, ArrayList<? extends BaseModel> objs) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        for (BaseModel obj : objs)
+            childUpdates.put(obj.getDBID(), obj);
+
+        dbr.updateChildren(childUpdates);
+    }
+
+    public DatabaseReference getUserDBR() {
+        return mDatabase.child(USERS).child(mAuth.getCurrentUser().getUid());
+    }
+
+    //region save
+
+    public void saveMedicationStats(MedicationStats medication) {
+        DatabaseReference dbr = mDatabase.child(MEDICATIONS);
+        dbr.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        // Get user value
-                        User user = dataSnapshot.getValue(User.class);
-
-                        if (user == null) {
-                            // User is null, error out
-                            Log.e(TAG, "User " + user.getEmail() + " is unexpectedly null");
-                            Toast.makeText(context,
-                                    "Error: could not fetch user.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            writeMedication(usersRef.child("medications"), medication);
-                        }
-
-//                        setEditingEnabled(true);
-//                        NavHostFragment.findNavController(NewPostFragment.this)
-//                                .navigate(R.id.action_NewPostFragment_to_MainFragment);
+                        writeObject(dbr, medication);
                     }
 
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-//                        setEditingEnabled(true);
                     }
                 });
     }
+
+    public void saveMedication(Medication medication) {
+        DatabaseReference dbr = getUserDBR().child(MEDICATIONS);
+        dbr.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        writeObject(dbr, medication);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+    private void savePrescription(Prescription prescription, String profileID) {
+        DatabaseReference dbr = getUserDBR().child(PRESCRIPTIONS).child(profileID);
+        dbr.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        writeObject(dbr, prescription);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+
+    @Override
+    public void saveProfile(Profile profile) {
+        DatabaseReference userDBR = getUserDBR();
+        userDBR.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        writeObject(userDBR.child(PROFILES), profile);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "addProfile:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+
+    public void saveProfiles(ArrayList<Profile> profiles) {
+        for (Profile profile : profiles)
+            saveProfile(profile);
+    }
+
+    //endregion
+
+
+    //region getAll
+
+    public void getUser(UserCallback callback) {
+        getUserDBR().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Profile> profiles = new ArrayList<>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    profiles.add(child.getValue(Profile.class));
+                }
+                callback.onCallback(dataSnapshot.getValue(User.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void getProfiles(ProfilesCallback callback) {
+        getUserDBR().child(PROFILES).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Profile> profiles = new ArrayList<>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    profiles.add(child.getValue(Profile.class));
+                }
+                callback.onCallback(profiles);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void getPrescriptions(PrescriptionsCallback callback, String profileID) {
+        getUserDBR().child(PRESCRIPTIONS).child(profileID).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<Prescription> prescriptions = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                prescriptions.add(child.getValue(Prescription.class));
+            }
+            callback.onCallback(prescriptions);
+        });
+    }
+
+
+    @Override
+    public void getMedications(MedicationsCallback callback, String profileID) {
+        getUserDBR().child(MEDICATIONS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<Medication> meds = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                Medication med = child.getValue(Medication.class);
+                Map<String, Boolean> allowed = med.getAllowed_profiles();
+                if (!allowed.containsKey(profileID) || allowed.get(profileID))
+                    meds.add(med);
+            }
+            callback.onCallback(meds);
+        });
+    }
+
+    @Override
+    public void getTreatments(TreatmentsCallback callback, String prescriptionID) {
+        getUserDBR().child(TREATMENTS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<Treatment> treatments = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                Treatment tr = child.getValue(Treatment.class);
+                if (tr.getPrescriptionId().equals(prescriptionID))
+                    treatments.add(tr);
+            }
+            callback.onCallback(treatments);
+        });
+    }
+
+    @Override
+    public void getMedicationStats(MedicationStatsCallback callback) {
+        mDatabase.child(MEDICATIONS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<MedicationStats> meds = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                meds.add(child.getValue(MedicationStats.class));
+            }
+            callback.onCallback(meds);
+        });
+    }
+    //endregion
+
+    //region get
+
+    @Override
+    public void getProfile(String id, ProfileCallback callback) {
+        getUserDBR().child(PROFILES).child(id).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            Profile profile = result.getValue(Profile.class);
+            callback.onCallback(profile);
+        });
+    }
+
+    @Override
+    public void getPrescription(PrescriptionCallback callback, String profileID, String id) {
+        getUserDBR().child(PRESCRIPTIONS).child(profileID).child(id).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            Prescription prescription = result.getValue(Prescription.class);
+            callback.onCallback(prescription);
+        });
+    }
+
+    @Override
+    public void getMedication(String id, MedicationCallback callback) {
+        mDatabase.child(MEDICATIONS).child(id).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            Medication med = result.getValue(Medication.class);
+            callback.onCallback(med);
+        });
+    }
+
+    @Override
+    public void getMedicationStat(String id, MedicationStatCallback callback) {
+        mDatabase.child(MEDICATIONS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            MedicationStats stats = result.getValue(MedicationStats.class);
+            callback.onCallback(stats);
+        });
+    }
+    //endregion
+
+
+    //region create
+    private void createUserStructure() {
+        DatabaseReference userDBR = getUserDBR();
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put(PROFILES, null);
+        childUpdates.put(MEDICATIONS, null);
+
+        userDBR.updateChildren(childUpdates);
+    }
+
+    private void createProfileStructure(Profile profile) {
+        DatabaseReference userDBR = getUserDBR();
+        DatabaseReference profileDBR = userDBR.child(profile.getDBID());
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put(PRESCRIPTIONS, null);
+        childUpdates.put(MEDICATIONS, null);
+
+        profileDBR.updateChildren(childUpdates);
+    }
+    //endregion
+
 
 
     public boolean initialized() {
         return false;
     }
+
 }
 
 
+//    public void getObject(Class cls, String dbID, BaseModelCallback callback) {
+//        if (BaseModel.class.isAssignableFrom(cls))
+//            try {
+//                Field pathField = cls.getField("dbpath");
+//                String path = (String) pathField.get(null);
+//                DatabaseReference userDBR = getUserDBR();
+//                DatabaseReference dataDBR = userDBR.child(path);
+//                dataDBR.get().addOnCompleteListener(task -> {
+//                    DataSnapshot result = task.getResult();
+//                    ArrayList<BaseModel> values = new ArrayList<>();
+//                    if (result != null && result.hasChildren())
+//                        for (DataSnapshot snapshot : result.getChildren()) {
+//                            cls med = snapshot.getValue(cls);
+//                            values.add(med);
+//                        }
+//                    callback.onCallback(values);
+//                });
+//            } catch (NoSuchFieldException | IllegalAccessException e) {
+//                e.printStackTrace();
+//            }

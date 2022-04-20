@@ -62,7 +62,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         // Check auth on Activity start
         if (mAuth.getCurrentUser() != null) {
-            onAuthSuccess(mAuth.getCurrentUser());
+            onAuthSuccess();
         } else {
             binding.toggleLoginSignUpTextView.setOnClickListener(this::toggleLoginMode);
             signUpModeActive = false;
@@ -115,7 +115,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                         Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
-                            onAuthSuccess(task.getResult().getUser());
+                            FirebaseUser user = task.getResult().getUser();
+                            String username = usernameFromEmail(user.getEmail());
+                            writeNewUser(user, username, user.getEmail());
+                            onAuthSuccess();
                         } else {
                             Toast.makeText(getContext(), "Sign Up Failed " + email,
                                     Toast.LENGTH_SHORT).show();
@@ -127,7 +130,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                         Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
-                            onAuthSuccess(task.getResult().getUser());
+                            onAuthSuccess();
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getContext(), "Sign In Failed",
@@ -146,17 +149,13 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void writeNewUser(String userId, String name, String email) {
+    private void writeNewUser(FirebaseUser fbUser, String name, String email) {
         User user = new User(name, email);
-
-        mDatabase.child("users").child(userId).setValue(user);
+        mDatabase.child("users").child(fbUser.getUid()).setValue(user);
     }
 
-    private void onAuthSuccess(FirebaseUser user) {
-        String username = usernameFromEmail(user.getEmail());
-
-        writeNewUser(user.getUid(), username, user.getEmail());
-        NavHostFragment.findNavController(this).navigate(R.id.action_SignInFragment_to_nav_home);
+    private void onAuthSuccess() {
+        NavHostFragment.findNavController(this).navigate(R.id.sucessfullSignIn);
     }
 
 

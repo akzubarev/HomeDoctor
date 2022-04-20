@@ -1,5 +1,6 @@
 package com.akzubarev.homedoctor.data.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ public class MedicationAdapter
         extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
 
     private ArrayList<Medication> medications;
+    NavController navController;
     private OnUserClickListener listener;
     private Context context;
 
@@ -41,9 +43,10 @@ public class MedicationAdapter
         this.listener = listener;
     }
 
-    public MedicationAdapter(ArrayList<Medication> medications, Context context) {
+    public MedicationAdapter(ArrayList<Medication> medications, Activity activity) {
         this.medications = medications;
-        this.context = context;
+        this.context = activity;
+        this.navController = Navigation.findNavController(activity, R.id.nav_host_fragment);
     }
 
     @NonNull
@@ -63,7 +66,14 @@ public class MedicationAdapter
 
         TextView medicationNextTime = medicationViewHolder.medicationNextTime;
 //        medicationNextTime.setText(Medication.nextConsumption().toString());
-
+        medicationViewHolder.itemView.setOnClickListener(v -> {
+                    int position = medicationViewHolder.getAdapterPosition();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("User", position);
+                    bundle.putString("Medication", medications.get(position).getName());
+                    navController.navigate(R.id.MedicationFragment, bundle);
+                }
+        );
     }
 
     @Override
@@ -81,16 +91,6 @@ public class MedicationAdapter
             medicationNextTime = itemView.findViewById(R.id.next_consumption);
             medicationName = itemView.findViewById(R.id.medication_name);
 
-            int position = getAdapterPosition();
-            if (listener == null) {
-                itemView.setOnClickListener(v -> {
-                            NavController navController = Navigation.findNavController(itemView);
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("User", position);
-                            navController.navigate(R.id.MedicationFragment, bundle);
-                        }
-                );
-            }
         }
     }
 }

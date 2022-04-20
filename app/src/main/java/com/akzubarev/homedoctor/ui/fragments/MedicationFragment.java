@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.ui.fragments.medication;
+package com.akzubarev.homedoctor.ui.fragments;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,7 +16,8 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.adapters.RemindTimeAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
+import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationBinding;
 
 import java.util.ArrayList;
@@ -32,14 +34,14 @@ import java.util.Date;
 
 public class MedicationFragment extends Fragment implements View.OnClickListener {
 
-    private MedicationViewModel medicationViewModel;
     private FragmentMedicationBinding binding;
-    private ArrayList<Date> remindTimes = new ArrayList<>();
+    private final ArrayList<Date> remindTimes = new ArrayList<>();
+    DataHandler dataHandler;
+    Medication medication;
+    MedicationStats medicationStats;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        medicationViewModel =
-                new ViewModelProvider(this).get(MedicationViewModel.class);
 
         binding = FragmentMedicationBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
@@ -50,11 +52,12 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         if (create_mode) {
 //            Button b = findViewById(R.id.id);
         } else {
-            EditText nameEditText = binding.nameEditText;
-            EditText durationEditText = binding.durationEditText;
-            EditText frequencyEditText = binding.frequencyEditText;
-            Spinner durationSpinner = binding.durationSpinner;
-
+            Bundle bundle = this.getArguments();
+            if (bundle != null) {
+                String medicationName = bundle.getString("Medication");
+                dataHandler = DataHandler.getInstance(getContext());
+                dataHandler.getMedication(medicationName, this::getMedicationStat);
+            }
         }
         configureSpinner(binding.durationSpinner, R.array.duration_dropdown, (int choice) -> {
             String[] options = getResources().getStringArray(R.array.duration_dropdown);
@@ -104,6 +107,35 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    private void getMedicationStat(Medication medication) {
+        this.medication = medication;
+        String medicationStatID = medication.getMedicationStatsID();
+        dataHandler.getMedicationStat(medicationStatID, this::fill);
+    }
+
+
+    private void fill(MedicationStats medicationStats) {
+        this.medicationStats = medicationStats;
+
+        binding.nameEditText.setText(medication.getName());
+        binding.frequencyEditText.setText(Integer.toString(medication.getDailyFrequency()));
+        String[] course = medicationStats.getCourceLength().split(" ");
+        binding.durationEditText.setText(course[0]);
+        int index = 0;
+        switch (course[1]) {
+            case "дней":
+                index = 0;
+                break;
+            case "недель":
+                index = 1;
+                break;
+            case "месяцев":
+                index = 2;
+                break;
+        }
+        binding.durationSpinner.setSelection(index);
+    }
+
     private void changeRemindersNum() {
         EditText frequencyEditText = binding.frequencyEditText;
         int consTimes = Integer.parseInt(frequencyEditText.getText().toString());
@@ -148,14 +180,21 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
 
     private void saveMedication() {
         String name = binding.nameEditText.getText().toString();
-        String courceLength = binding.durationEditText.getText().toString();
+        String courceLength = String.format("%s %s",
+                binding.durationEditText.getText().toString(),
+                binding.durationSpinner.getSelectedItem().toString());
         int dailyFrequency = Integer.parseInt(binding.frequencyEditText.getText().toString());
 
-        Medication med = new Medication(name, courceLength, dailyFrequency);
+//        Medication med = new Medication(name, courceLength, dailyFrequency);
         DataHandler dataBaseHandler = DataHandler.getInstance(getContext());
-        dataBaseHandler.addMedication(med);
+//        dataBaseHandler.addMedication(med);
+        onSuccesfulSave();
     }
 
+    private void onSuccesfulSave() {
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.popBackStack();
+    }
 
     @Override
     public void onClick(View view) {

@@ -1,5 +1,7 @@
 package com.akzubarev.homedoctor.data.models;
 
+import com.google.firebase.database.Exclude;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,9 +13,33 @@ import java.util.Map;
 public class Prescription extends BaseModel {
     private String name = "";
     private String length = "1 месяц";
-    private Map<String, String> consumptionTimes = new HashMap<>();
+    private String diagnosis = "";
 
-//    public Date nextConsumption() {
+    public Prescription(String name, String lenght) {
+        this.name = name;
+        this.length = lenght;
+    }
+
+    public Prescription() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length;
+    }
+
+    //    public Date nextConsumption() {
 //        Calendar now = Calendar.getInstance();
 //        Calendar comparing = Calendar.getInstance();
 //        if (consumptionTimes.size() == 0)
@@ -44,15 +70,27 @@ public class Prescription extends BaseModel {
 //    dates.add(Calendar.getInstance().getTime());
 //    return new Medication("Парацетамол", "1 месяц", 1, dates);
 //}
+    @Override
+    @Exclude
+    public String getDBID() {
+        return getName();
+    }
 
     @Override
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-
-        result.put("name", name);
-        result.put("length", length);
-        result.put("consumptionTimes", consumptionTimes);
+//
+//        result.put("name", name);
+//        result.put("length", length);
 
         return result;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 }

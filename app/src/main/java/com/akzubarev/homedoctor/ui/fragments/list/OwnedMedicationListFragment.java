@@ -14,19 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.akzubarev.homedoctor.data.adapters.MedicationAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
-import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationListBinding;
 
 import java.util.ArrayList;
 
-public class MedicationListFragment extends Fragment {
+public class OwnedMedicationListFragment extends Fragment {
 
     private FragmentMedicationListBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMedicationListBinding.inflate(inflater, container, false);
-        DataHandler.getInstance(getContext()).getMedications(this::fill, "ааа");
+//        DataHandler.getInstance(getContext()).getMedications(this::fill);
         return binding.getRoot();
     }
 

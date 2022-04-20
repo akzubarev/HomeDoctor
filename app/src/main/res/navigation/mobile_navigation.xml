@@ -8,21 +8,24 @@
     <fragment
         android:id="@+id/SignInFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.SignInFragment"
-        android:label="@string/menu_users"
+        android:label="Регистрация"
         tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_SignInFragment_to_nav_home"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/sucessfullSignIn"
+            app:destination="@id/ProfilesListFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/InfoFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.InfoFragment"
-        android:label="@string/menu_users"
+        android:label="Информация"
         tools:layout="@layout/fragment_info" />
     <fragment
-        android:id="@+id/HomeFragment"
-        android:name="com.akzubarev.homedoctor.ui.fragments.home.HomeFragment"
+        android:id="@+id/ProfilesListFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.list.ProfilesListFragment"
         android:label="@string/menu_users"
         tools:layout="@layout/fragment_home">
         <action
@@ -32,32 +35,58 @@
             android:id="@+id/action_HomeFragment_to_InfoFragment"
             app:destination="@id/InfoFragment" />
         <action
-            android:id="@+id/action_HomeFragment_to_medicationsListFragment"
-            app:destination="@id/PrescriptionListFragment" />
+            android:id="@+id/action_HomeFragment_to_OwnedMedicationsListFragment"
+            app:destination="@id/OwnedMedicationsListFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_MedicationFragment"
+            app:destination="@id/MedicationFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_ProfileFragment"
+            app:destination="@id/ProfileFragment" />
     </fragment>
-
+    <fragment
+        android:id="@+id/OwnedMedicationsListFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.list.OwnedMedicationListFragment"
+        android:label="@string/menu_list"
+        tools:layout="@layout/fragment_medication_list_owned">
+        <action
+            android:id="@+id/action_nav_list_to_nav_medication"
+            app:destination="@id/MedicationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/PrescriptionFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.PrescriptionFragment"
+        android:label="Лечение"
+        tools:layout="@layout/fragment_prescription">
+        <action
+            android:id="@+id/action_nav_list_to_nav_medication"
+            app:destination="@id/MedicationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ProfileFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.ProfileFragment"
+        android:label="Профиль"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_ProfileFragment_to_PrescriptionFragment"
+            app:destination="@id/PrescriptionFragment" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_MedicationFragment"
+            app:destination="@id/MedicationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/MedicationsListFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.list.MedicationListFragment"
         android:label="@string/menu_list"
-        tools:layout="@layout/fragment_list">
+        tools:layout="@layout/fragment_medication_list">
         <action
             android:id="@+id/action_nav_list_to_nav_medication"
             app:destination="@id/MedicationFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/PrescriptionListFragment"
-        android:name="com.akzubarev.homedoctor.ui.fragments.list.PrescriptionListFragment"
-        android:label="@string/menu_list"
-        tools:layout="@layout/fragment_list">
-        <action
-            android:id="@+id/action_nav_list_to_nav_medication"
-            app:destination="@id/MedicationFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/MedicationFragment"
-        android:name="com.akzubarev.homedoctor.ui.fragments.medication.MedicationFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.MedicationFragment"
         android:label="@string/menu_medication"
         tools:layout="@layout/fragment_medication" />
 </navigation>

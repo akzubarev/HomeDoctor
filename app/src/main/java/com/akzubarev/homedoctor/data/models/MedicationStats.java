@@ -6,25 +6,15 @@ import com.google.firebase.database.Exclude;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-public class Medication extends BaseModel {
-    public Medication(String name, String medicationStatsID, int dailyFrequency) {
-        this.name = name;
-        this.medicationStatsID = medicationStatsID;
-        this.dailyFrequency = dailyFrequency;
-    }
-
-    private String name;
-    private String medicationStatsID;
+public class MedicationStats extends BaseModel {
+    private String name = "";
+    private String courceLength = "1 месяц";
     private int dailyFrequency = 1;
-    private int tablets = 1;
-    private Date expiry_date = new Date();
-    private Map<String, Boolean> allowed_profiles = new HashMap<>();
+
 
     public String getName() {
         return name;
@@ -32,21 +22,30 @@ public class Medication extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
-        medicationStatsID = name;
     }
 
-    public String getMedicationStatsID() {
-        return medicationStatsID;
+    public String getCourceLength() {
+        return courceLength;
+    }
+
+    public void setCourceLength(String courceLength) {
+        this.courceLength = courceLength;
     }
 
     public int getDailyFrequency() {
         return dailyFrequency;
     }
 
-    public Medication() {
+    public void setDailyFrequency(int dailyFrequency) {
+        this.dailyFrequency = dailyFrequency;
     }
 
-    public Medication(int dailyFrequency) {
+    public MedicationStats() {
+    }
+
+    public MedicationStats(String name, String courceLength, int dailyFrequency) {
+        this.name = name;
+        this.courceLength = courceLength;
         this.dailyFrequency = dailyFrequency;
     }
 
@@ -67,11 +66,11 @@ public class Medication extends BaseModel {
         return json;
     }
 
-    public static Medication deserialize(String json) {
+    public static MedicationStats deserialize(String json) {
         if (!json.isEmpty()) {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
-                return objectMapper.readValue(json, Medication.class);
+                return objectMapper.readValue(json, MedicationStats.class);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -83,18 +82,10 @@ public class Medication extends BaseModel {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
 
-//        result.put("name", name);
-//        result.put("courceLength", courceLength);
-//        result.put("dailyFrequency", dailyFrequency);
+        result.put("name", name);
+        result.put("courceLength", courceLength);
+        result.put("dailyFrequency", dailyFrequency);
 
         return result;
-    }
-
-    public Map<String, Boolean> getAllowed_profiles() {
-        return allowed_profiles;
-    }
-
-    public void addAllowed_profile(String allowed_profile) {
-        this.allowed_profiles.put(allowed_profile, true);
     }
 }
