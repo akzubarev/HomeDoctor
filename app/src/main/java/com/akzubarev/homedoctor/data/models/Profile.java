@@ -41,26 +41,6 @@ public class Profile extends BaseModel {
         this.name = name;
     }
 
-    @Override
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-//        ArrayList<Map<String, Object>> prescriptionMap = new ArrayList<>();
-//        ArrayList<Map<String, Object>> medicationMap = new ArrayList<>();
-//
-//        for (Prescription prescription : prescriptions) {
-//            prescriptionMap.add(prescription.toMap());
-//        }
-//        for (Medication medication : medications) {
-//            medicationMap.add(medication.toMap());
-//        }
-//
-//        result.put("name", name);
-//        result.put("prescriptions", prescriptionMap);
-//        result.put("medications", medicationMap);
-
-        return result;
-    }
-
     public String getBirthday() {
         return birthday;
     }

@@ -13,18 +13,48 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Medication extends BaseModel {
-    public Medication(String name, String medicationStatsID, int dailyFrequency) {
-        this.name = name;
-        this.medicationStatsID = medicationStatsID;
-        this.dailyFrequency = dailyFrequency;
-    }
 
     private String name;
     private String medicationStatsID;
     private int dailyFrequency = 1;
     private int tablets = 1;
-    private Date expiry_date = new Date();
+    private String expiry_date = "";
     private Map<String, Boolean> allowed_profiles = new HashMap<>();
+
+    public void setMedicationStatsID(String medicationStatsID) {
+        this.medicationStatsID = medicationStatsID;
+    }
+
+    public void setDailyFrequency(int dailyFrequency) {
+        this.dailyFrequency = dailyFrequency;
+    }
+
+    public int getTablets() {
+        return tablets;
+    }
+
+    public void setTablets(int tablets) {
+        this.tablets = tablets;
+    }
+
+    public String getExpiry_date() {
+        return expiry_date;
+    }
+
+    public void setExpiry_date(String expiry_date) {
+        this.expiry_date = expiry_date;
+    }
+
+    public void setAllowed_profiles(Map<String, Boolean> allowed_profiles) {
+        this.allowed_profiles = allowed_profiles;
+    }
+
+
+    public Medication(String name, String medicationStatsID, int dailyFrequency) {
+        this.name = name;
+        this.medicationStatsID = medicationStatsID;
+        this.dailyFrequency = dailyFrequency;
+    }
 
     public String getName() {
         return name;
@@ -79,16 +109,7 @@ public class Medication extends BaseModel {
         return null;
     }
 
-    @Override
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
 
-//        result.put("name", name);
-//        result.put("courceLength", courceLength);
-//        result.put("dailyFrequency", dailyFrequency);
-
-        return result;
-    }
 
     public Map<String, Boolean> getAllowed_profiles() {
         return allowed_profiles;

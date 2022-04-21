@@ -1,11 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Spinner">
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">30dp</item>
+        <item name="android:textAlignment">center</item>
         <item name="android:gravity">center_horizontal|end</item>
         <item name="android:layout_gravity">center_horizontal|end</item>
         <item name="android:background">@null</item>
-        <item name="android:textColor">@color/additional</item>
+        <item name="android:textColor">@drawable/edit_text_selector</item>
         <!--        <item name="android:dropDownHorizontalOffset">-200dp</item>--> <!-- set programmatically -->
         <item name="android:dropDownVerticalOffset">30dp</item>
     </style>
@@ -33,7 +35,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center_horizontal|end</item>
-        <item name="android:textColor">@color/main</item>
+        <item name="android:textColor">@drawable/edit_text_selector</item>
+        <item name="android:backgroundTint">@drawable/edit_text_tint_selector</item>
         <item name="android:textColorHint">@color/shadowed</item>
         <item name="android:dropDownVerticalOffset">30dp</item>
     </style>
@@ -73,5 +76,20 @@
         <item name="android:textColor">@color/main</item>
         <item name="textAllCaps">false</item>
         <item name="android:textSize">@dimen/dimen4</item>
+    </style>
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/additional</item>
+        <item name="colorControlActivated">@color/additional</item>
+    </style>
+
+    <style name="checkbox" parent="MyCheckBox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
+        <item name="android:gravity">center_vertical|end</item>
+        <item name="android:theme">@style/MyCheckBox</item>
     </style>
 </resources>

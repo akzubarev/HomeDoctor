@@ -32,12 +32,20 @@ public interface DataHandler {
     Object get(String name, Context context);
 
 
+    void saveMedicationStats(MedicationStats medication);
+
+    void saveMedication(Medication medication);
+
+    void savePrescription(Prescription prescription, String profileID);
+
     void saveProfile(Profile profile);
 
     void getProfiles(ProfilesCallback callback);
 
 
     void getPrescriptions(PrescriptionsCallback callback, String profileID);
+
+    void getMedications(MedicationsCallback callback);
 
     void getMedications(MedicationsCallback callback, String profileID);
 

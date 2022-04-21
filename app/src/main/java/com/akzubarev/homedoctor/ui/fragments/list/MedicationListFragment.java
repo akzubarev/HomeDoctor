@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.data.adapters.MedicationAdapter;
+import com.akzubarev.homedoctor.data.adapters.MedicationStatsAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
+import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationListBinding;
 
@@ -26,18 +28,18 @@ public class MedicationListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMedicationListBinding.inflate(inflater, container, false);
-        DataHandler.getInstance(getContext()).getMedications(this::fill, "ааа");
+        DataHandler.getInstance(getContext()).getMedicationStats(this::fill);
         return binding.getRoot();
     }
 
-    private void fill(ArrayList<Medication> medications) {
+    private void fill(ArrayList<MedicationStats> medications) {
         RecyclerView medicationsList = binding.medicationsList;
         medicationsList.setHasFixedSize(true);
         medicationsList.addItemDecoration(new DividerItemDecoration(
                 medicationsList.getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
 
-        MedicationAdapter medicationsAdapter = new MedicationAdapter(medications, getActivity());
+        MedicationStatsAdapter medicationsAdapter = new MedicationStatsAdapter(medications, getActivity());
         medicationsList.setLayoutManager(medicationsLayoutManager);
         medicationsList.setAdapter(medicationsAdapter);
     }

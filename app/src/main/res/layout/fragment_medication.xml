@@ -1,68 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color2"
     android:orientation="vertical">
 
-    <LinearLayout style="@style/LinearLayout">
+    <LinearLayout
+        android:id="@+id/medicationStats_layout"
+        style="@style/LinearLayout"
+        android:orientation="vertical"
+        android:padding="0dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|start"
-            android:layout_weight="1"
-            android:gravity="center_vertical|start"
-            android:text="Название"
-            android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+        <LinearLayout style="@style/LinearLayout">
 
-        <EditText
-            android:id="@+id/name_edit_text"
-            style="@style/EditText"
-            android:hint="Название"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:textSize="@dimen/dimen4" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:width="0dp" />
 
+            <EditText
+                android:id="@+id/name_edit_text"
+                style="@style/EditText"
+                android:hint="Название"
+
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:textSize="@dimen/dimen4" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:width="0dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:text="Длительность курса"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:width="0dp" />
+
+            <EditText
+                android:id="@+id/duration_edit_text"
+                style="@style/EditText"
+                android:width="50dp"
+                android:hint="4"
+                android:imeOptions="actionDone"
+                android:inputType="number" />
+
+            <Spinner
+                android:id="@+id/duration_spinner"
+                style="@style/Spinner"
+                android:layout_height="match_parent"
+                android:entries="@array/duration_dropdown"
+                tools:listitem="@layout/spinner_row" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="Приемов в день"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <EditText
+                android:id="@+id/frequency_edit_text"
+                style="@style/EditText"
+                android:hint="4"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="3" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="Таблеток в пачке"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <EditText
+                android:id="@+id/pack_edit_text"
+                style="@style/EditText"
+                android:hint="4"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="3" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:baselineAligned="false">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:includeFontPadding="false"
+                android:text="Способ употребления"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <EditText
+                android:id="@+id/usage_edit_text"
+                style="@style/EditText"
+                android:hint="4"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="Запить водой перед едой" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/medication_layout"
+        style="@style/LinearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:padding="0dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:background="@color/shadowed" />
+
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_margin="0dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="Количество таблеток"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <EditText
+                android:id="@+id/tablets_edit_text"
+                style="@style/EditText"
+                android:hint="4"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="20" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="Срок годности"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <EditText
+                android:id="@+id/expiry_date_edit_text"
+                style="@style/EditText"
+                android:hint="20.11.2022"
+                android:imeOptions="actionDone"
+                android:inputType="date"
+                android:text="20.11.2022" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         style="@style/LinearLayout"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
-
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
-            android:gravity="center_vertical|start"
-            android:text="Длительность курса"
-            android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
-
-        <EditText
-            android:id="@+id/duration_edit_text"
-            style="@style/EditText"
-            android:layout_weight="1"
-            android:width="50dp"
-            android:hint="4"
-            android:imeOptions="actionDone"
-            android:inputType="number" />
-
-        <Spinner
-            android:id="@+id/duration_spinner"
-            style="@style/Spinner"
-            android:layout_height="match_parent"
-
-            android:entries="@array/duration_dropdown"
-            tools:listitem="@layout/spinner_row" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/LinearLayout"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:visibility="gone">
 
         <ToggleButton
             android:id="@+id/days_mon"
@@ -110,35 +256,13 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        style="@style/LinearLayout"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|start"
-            android:layout_weight="1"
-            android:gravity="center_vertical|start"
-            android:text="Приемов в день"
-            android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
-
-        <EditText
-            android:id="@+id/frequency_edit_text"
-            style="@style/EditText"
-            android:hint="4"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:text="3" />
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/remind_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:scrollbars="vertical"
+        android:visibility="gone"
         tools:itemCount="3"
         tools:listitem="@layout/block_remind_time" />
 
@@ -150,12 +274,23 @@
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/color3"
+        android:tag="Отмена"
+        android:text="Назад"
+        android:textColor="@color/additional" />
+
+    <Button
         android:id="@+id/save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/color3"
-        android:text="Сохранить изменения"
+        android:tag="Редактирование"
+        android:text="Редактировать"
         android:textColor="@color/additional" />
 
 </LinearLayout>

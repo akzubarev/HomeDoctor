@@ -2,7 +2,6 @@ package com.akzubarev.homedoctor.ui.fragments;
 
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,10 +29,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MedicationFragment extends Fragment implements View.OnClickListener {
-
+    String TAG = "MedicationFragment";
     private FragmentMedicationBinding binding;
     private final ArrayList<Date> remindTimes = new ArrayList<>();
     DataHandler dataHandler;
+    String medicationID;
+    Mode mode = Mode.view;
+
+    enum Mode {view, create, edit, add}
+
     Medication medication;
     MedicationStats medicationStats;
 
@@ -45,20 +46,18 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
 
         binding = FragmentMedicationBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        boolean create_mode = false;
-        if (savedInstanceState != null)
-            create_mode = savedInstanceState.getBoolean("create", true);
-
-        if (create_mode) {
-//            Button b = findViewById(R.id.id);
-        } else {
-            Bundle bundle = this.getArguments();
-            if (bundle != null) {
-                String medicationName = bundle.getString("Medication");
-                dataHandler = DataHandler.getInstance(getContext());
-                dataHandler.getMedication(medicationName, this::getMedicationStat);
-            }
+        switchMode(Mode.view);
+        Bundle bundle = this.getArguments();
+        dataHandler = DataHandler.getInstance(getContext());
+        if (bundle != null) {
+            String medicationStatID = bundle.getString("MedicationStat");
+            medicationID = bundle.getString("Medication");
+            boolean add = bundle.getBoolean("Add");
+            dataHandler.getMedicationStat(medicationStatID, this::fillStat);
+            if (add)
+                switchMode(Mode.add);
         }
+
         configureSpinner(binding.durationSpinner, R.array.duration_dropdown, (int choice) -> {
             String[] options = getResources().getStringArray(R.array.duration_dropdown);
             String duration = options[choice];
@@ -82,15 +81,12 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         }
 
         EditText frequencyEditText = binding.frequencyEditText;
-        frequencyEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    changeRemindersNum();
-                    return true;
-                }
-                return false;
+        frequencyEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                changeRemindersNum();
+                return true;
             }
+            return false;
         });
         RecyclerView remindList = binding.remindList;
         remindList.setHasFixedSize(false);
@@ -104,21 +100,20 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
 
 
         binding.saveButton.setOnClickListener(this);
+        binding.cancelButton.setOnClickListener(this);
+        binding.cancelButton.setVisibility(View.GONE);
         return view;
     }
 
-    private void getMedicationStat(Medication medication) {
-        this.medication = medication;
-        String medicationStatID = medication.getMedicationStatsID();
-        dataHandler.getMedicationStat(medicationStatID, this::fill);
+    private void refill() {
+//        fillStat(medicationStats);
+        fillMedication(medication);
     }
 
-
-    private void fill(MedicationStats medicationStats) {
+    private void fillStat(MedicationStats medicationStats) {
         this.medicationStats = medicationStats;
-
-        binding.nameEditText.setText(medication.getName());
-        binding.frequencyEditText.setText(Integer.toString(medication.getDailyFrequency()));
+        binding.nameEditText.setText(medicationStats.getName());
+        binding.frequencyEditText.setText(Integer.toString(medicationStats.getDailyFrequency()));
         String[] course = medicationStats.getCourceLength().split(" ");
         binding.durationEditText.setText(course[0]);
         int index = 0;
@@ -134,19 +129,79 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
                 break;
         }
         binding.durationSpinner.setSelection(index);
+        changeRemindersNum();
+        if (medicationID != null)
+            dataHandler.getMedication(medicationID, this::fillMedication);
+        else if (mode != Mode.add)
+            binding.medicationLayout.setVisibility(View.GONE);
+
+        switchMode(mode);
     }
+
+    private void fillMedication(Medication medication) {
+        this.medication = medication;
+        binding.medicationLayout.setVisibility(View.VISIBLE);
+        binding.frequencyEditText.setText(Integer.toString(medication.getDailyFrequency()));
+        binding.tabletsEditText.setText(Integer.toString(20));
+        binding.expiryDateEditText.setText("01.01.2023");
+        changeRemindersNum();
+
+        switchMode(mode);
+    }
+
 
     private void changeRemindersNum() {
-        EditText frequencyEditText = binding.frequencyEditText;
-        int consTimes = Integer.parseInt(frequencyEditText.getText().toString());
-        if (consTimes > remindTimes.size())
-            while (consTimes > remindTimes.size())
-                remindTimes.add(new Date());
-        else
-            while (consTimes < remindTimes.size())
-                remindTimes.remove(remindTimes.size() - 1);
+//        EditText frequencyEditText = binding.frequencyEditText;
+//        int consTimes = Integer.parseInt(frequencyEditText.getText().toString());
+//        if (consTimes > remindTimes.size())
+//            while (consTimes > remindTimes.size())
+//                remindTimes.add(new Date());
+//        else
+//            while (consTimes < remindTimes.size())
+//                remindTimes.remove(remindTimes.size() - 1);
     }
 
+
+    private void switchMode(Mode mode) {
+        this.mode = mode;
+        View[] statViews = new View[]{binding.nameEditText, binding.frequencyEditText,
+                binding.durationEditText, binding.durationSpinner,
+                binding.packEditText, binding.usageEditText
+        };
+        View[] medViews = new View[]{binding.tabletsEditText, binding.expiryDateEditText};
+
+        switch (mode) {
+            case add:
+                binding.medicationLayout.setVisibility(View.VISIBLE);
+                binding.saveButton.setText("Добавить");
+                for (View v : medViews) {
+                    ((EditText) v).setText("");
+                    v.setEnabled(true);
+                }
+                break;
+            case view:
+                for (View v : statViews)
+                    v.setEnabled(false);
+                for (View v : medViews)
+                    v.setEnabled(false);
+                break;
+            case create:
+                for (View v : statViews)
+                    v.setEnabled(true);
+                binding.medicationLayout.setVisibility(View.GONE);
+                break;
+            case edit:
+                for (View v : statViews)
+                    v.setEnabled(false);
+                for (View v : medViews)
+                    v.setEnabled(true);
+                break;
+        }
+        if (medicationID == null && mode != Mode.add)
+            binding.saveButton.setVisibility(View.GONE);
+        else
+            binding.saveButton.setVisibility(View.VISIBLE);
+    }
 
     public interface SpinnerCallback {
         void onCallback(int choice);
@@ -163,10 +218,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         spinner.setAdapter(adapter);
         spinner.setSelection(choice_index);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent,
-                                       View itemSelected,
-                                       int selectedItemPosition,
-                                       long selectedId) {
+            public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
                 callback.onCallback(selectedItemPosition);
             }
 
@@ -179,26 +231,46 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     }
 
     private void saveMedication() {
-        String name = binding.nameEditText.getText().toString();
-        String courceLength = String.format("%s %s",
-                binding.durationEditText.getText().toString(),
-                binding.durationSpinner.getSelectedItem().toString());
-        int dailyFrequency = Integer.parseInt(binding.frequencyEditText.getText().toString());
+        Medication medToSave;
+        if (medication != null)
+            medToSave = medication;
+        else
+            medToSave = new Medication();
 
-//        Medication med = new Medication(name, courceLength, dailyFrequency);
-        DataHandler dataBaseHandler = DataHandler.getInstance(getContext());
-//        dataBaseHandler.addMedication(med);
-        onSuccesfulSave();
+        medToSave.setName(binding.nameEditText.getText().toString());
+        medToSave.setDailyFrequency(Integer.parseInt(binding.frequencyEditText.getText().toString()));
+        medToSave.setExpiry_date(binding.expiryDateEditText.getText().toString());
+        medToSave.setMedicationStatsID(medicationStats.getDBID());
+
+//        String courceLength = String.format("%s %s",
+//                binding.durationEditText.getText().toString(),
+//                binding.durationSpinner.getSelectedItem().toString());
+
+        dataHandler.saveMedication(medToSave);
+        onSuccessfulSave();
     }
 
-    private void onSuccesfulSave() {
-        NavController navController = NavHostFragment.findNavController(this);
-        navController.popBackStack();
+    private void onSuccessfulSave() {
+//        NavController navController = NavHostFragment.findNavController(this);
+//        navController.popBackStack();
+        binding.saveButton.setText("Редактировать");
+        binding.cancelButton.setVisibility(View.GONE);
+        switchMode(Mode.view);
     }
 
     @Override
     public void onClick(View view) {
-        saveMedication();
+        if (view.getTag().equals("Отмена")) {
+            refill();
+            switchMode(Mode.view);
+            binding.cancelButton.setVisibility(View.GONE);
+        } else if (mode == Mode.view) {
+            binding.saveButton.setText("Сохранить изменения");
+            binding.cancelButton.setVisibility(View.VISIBLE);
+            switchMode(Mode.edit);
+        } else {
+            saveMedication();
+        }
     }
 
     @Override

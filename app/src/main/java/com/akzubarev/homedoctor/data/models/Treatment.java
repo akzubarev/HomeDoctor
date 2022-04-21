@@ -63,11 +63,6 @@ public class Treatment extends BaseModel {
         return String.format("%s | %s | %s | %s", medicationId, profileID, time, prescriptionId);
     }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return null;
-    }
-
     public String getProfileID() {
         return profileID;
     }

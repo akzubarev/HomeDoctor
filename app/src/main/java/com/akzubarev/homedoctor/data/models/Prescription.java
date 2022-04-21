@@ -76,16 +76,6 @@ public class Prescription extends BaseModel {
         return getName();
     }
 
-    @Override
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-//
-//        result.put("name", name);
-//        result.put("length", length);
-
-        return result;
-    }
-
     public String getDiagnosis() {
         return diagnosis;
     }

@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:showIn="navigation_view">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
         <item
-                android:id="@+id/HomeFragment"
-                android:icon="@drawable/ic_menu_camera"
-                android:title="@string/menu_users" />
+            android:id="@+id/HomeFragment"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Профили" />
         <item
-                android:id="@+id/MedicationsListFragment"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="@string/menu_list" />
+            android:id="@+id/OwnedMedicationsListFragment"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Мои лекарства" />
         <item
-                android:id="@+id/MedicationFragment"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="Добавить лекарство" />
+            android:id="@+id/MedicationsListFragment"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_list" />
+        <item
+            android:id="@+id/MedicationFragment"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Добавить лекарство" />
     </group>
 </menu>

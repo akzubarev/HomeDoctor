@@ -41,7 +41,4 @@ public abstract class BaseModel {
         }
         return null;
     }
-
-    @Exclude
-    public abstract Map<String, Object> toMap();
 }

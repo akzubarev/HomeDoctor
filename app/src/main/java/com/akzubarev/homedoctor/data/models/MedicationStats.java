@@ -77,15 +77,4 @@ public class MedicationStats extends BaseModel {
         }
         return null;
     }
-
-    @Override
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-
-        result.put("name", name);
-        result.put("courceLength", courceLength);
-        result.put("dailyFrequency", dailyFrequency);
-
-        return result;
-    }
 }

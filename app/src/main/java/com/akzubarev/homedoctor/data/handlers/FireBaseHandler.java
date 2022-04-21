@@ -114,6 +114,7 @@ public class FireBaseHandler implements DataHandler {
 
     //region save
 
+    @Override
     public void saveMedicationStats(MedicationStats medication) {
         DatabaseReference dbr = mDatabase.child(MEDICATIONS);
         dbr.addListenerForSingleValueEvent(
@@ -128,6 +129,7 @@ public class FireBaseHandler implements DataHandler {
                 });
     }
 
+    @Override
     public void saveMedication(Medication medication) {
         DatabaseReference dbr = getUserDBR().child(MEDICATIONS);
         dbr.addListenerForSingleValueEvent(
@@ -141,8 +143,8 @@ public class FireBaseHandler implements DataHandler {
                     }
                 });
     }
-
-    private void savePrescription(Prescription prescription, String profileID) {
+    @Override
+    public void savePrescription(Prescription prescription, String profileID) {
         DatabaseReference dbr = getUserDBR().child(PRESCRIPTIONS).child(profileID);
         dbr.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -235,6 +237,20 @@ public class FireBaseHandler implements DataHandler {
 
 
     @Override
+    public void getMedications(MedicationsCallback callback) {
+        getUserDBR().child(MEDICATIONS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<Medication> meds = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                Medication med = child.getValue(Medication.class);
+                meds.add(med);
+            }
+            callback.onCallback(meds);
+        });
+
+    }
+
+    @Override
     public void getMedications(MedicationsCallback callback, String profileID) {
         getUserDBR().child(MEDICATIONS).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
@@ -307,7 +323,7 @@ public class FireBaseHandler implements DataHandler {
 
     @Override
     public void getMedicationStat(String id, MedicationStatCallback callback) {
-        mDatabase.child(MEDICATIONS).get().addOnCompleteListener(task -> {
+        mDatabase.child(MEDICATIONS).child(id).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
             MedicationStats stats = result.getValue(MedicationStats.class);
             callback.onCallback(stats);
@@ -338,7 +354,6 @@ public class FireBaseHandler implements DataHandler {
         profileDBR.updateChildren(childUpdates);
     }
     //endregion
-
 
 
     public boolean initialized() {
