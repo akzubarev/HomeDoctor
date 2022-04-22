@@ -6,4 +6,14 @@
         <item>недель</item>
         <item>месяцев</item>
     </string-array>
+
+    <string-array name="reminder_day_options">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </string-array>
 </resources>

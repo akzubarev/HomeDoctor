@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tourblock"
+    style="@style/LinearLayout"
+    android:layout_marginTop="@dimen/default_gap"
+    android:layout_marginBottom="@dimen/default_gap"
+    android:background="@color/color2"
+    android:orientation="vertical"
+    android:paddingHorizontal="0dp">
+
+    <LinearLayout style="@style/LinearLayout">
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_medicine"
+            android:textSize="@dimen/dimen5"
+            app:tint="@color/additional" />
+
+        <TextView
+            android:id="@+id/medication_name"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:text="Парацетамол"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Следующий прием:"
+                android:textColor="@color/additional"
+                android:textSize="@dimen/dimen5" />
+
+            <TextView
+                android:id="@+id/next_consumption"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Парацетамол\n 14.02 14:00"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen5" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/LinearLayout"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:labelFor="@id/birthday"
+            android:text="Добавить время"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen5" />
+
+        <TextView
+            android:id="@+id/remind_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/additional"
+            android:gravity="center"
+            android:layout_marginRight="5dp"
+            android:text="Понедельник"
+            android:textSize="@dimen/dimen5" />
+
+        <TextView
+            android:id="@+id/remind_time"
+            android:layout_width="50dp"
+            android:layout_marginRight="5dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="14:00"
+            android:textAlignment="center"
+            android:textColor="@color/additional"
+            android:textSize="@dimen/dimen5" />
+
+        <ImageButton
+            android:id="@+id/remind_add_button"
+            android:layout_width="50dp"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_add"
+            android:textAlignment="center"
+            android:background="@color/transparent"
+            android:textColor="@color/additional"
+            android:textSize="@dimen/dimen5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/treatment_layout"
+        style="@style/LinearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="0dp">
+
+<!--        <include layout="@layout/block_treatment"/>-->
+<!--        <include layout="@layout/block_treatment"/>-->
+<!--        <include layout="@layout/block_treatment"/>-->
+<!--        <include layout="@layout/block_treatment"/>-->
+<!--        <include layout="@layout/block_treatment"/>-->
+<!--        <include layout="@layout/block_treatment"/>-->
+<!--        <include layout="@layout/block_treatment"/>-->
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:background="@color/shadowed" />
+</LinearLayout>

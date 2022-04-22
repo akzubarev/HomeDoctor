@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Spinner">
         <item name="android:layout_width">100dp</item>
@@ -20,15 +20,25 @@
     </style>
 
     <style name="WeekButtons" parent="@style/Widget.AppCompat.Button">
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
         <item name="android:background">@color/color3</item>
         <item name="android:textSize">@dimen/dimen5</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:textColor">@color/main</item>
     </style>
+
+    <!--    <style name="WeekButtons" parent="@style/Widget.AppCompat.Button">-->
+    <!--        <item name="android:layout_width">30dp</item>-->
+    <!--        <item name="android:layout_height">wrap_content</item>-->
+    <!--        <item name="android:background">@color/color3</item>-->
+    <!--        <item name="android:textSize">@dimen/dimen5</item>-->
+    <!--        <item name="android:padding">0dp</item>-->
+    <!--        <item name="android:layout_weight">1</item>-->
+    <!--        <item name="android:layout_marginEnd">5dp</item>-->
+    <!--        <item name="android:textColor">@color/main</item>-->
+    <!--    </style>-->
+
 
     <style name="EditText" parent="@style/Widget.AppCompat.EditText">
         <item name="android:layout_width">wrap_content</item>
@@ -45,14 +55,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingLeft">@dimen/activity_horizontal_margin
-        </item>
-        <!--        <item name="android:paddingTop">@dimen/activity_horizontal_margin-->
-        <!--        </item>-->
-        <item name="android:paddingRight">@dimen/activity_horizontal_margin
-        </item>
-        <!--        <item name="android:paddingBottom">@dimen/activity_horizontal_margin-->
-        <!--        </item>-->
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <!--        <item name="android:paddingTop">@dimen/activity_horizontal_margin</item>-->
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <!--        <item name="android:paddingBottom">@dimen/activity_horizontal_margin </item>-->
     </style>
 
 
@@ -60,10 +66,18 @@
         <item name="android:background">@color/color2</item>
         <item name="android:itemBackground">@color/color3</item>
         <item name="android:textColorPrimary">@color/main</item>
+        <item name="android:textColorSecondary">@color/main</item>
         <item name="android:windowTitleStyle">@style/AlertTitleStyle</item>
         <item name="android:textAppearanceMedium">@style/AlertTitleStyle</item>
         <item name="android:buttonStyle">@style/AlertButtonStyle</item>
         <item name="buttonBarButtonStyle">@style/AlertButtonStyle</item>
+        <item name="textColorAlertDialogListItem">@color/main</item>
+
+        <item name="android:textColorTertiary">@color/main</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:colorControlActivated">@color/additional</item>
+        <item name="android:colorControlHighlight">@color/additional</item>
+        <item name="android:colorControlNormal">@color/additional</item>
     </style>
 
     <style name="AlertTitleStyle">
@@ -91,5 +105,21 @@
         <item name="android:layout_gravity">center_vertical|end</item>
         <item name="android:gravity">center_vertical|end</item>
         <item name="android:theme">@style/MyCheckBox</item>
+    </style>
+
+    <style name="RecyclerView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="remindTimeLayout" parent="LinearLayout">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:paddingHorizontal" tools:targetApi="o">5dp</item>
+
     </style>
 </resources>

@@ -93,9 +93,9 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         remindList.addItemDecoration(new DividerItemDecoration(
                 remindList.getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager remindersLayoutManager = new LinearLayoutManager(getContext());
-        RemindTimeAdapter remindersAdapter = new RemindTimeAdapter(remindTimes, getContext());
+//        RemindTimeAdapter remindersAdapter = new RemindTimeAdapter(remindTimes, getContext());
         remindList.setLayoutManager(remindersLayoutManager);
-        remindList.setAdapter(remindersAdapter);
+//        remindList.setAdapter(remindersAdapter);
         changeRemindersNum();
 
 

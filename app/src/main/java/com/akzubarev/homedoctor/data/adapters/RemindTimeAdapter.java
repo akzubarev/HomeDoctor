@@ -16,27 +16,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class RemindTimeAdapter
-        extends RecyclerView.Adapter<RemindTimeAdapter.DateViewHolder> {
+        extends RecyclerView.Adapter<RemindTimeAdapter.StringViewHolder> {
 
-    private ArrayList<Date> dates;
+    private ArrayList<String> dates;
     private OnUserClickListener listener;
     private Context context;
 
     public Context getContext() {
         return context;
     }
-
+    public void addTime(String time) {
+        dates.add(time);
+        notifyItemInserted(dates.size() - 1);
+    }
     public void setContext(Context context) {
         this.context = context;
     }
-
 
     public interface OnUserClickListener {
         void onUserClick(int position);
@@ -46,31 +46,24 @@ public class RemindTimeAdapter
         this.listener = listener;
     }
 
-    public RemindTimeAdapter(ArrayList<Date> dates, Context context) {
+    public RemindTimeAdapter(ArrayList<String> dates, Context context) {
         this.dates = dates;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public DateViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public StringViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.block_remind_time, viewGroup, false);
-        return new DateViewHolder(view, listener);
+        return new StringViewHolder(view, listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DateViewHolder dateViewHolder, int dateNumber) {
-        Date date = dates.get(dateNumber);
-        String text = String.format("Напоминание №%d", dateNumber);
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm", Locale.US);
-        String datetime = sdf.format(date);
-
-        TextView remindText = dateViewHolder.remindText;
-        remindText.setText(text);
-
-        TextView dateName = dateViewHolder.remindTime;
-//        dateName.setText(datetime);
+    public void onBindViewHolder(@NonNull StringViewHolder dateViewHolder, int dateNumber) {
+        String date = dates.get(dateNumber);
+        TextView datetime = dateViewHolder.remindTime;
+        datetime.setText(date);
     }
 
 
@@ -79,16 +72,21 @@ public class RemindTimeAdapter
         return dates.size();
     }
 
-    public static class DateViewHolder extends RecyclerView.ViewHolder {
+    public static class StringViewHolder extends RecyclerView.ViewHolder {
 
-        TextView remindText;
         TextView remindTime;
+
+        public StringViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+            super(itemView);
+            remindTime = itemView.findViewById(R.id.remind_time);
+            remindTime.setOnClickListener(this::reminderDropDown);
+        }
 
         @RequiresApi(api = Build.VERSION_CODES.M)
         public void reminderDropDown(View v) {
             TimePicker timePicker = (TimePicker) TimePicker.inflate(v.getContext(),
                     R.layout.time_selector, null);
-//        timePicker.setIs24HourView(DateFormat.is24HourFormat(context));
+//        timePicker.setIs24HourView(StringFormat.is24HourFormat(context));
             timePicker.setIs24HourView(true);
 
             AlertDialog dialog = new AlertDialog.Builder(v.getContext())
@@ -106,23 +104,12 @@ public class RemindTimeAdapter
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            String timetext = sdf.format(calendar.getTime());
-            remindTime.setText(timetext);
+            remindTime.setText("14:00");
 //        DataReader.SaveString(timetext, DataReader.REMINDER_TIME, context);
 
             new NotificationHelper(remindTime.getContext()).setReminder(hour, minute, NotificationHelper.MAKE);
         }
 
-        public DateViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
-            super(itemView);
-            remindText = itemView.findViewById(R.id.remind_text);
-            remindTime = itemView.findViewById(R.id.remind_time);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                remindTime.setOnClickListener(this::reminderDropDown);
-            }
-        }
 
     }
 

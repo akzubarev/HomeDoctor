@@ -26,6 +26,7 @@ import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.adapters.MedicationAdapter;
 import com.akzubarev.homedoctor.data.adapters.PrescriptionAdapter;
 import com.akzubarev.homedoctor.data.adapters.RemindTimeAdapter;
+import com.akzubarev.homedoctor.data.adapters.TreatmentTimeAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.Prescription;
@@ -91,13 +92,13 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             if (!medicationIDs.contains(t.getMedicationId()))
                 this.medicationIDs.add(t.getMedicationId());
 
-            dataHandler.getMedications(this::fillMedications, profileID);
+        dataHandler.getMedications(this::fillMedications, profileID);
     }
 
     private void fillMedications(ArrayList<Medication> medications) {
         medications = dataHandler.filter(medications, medicationIDs);
         configureRecyclerView(binding.medicationsList);
-        binding.medicationsList.setAdapter(new MedicationAdapter(medications, getActivity()));
+        binding.medicationsList.setAdapter(new TreatmentTimeAdapter(treatments, medications, getActivity()));
     }
 
     private void saveMedication() {

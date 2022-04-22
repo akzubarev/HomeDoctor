@@ -60,7 +60,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|start"
             android:labelFor="@id/birthday"
-            android:text="Длительность"
+            android:text="Конец приема"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
 
@@ -69,7 +69,7 @@
             style="@style/EditText"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:text="3 месяца"
+            android:text="20.05.2022"
             android:textSize="@dimen/dimen4" />
     </LinearLayout>
 
@@ -80,6 +80,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:layout_gravity="center_vertical|start"
         android:gravity="center_vertical|start"
         android:labelFor="@id/medications_list"
@@ -94,7 +95,7 @@
         android:padding="4dp"
         android:scrollbars="vertical"
         tools:itemCount="3"
-        tools:listitem="@layout/block_medication" />
+        tools:listitem="@layout/block_medication_prescription" />
 
     <View
         android:id="@+id/empty_space"

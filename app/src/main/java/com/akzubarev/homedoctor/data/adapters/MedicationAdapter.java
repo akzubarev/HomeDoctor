@@ -69,7 +69,6 @@ public class MedicationAdapter
         medicationViewHolder.itemView.setOnClickListener(v -> {
                     int position = medicationViewHolder.getAdapterPosition();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("User", position);
                     bundle.putString("Medication", medications.get(position).getName());
                     navController.navigate(R.id.MedicationFragment, bundle);
                 }
