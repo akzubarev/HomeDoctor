@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,15 +59,13 @@ public class FireBaseHandler implements DataHandler {
 
         Prescription angina = new Prescription("Ангина Весна 2022", "2 месяца");
 //        savePrescription(angina, "Дочь");
-
+//
 
         ArrayList<Treatment> treatmetsPara = new ArrayList<>();
-        Treatment treatment = new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "14:00", 1);
-        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "11:00", 1));
-        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "17:00", 2));
-        DatabaseReference treatmentDBR = getUserDBR().child(TREATMENTS);
-        writeObject(treatmentDBR, treatment);
-        writeObjects(treatmentDBR, treatmetsPara);
+        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "Понедельник", "14:00", 1));
+        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "Понедельник", "11:00", 1));
+        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "Вторник", "17:00", 2));
+//        saveTreatments(treatmetsPara);
 
     }
 
@@ -143,6 +142,7 @@ public class FireBaseHandler implements DataHandler {
                     }
                 });
     }
+
     @Override
     public void savePrescription(Prescription prescription, String profileID) {
         DatabaseReference dbr = getUserDBR().child(PRESCRIPTIONS).child(profileID);
@@ -158,6 +158,20 @@ public class FireBaseHandler implements DataHandler {
                 });
     }
 
+    @Override
+    public void saveTreatments(ArrayList<Treatment> treatments) {
+        DatabaseReference dbr = getUserDBR().child(TREATMENTS);
+        dbr.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        writeObjects(dbr, treatments);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "saveTreatments:onCancelled", databaseError.toException());
+                    }
+                });
+    }
 
     @Override
     public void saveProfile(Profile profile) {
@@ -360,6 +374,80 @@ public class FireBaseHandler implements DataHandler {
         return false;
     }
 
+
+    //region delete
+    @Override
+    public void deleteTreatments(ArrayList<Treatment> treatments) {
+        DatabaseReference dbr = getUserDBR().child(TREATMENTS);
+        dbr.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        deleteObjects(dbr, treatments);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "saveTreatments:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+    @Override
+    public void deleteObjects(DatabaseReference dbr, ArrayList<? extends BaseModel> objs) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        for (BaseModel obj : objs)
+            childUpdates.put(obj.getDBID(), null);
+        dbr.updateChildren(childUpdates);
+    }
+
+    @Override
+    public Calendar getNextMorningTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar;
+    }
+
+    @Override
+    public Calendar getNextReminderTime() {
+        Treatment nextReminder = findNextReminder();
+        saveNextReminder(nextReminder);
+
+        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.HOUR_OF_DAY,3);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.add(Calendar.SECOND, 5);
+        return calendar;
+    }
+
+    @Override
+    public Treatment findNextReminder() {
+        return new Treatment();
+    }
+
+    @Override
+    public void saveNextReminder(Treatment treatment) {
+        return;
+    }
+
+    @Override
+    public Treatment getCurrentReminder() {
+        return new Treatment("Парацетамол", "Ангина Весна 2022",
+                "Дочь", "Понедельник", "03:00", 1);
+    }
+//endregion
+
+    @Override
+    public String getExpiryData() {
+        return "Парацетамол | Cрок годности истекает через 2 недели";
+    }
+
+    @Override
+    public String getShortageData() {
+        return "Парацетамол | Осталось меньше 10 таблеток\nАрпефлю | Осталось меньше 16 таблеток";
+    }
 }
 
 

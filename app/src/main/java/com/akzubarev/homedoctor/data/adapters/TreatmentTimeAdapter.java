@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
+import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -31,13 +32,16 @@ import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class TreatmentTimeAdapter
-        extends RecyclerView.Adapter<TreatmentTimeAdapter.DateViewHolder> {
+        extends RecyclerView.Adapter<TreatmentTimeAdapter.TreatmentViewHolder> {
 
-    private ArrayList<Treatment> treatments;
-    private ArrayList<Medication> medications;
+    private final HashMap<String, ArrayList<Treatment>> treatments;
+    private final HashMap<String, Medication> medications;
+    private final HashMap<String, TreatmentViewHolder> viewholders = new HashMap<>();
+    private final ArrayList<String> fixedKeyList = new ArrayList<>();
     private OnUserClickListener listener;
     private Context context;
     NavController navController;
@@ -50,6 +54,15 @@ public class TreatmentTimeAdapter
         this.context = context;
     }
 
+    public void add(Medication medication) {
+        if (medications.containsKey(medication.getDBID()))
+            return;
+        fixedKeyList.add(medication.getDBID());
+        medications.put(medication.getDBID(), medication);
+        treatments.put(medication.getDBID(), new ArrayList<>());
+        notifyDataSetChanged();
+    }
+
 
     public interface OnUserClickListener {
         void onUserClick(int position);
@@ -59,39 +72,56 @@ public class TreatmentTimeAdapter
         this.listener = listener;
     }
 
-    public TreatmentTimeAdapter(ArrayList<Treatment> treatments, ArrayList<Medication> medications, Activity activity) {
+    public TreatmentTimeAdapter(HashMap<String, ArrayList<Treatment>> treatments, HashMap<String, Medication> medications, Activity activity) {
         this.treatments = treatments;
         this.medications = medications;
+        fixedKeyList.addAll(medications.keySet());
         this.context = activity;
         this.navController = Navigation.findNavController(activity, R.id.nav_host_fragment);
     }
 
     @NonNull
     @Override
-    public DateViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public TreatmentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.block_medication_prescription, viewGroup, false);
-        return new DateViewHolder(view, listener);
+        return new TreatmentViewHolder(view, listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DateViewHolder viewHolder, int medicationNumber) {
-        Medication Medication = medications.get(medicationNumber);
+    public void onBindViewHolder(@NonNull TreatmentViewHolder viewHolder, int position) {
+        String key = fixedKeyList.get(position);
+        Medication medication = medications.get(key);
+        ArrayList<Treatment> treatmentsList = treatments.get(key);
 
         TextView medicationName = viewHolder.medicationName;
-        medicationName.setText(Medication.getName());
+        medicationName.setText(medication.getName());
 
         TextView medicationNextTime = viewHolder.medicationNextTime;
 //        medicationNextTime.setText(Medication.nextConsumption().toString());
-//        viewHolder.itemView.setOnClickListener(v -> {
-//                    int position = viewHolder.getAdapterPosition();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putInt("User", position);
-//                    bundle.putString("Medication", medications.get(position).getName());
-//                    navController.navigate(R.id.MedicationFragment, bundle);
-//                }
-//        );
+        viewHolder.fillTreatments(treatments.get(medication.getDBID()));
+        viewHolder.medication_layout.setOnClickListener(v -> {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Medication", medication.getDBID());
+                    bundle.putString("MedicationStat", medication.getMedicationStatsID());
+                    navController.navigate(R.id.MedicationFragment, bundle);
+                }
+        );
+        viewholders.put(medication.getDBID(), viewHolder);
+    }
 
+    public HashMap<String, ArrayList<Pair<String, String>>> gatherTreatments() {
+        HashMap<String, ArrayList<Pair<String, String>>> result = new HashMap<>();
+        for (int i = 0; i < getItemCount(); i++) {
+            String medKey = fixedKeyList.get(i);
+            TreatmentViewHolder vh = viewholders.get(medKey);
+            for (Pair<String, String> dayTime : vh.gatherTreatments()) {
+                if (!result.containsKey(medKey))
+                    result.put(medKey, new ArrayList<>());
+                result.get(medKey).add(dayTime);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -99,50 +129,50 @@ public class TreatmentTimeAdapter
         return medications.size();
     }
 
-    public static class DateViewHolder extends RecyclerView.ViewHolder {
+    public static class TreatmentViewHolder extends RecyclerView.ViewHolder {
 
-        TextView remindDay;
-        TextView remindTime;
-        TextView medicationNextTime;
-        TextView medicationName;
-        LinearLayout treatmentLayout;
-        ImageButton addButton;
-        HashMap<String, RecyclerView> rvs = new HashMap<>();
-        HashMap<String, RemindTimeAdapter> adapters = new HashMap<>();
-        ArrayList<Integer> selectedItems = new ArrayList<>();
-        String[] items;
-        String[] days_abbr = new String[]{"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};
-        HashMap<String, String> decoder = new HashMap<>();
+        private final DataHandler dataHandler;
+        private final TextView remindDay, remindTime, medicationNextTime, medicationName;
+        private final LinearLayout medication_layout;
+        private final HashMap<String, RecyclerView> rvs = new HashMap<>();
+        private final HashMap<String, RemindTimeAdapter> adapters = new HashMap<>();
+        private ArrayList<Integer> selectedItems = new ArrayList<>();
+        private final String[] daysNames;
+        private final String[] days_abbr = new String[]{"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};
 
-        public DateViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+        public TreatmentViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
             super(itemView);
             remindTime = itemView.findViewById(R.id.remind_time);
             remindDay = itemView.findViewById(R.id.remind_day);
-            addButton = itemView.findViewById(R.id.remind_add_button);
-            treatmentLayout = itemView.findViewById(R.id.treatment_layout);
-
-            items = itemView.getContext().getResources().getStringArray(R.array.reminder_day_options);
+            ImageButton addButton = itemView.findViewById(R.id.remind_add_button);
+            LinearLayout treatmentLayout = itemView.findViewById(R.id.treatment_layout);
+            medication_layout = itemView.findViewById(R.id.medication_layout);
             medicationNextTime = itemView.findViewById(R.id.next_consumption);
             medicationName = itemView.findViewById(R.id.medication_name);
+
+            daysNames = itemView.getContext().getResources().getStringArray(R.array.reminder_day_options);
 
             remindTime.setOnClickListener(this::reminderTimeDropDown);
             remindDay.setOnClickListener(this::reminderDayDropDown);
             addButton.setOnClickListener(this::addTreatments);
 
-            rvs.put("Понедельник", itemView.findViewById(R.id.remind_list));
+            rvs.put(daysNames[0], itemView.findViewById(R.id.remind_list));
             selectedItems.add(0);
-            remindDay.setText("Понедельник");
+            remindDay.setText(daysNames[0]);
 
-            for (int i = 1; i < items.length; i++) {
-                LinearLayout lyt = (LinearLayout) View.inflate(itemView.getContext(), R.layout.block_treatment, treatmentLayout);
-                RecyclerView rv = lyt.findViewById(R.id.remind_list); // TODO: that somehow is always the same layout instead of copies
-                Button bt = lyt.findViewById(R.id.day_button);
+            for (int i = 1; i < daysNames.length; i++) {
+                LinearLayout lyt = (LinearLayout) View.inflate(itemView.getContext(), R.layout.block_treatment, null);
+                RecyclerView rv = lyt.findViewById(R.id.remind_list);
+                ToggleButton bt = lyt.findViewById(R.id.day_button);
                 bt.setText(days_abbr[i]);
-                rvs.put(items[i], rv);
-                decoder.put(days_abbr[i], items[i]);
+                bt.setTextOn(days_abbr[i]);
+                bt.setTextOff(days_abbr[i]);
+//                bt.setOnClickListener();
+                treatmentLayout.addView(lyt);
+                rvs.put(daysNames[i], rv);
             }
 
-            DataHandler.getInstance(medicationName.getContext()).getTreatments(this::fillTreatments, "prescriptionID");
+            dataHandler = DataHandler.getInstance(medicationName.getContext());
         }
 
         private void configureRecyclerView(RecyclerView rv) {
@@ -153,16 +183,27 @@ public class TreatmentTimeAdapter
         }
 
         private void fillTreatments(ArrayList<Treatment> treatments) {
-            for (String key : rvs.keySet()) {
-                ArrayList<String> times = new ArrayList<>();
-                times.add("13:00");
-                RemindTimeAdapter adapter = new RemindTimeAdapter(times, itemView.getContext());
-                adapters.put(key, adapter);
+            HashMap<String, ArrayList<String>> treatmentsMap = filterTreatments(treatments);
+            for (String dayKey : rvs.keySet()) {
+                RemindTimeAdapter adapter = new RemindTimeAdapter(treatmentsMap.get(dayKey), itemView.getContext());
+                adapters.put(dayKey, adapter);
 
-                RecyclerView day = rvs.get(key);
-                configureRecyclerView(day);
-                day.setAdapter(adapter);
+                RecyclerView dayRecyclerView = rvs.get(dayKey);
+                configureRecyclerView(dayRecyclerView);
+                dayRecyclerView.setAdapter(adapter);
             }
+        }
+
+        private HashMap<String, ArrayList<String>> filterTreatments(ArrayList<Treatment> treatments) {
+            HashMap<String, ArrayList<String>> result = new HashMap<>();
+            for (String dayKey : daysNames)
+                result.put(dayKey, new ArrayList<>());
+
+            for (Treatment t : treatments)
+                if (result.containsKey(t.getDay()))
+                    result.get(t.getDay()).add(t.getTime());
+
+            return result;
         }
 
         @RequiresApi(api = Build.VERSION_CODES.M)
@@ -173,7 +214,7 @@ public class TreatmentTimeAdapter
                 checked[selectedItem] = true;
 
             ArrayList<Integer> selectedCopy = new ArrayList<>(selectedItems);
-            AlertDialog reminderDayDialog = builder.setMultiChoiceItems(items, checked
+            AlertDialog reminderDayDialog = builder.setMultiChoiceItems(daysNames, checked
                     , (dialog, indexSelected, isChecked) -> {
                         if (isChecked) {
                             selectedItems.add(indexSelected);
@@ -202,7 +243,7 @@ public class TreatmentTimeAdapter
         private void addTreatments(View v) {
             String time = remindTime.getText().toString();
             for (int selection : selectedItems) {
-                String day = items[selection];
+                String day = daysNames[selection];
                 RemindTimeAdapter adapter = adapters.get(day);
                 adapter.addTime(time);
             }
@@ -217,28 +258,32 @@ public class TreatmentTimeAdapter
             AlertDialog dialog = new AlertDialog.Builder(v.getContext())
                     .setTitle("Введите время напоминания").setView(timePicker)
                     .setPositiveButton("Ок", (dialog1, which) ->
-                            setAlarm(timePicker.getHour(), timePicker.getMinute())
-                    ).setNegativeButton("Отмена", (dialog1, which) -> {
-                    })
-                    .show();
+                    {
+                        String text = timeFromPicker(timePicker.getHour(), timePicker.getMinute());
+                        remindTime.setText(text);
+                    }).setNegativeButton("Отмена", (dialog1, which) -> {
+                    }).show();
         }
 
-        private void setAlarm(int hour, int minute) {
+        private String timeFromPicker(int hour, int minute) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
 
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            String timetext = sdf.format(calendar.getTime());
-            remindTime.setText(timetext);
-//        DataReader.SaveString(timetext, DataReader.REMINDER_TIME, context);
-
-            new NotificationHelper(remindTime.getContext()).setReminder(hour, minute, NotificationHelper.MAKE);
+            return sdf.format(calendar.getTime());
         }
 
-
+        public ArrayList<Pair<String, String>> gatherTreatments() {
+            ArrayList<Pair<String, String>> result = new ArrayList<>();
+            for (String dayKey : rvs.keySet()) {
+                RemindTimeAdapter adapter = adapters.get(dayKey);
+                for (String time : adapter.gatherTreatments())
+                    result.add(new Pair<>(dayKey, time));
+            }
+            return result;
+        }
     }
-
 
 }
 

@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.database.Exclude;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class Medication extends BaseModel {
@@ -17,7 +13,7 @@ public class Medication extends BaseModel {
     private String name;
     private String medicationStatsID;
     private int dailyFrequency = 1;
-    private int tablets = 1;
+    private int amount = 1;
     private String expiry_date = "";
     private Map<String, Boolean> allowed_profiles = new HashMap<>();
 
@@ -29,12 +25,12 @@ public class Medication extends BaseModel {
         this.dailyFrequency = dailyFrequency;
     }
 
-    public int getTablets() {
-        return tablets;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setTablets(int tablets) {
-        this.tablets = tablets;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public String getExpiry_date() {

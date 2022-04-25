@@ -1,18 +1,15 @@
 package com.akzubarev.homedoctor.ui.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.KeyEvent;
+import android.os.Debug;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.ToggleButton;
+import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,29 +20,35 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.adapters.MedicationAdapter;
-import com.akzubarev.homedoctor.data.adapters.PrescriptionAdapter;
-import com.akzubarev.homedoctor.data.adapters.RemindTimeAdapter;
 import com.akzubarev.homedoctor.data.adapters.TreatmentTimeAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.Prescription;
-import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.data.models.Treatment;
-import com.akzubarev.homedoctor.databinding.FragmentMedicationBinding;
 import com.akzubarev.homedoctor.databinding.FragmentPrescriptionBinding;
-import com.akzubarev.homedoctor.databinding.FragmentProfileBinding;
+import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PrescriptionFragment extends Fragment implements View.OnClickListener {
     String TAG = "PrescriptionFragment";
     DataHandler dataHandler;
-    String profileID;
+    String profileID, prescriptionID;
     private FragmentPrescriptionBinding binding;
-    private ArrayList<Treatment> treatments = new ArrayList<>();
-    private ArrayList<String> medicationIDs = new ArrayList<>();
+    HashMap<String, ArrayList<Treatment>> treatments;
+    ArrayList<Treatment> oldTreatments = new ArrayList<>();
+    ArrayList<Medication> allMedications = new ArrayList<>();
+    HashMap<String, Medication> medicationsMap;
+    TreatmentTimeAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -61,12 +64,13 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             Bundle bundle = this.getArguments();
             if (bundle != null) {
                 profileID = bundle.getString("Profile");
-                String prescriptionID = bundle.getString("Prescription");
+                prescriptionID = bundle.getString("Prescription");
                 dataHandler = DataHandler.getInstance(getContext());
                 dataHandler.getPrescription(this::fill, profileID, prescriptionID);
             }
         }
         binding.saveButton.setOnClickListener(this);
+        binding.addMedicationButton.setOnClickListener(this);
         return binding.getRoot();
     }
 
@@ -83,45 +87,85 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         binding.diagnosis.setText(prescription.getDiagnosis());
 //        prescription.getConsumptionTimes();
 
-        dataHandler.getTreatments(this::fillTreatments, prescription.getDBID());
-    }
-
-    private void fillTreatments(ArrayList<Treatment> treatments) {
-        this.treatments = treatments;
-        for (Treatment t : treatments)
-            if (!medicationIDs.contains(t.getMedicationId()))
-                this.medicationIDs.add(t.getMedicationId());
-
-        dataHandler.getMedications(this::fillMedications, profileID);
+        dataHandler.getTreatments(this::fillTreatments, prescriptionID);
     }
 
     private void fillMedications(ArrayList<Medication> medications) {
-        medications = dataHandler.filter(medications, medicationIDs);
+        allMedications = medications;
+        medicationsMap = new HashMap<>();
+        for (Medication med : dataHandler.filter(medications, new ArrayList<>(treatments.keySet())))
+            medicationsMap.put(med.getDBID(), med);
+
         configureRecyclerView(binding.medicationsList);
-        binding.medicationsList.setAdapter(new TreatmentTimeAdapter(treatments, medications, getActivity()));
+        adapter = new TreatmentTimeAdapter(treatments, medicationsMap, getActivity());
+        binding.medicationsList.setAdapter(adapter);
     }
 
-    private void saveMedication() {
-//        String name = binding.nameEditText.getText().toString();
-//        String courceLength = String.format("%s %s",
-//                binding.durationEditText.getText().toString(),
-//                binding.durationSpinner.getSelectedItem().toString());
-//        int dailyFrequency = Integer.parseInt(binding.frequencyEditText.getText().toString());
-//
-////        Medication med = new Medication(name, courceLength, dailyFrequency);
-//        DataHandler dataBaseHandler = DataHandler.getInstance(getContext());
-////        dataBaseHandler.addMedication(med);
-//        onSuccesfulSave();
-//    }
-//
-//    private void onSuccesfulSave() {
-//        NavController navController = NavHostFragment.findNavController(this);
-//        navController.popBackStack();
+    private void fillTreatments(ArrayList<Treatment> treatmentsList) {
+        treatments = new HashMap<>();
+        for (Treatment treatment : treatmentsList) {
+            if (treatment.getPrescriptionId().equals(prescriptionID)) {
+                if (!treatments.containsKey(treatment.getMedicationId()))
+                    treatments.put(treatment.getMedicationId(), new ArrayList<>());
+                treatments.get(treatment.getMedicationId()).add(treatment);
+                oldTreatments.add(treatment);
+            }
+        }
+        dataHandler.getMedications(this::fillMedications, profileID);
+    }
+
+
+    private void savePrescription() {
+        dataHandler.deleteTreatments(oldTreatments);
+
+        HashMap<String, ArrayList<Pair<String, String>>> treatmentsMap = adapter.gatherTreatments();
+        ArrayList<Treatment> treatments = new ArrayList<>();
+        for (String medicationID : treatmentsMap.keySet()) {
+            ArrayList<Pair<String, String>> dayTimes = treatmentsMap.get(medicationID);
+            for (Pair<String, String> dayTime : dayTimes)
+                treatments.add(new Treatment(medicationID, prescriptionID, profileID, dayTime.first, dayTime.second, 1));
+        }
+        dataHandler.saveTreatments(treatments);
+        setAlarm();
+    }
+
+    private void setAlarm() {
+        new NotificationHelper(getContext()).setUpNotification(NotificationHelper.REMIND);
+        Log.d("notifications","SetUp");
+    }
+
+    private void onSuccessfulSave() {
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.popBackStack();
     }
 
     @Override
     public void onClick(View view) {
-        saveMedication();
+        if (view.getTag().equals("save"))
+            savePrescription();
+        else {
+            List<String> ops = allMedications.stream().map(Medication::getName).collect(Collectors.toList());
+            new AlertDialog.Builder(getContext())
+                    .setSingleChoiceItems(arrayListToArray(ops), 0, null)
+                    .setPositiveButton("Ок", (dialog, whichButton) -> {
+                        dialog.dismiss();
+                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                        addMedication(allMedications.get(selectedPosition));
+                    }).setNegativeButton("Отмена", (dialog, whichButton) -> {
+                dialog.dismiss();
+            }).show();
+        }
+    }
+
+    private String[] arrayListToArray(List<String> allMedications) {
+        String[] ops = new String[allMedications.size()];
+        for (int i = 0; i < ops.length; i++)
+            ops[i] = allMedications.get(i);
+        return ops;
+    }
+
+    private void addMedication(Medication medication) {
+        adapter.add(medication);
     }
 
     @Override

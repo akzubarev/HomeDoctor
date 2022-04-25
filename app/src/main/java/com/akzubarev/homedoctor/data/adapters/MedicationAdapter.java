@@ -59,17 +59,17 @@ public class MedicationAdapter
 
     @Override
     public void onBindViewHolder(@NonNull MedicationViewHolder medicationViewHolder, int medicationNumber) {
-        Medication Medication = medications.get(medicationNumber);
+        Medication medication = medications.get(medicationNumber);
 
         TextView medicationName = medicationViewHolder.medicationName;
-        medicationName.setText(Medication.getName());
+        medicationName.setText(medication.getName());
 
         TextView medicationNextTime = medicationViewHolder.medicationNextTime;
 //        medicationNextTime.setText(Medication.nextConsumption().toString());
         medicationViewHolder.itemView.setOnClickListener(v -> {
-                    int position = medicationViewHolder.getAdapterPosition();
                     Bundle bundle = new Bundle();
-                    bundle.putString("Medication", medications.get(position).getName());
+                    bundle.putString("Medication", medication.getDBID());
+                    bundle.putString("MedicationStat", medication.getMedicationStatsID());
                     navController.navigate(R.id.MedicationFragment, bundle);
                 }
         );

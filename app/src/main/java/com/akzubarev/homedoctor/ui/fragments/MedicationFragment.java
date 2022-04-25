@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.adapters.RemindTimeAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationBinding;
+import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,7 +114,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         this.medicationStats = medicationStats;
         binding.nameEditText.setText(medicationStats.getName());
         binding.frequencyEditText.setText(Integer.toString(medicationStats.getDailyFrequency()));
-        String[] course = medicationStats.getCourceLength().split(" ");
+        String[] course = medicationStats.getCourseLength().split(" ");
         binding.durationEditText.setText(course[0]);
         int index = 0;
         switch (course[1]) {
@@ -141,9 +141,9 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     private void fillMedication(Medication medication) {
         this.medication = medication;
         binding.medicationLayout.setVisibility(View.VISIBLE);
-        binding.frequencyEditText.setText(Integer.toString(medication.getDailyFrequency()));
-        binding.tabletsEditText.setText(Integer.toString(20));
-        binding.expiryDateEditText.setText("01.01.2023");
+        binding.frequencyEditText.setText(String.valueOf(medication.getDailyFrequency()));
+        binding.tabletsEditText.setText(String.valueOf(medication.getAmount()));
+        binding.expiryDateEditText.setText(medication.getExpiry_date());
         changeRemindersNum();
 
         switchMode(mode);
@@ -256,6 +256,10 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         binding.saveButton.setText("Редактировать");
         binding.cancelButton.setVisibility(View.GONE);
         switchMode(Mode.view);
+
+        NotificationHelper notificationHelper = new NotificationHelper(getContext());
+        notificationHelper.setUpNotification(NotificationHelper.EXPIRY);
+        notificationHelper.setUpNotification(NotificationHelper.SHORTAGE);
     }
 
     @Override

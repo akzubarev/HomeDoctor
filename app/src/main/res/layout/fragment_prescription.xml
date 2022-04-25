@@ -73,36 +73,40 @@
             android:textSize="@dimen/dimen4" />
     </LinearLayout>
 
-    <LinearLayout
-        style="@style/LinearLayout"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
+    <LinearLayout style="@style/LinearLayout">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-        android:layout_gravity="center_vertical|start"
-        android:gravity="center_vertical|start"
-        android:labelFor="@id/medications_list"
-        android:text="Лекарства"
-        android:textColor="@color/main"
-        android:textSize="@dimen/dimen4" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:gravity="center_vertical|start"
+            android:labelFor="@id/medications_list"
+            android:text="Лекарства"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <ImageButton
+            android:id="@+id/add_medication_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_add"
+            android:tag="add_medication"
+            android:textColor="@color/additional"
+            android:textSize="@dimen/dimen5" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medications_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="4dp"
         android:scrollbars="vertical"
         tools:itemCount="3"
         tools:listitem="@layout/block_medication_prescription" />
-
-    <View
-        android:id="@+id/empty_space"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="1" />
 
     <Button
         android:id="@+id/save_button"
@@ -110,6 +114,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/color3"
+        android:tag="save"
         android:text="Сохранить изменения"
         android:textColor="@color/additional" />
 

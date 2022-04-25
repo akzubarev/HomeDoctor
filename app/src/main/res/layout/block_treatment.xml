@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/remindTimeLayout"
     android:orientation="vertical"
-    android:paddingHorizontal="0dp">
+    android:paddingHorizontal="0dp"
+    android:layout_weight="1">
 
     <ToggleButton
         android:id="@+id/day_button"

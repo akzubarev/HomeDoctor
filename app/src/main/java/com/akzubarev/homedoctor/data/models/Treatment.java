@@ -1,10 +1,15 @@
 package com.akzubarev.homedoctor.data.models;
 
+import com.akzubarev.homedoctor.R;
 import com.google.firebase.database.Exclude;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Treatment extends BaseModel {
@@ -12,7 +17,11 @@ public class Treatment extends BaseModel {
     private String prescriptionId;
     private String profileID;
     private String time;
+    private String day;
     private int amount;
+    @Exclude
+    private String[] days = new String[]{"Понедельник", "Вторник", "Среда",
+            "Четверг", "Пятница", "Суббота", "Воскресенье"};
 
     public String getMedicationId() {
         return medicationId;
@@ -46,10 +55,11 @@ public class Treatment extends BaseModel {
         this.amount = amount;
     }
 
-    public Treatment(String medicationId, String prescriptionId, String profileID, String time, int amount) {
+    public Treatment(String medicationId, String prescriptionId, String profileID, String day, String time, int amount) {
         this.medicationId = medicationId;
         this.prescriptionId = prescriptionId;
         this.profileID = profileID;
+        this.day = day;
         this.time = time;
         this.amount = amount;
     }
@@ -60,7 +70,7 @@ public class Treatment extends BaseModel {
     @Override
     @Exclude
     public String getDBID() {
-        return String.format("%s | %s | %s | %s", medicationId, profileID, time, prescriptionId);
+        return String.format("%s | %s | %s | %s | %s", medicationId, profileID, day, time, prescriptionId);
     }
 
     public String getProfileID() {
@@ -69,5 +79,37 @@ public class Treatment extends BaseModel {
 
     public void setProfileID(String profileID) {
         this.profileID = profileID;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public Calendar getAbsoluteTime() {
+        String[] time = getTime().split(":");
+        String day = getDay();
+        int hours = Integer.parseInt(time[0]);
+        int minutes = Integer.parseInt(time[1]);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.DAY_OF_WEEK, DayOfWeek.MONDAY);
+//        calendar.set(Calendar.HOUR_OF_DAY, );
+//        calendar.set(Calendar.MINUTE, );
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, Arrays.asList(days).indexOf(day));
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, 0);
+
+        if (calendar.getTime().compareTo(new Date()) < 0)
+            calendar.add(Calendar.DAY_OF_MONTH, 7);
+        return calendar;
+    }
+
+    public String getNotification() {
+        return getDBID();
     }
 }

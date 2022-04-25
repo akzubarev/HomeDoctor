@@ -10,7 +10,15 @@
     android:orientation="vertical"
     android:paddingHorizontal="0dp">
 
-    <LinearLayout style="@style/LinearLayout">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="5dp"
+        android:background="@color/shadowed" />
+
+    <LinearLayout style="@style/LinearLayout"
+        android:id="@+id/medication_layout">
 
         <ImageView
             android:id="@+id/user_icon"
@@ -58,7 +66,8 @@
 
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout"
+    <LinearLayout
+        style="@style/LinearLayout"
         android:layout_height="40dp">
 
         <TextView
@@ -76,17 +85,17 @@
             android:id="@+id/remind_day"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/additional"
-            android:gravity="center"
             android:layout_marginRight="5dp"
+            android:gravity="center"
             android:text="Понедельник"
+            android:textColor="@color/additional"
             android:textSize="@dimen/dimen5" />
 
         <TextView
             android:id="@+id/remind_time"
             android:layout_width="50dp"
-            android:layout_marginRight="5dp"
             android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
             android:gravity="center"
             android:text="14:00"
             android:textAlignment="center"
@@ -96,12 +105,12 @@
         <ImageButton
             android:id="@+id/remind_add_button"
             android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
             android:padding="5dp"
             android:scaleType="fitCenter"
-            android:layout_height="match_parent"
             android:src="@drawable/ic_add"
             android:textAlignment="center"
-            android:background="@color/transparent"
             android:textColor="@color/additional"
             android:textSize="@dimen/dimen5" />
     </LinearLayout>
@@ -113,19 +122,15 @@
         android:gravity="center_horizontal"
         android:paddingHorizontal="0dp">
 
-<!--        <include layout="@layout/block_treatment"/>-->
-<!--        <include layout="@layout/block_treatment"/>-->
-<!--        <include layout="@layout/block_treatment"/>-->
-<!--        <include layout="@layout/block_treatment"/>-->
-<!--        <include layout="@layout/block_treatment"/>-->
-<!--        <include layout="@layout/block_treatment"/>-->
-<!--        <include layout="@layout/block_treatment"/>-->
+        <include layout="@layout/block_treatment" />
+        <!--        <include layout="@layout/block_treatment"/>-->
+        <!--        <include layout="@layout/block_treatment"/>-->
+        <!--        <include layout="@layout/block_treatment"/>-->
+        <!--        <include layout="@layout/block_treatment"/>-->
+        <!--        <include layout="@layout/block_treatment"/>-->
+        <!--        <include layout="@layout/block_treatment"/>-->
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-        android:background="@color/shadowed" />
+
 </LinearLayout>

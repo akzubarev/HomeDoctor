@@ -12,8 +12,10 @@ import com.akzubarev.homedoctor.data.models.Prescription;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.data.models.User;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,8 @@ public interface DataHandler {
 
     void savePrescription(Prescription prescription, String profileID);
 
+    void saveTreatments(ArrayList<Treatment> treatments);
+
     void saveProfile(Profile profile);
 
     void getProfiles(ProfilesCallback callback);
@@ -61,6 +65,25 @@ public interface DataHandler {
     void getMedication(String medicationName, MedicationCallback callback);
 
     void getMedicationStat(String id, MedicationStatCallback callback);
+
+    Treatment findNextReminder();
+
+    void saveNextReminder(Treatment treatment);
+
+    Treatment getCurrentReminder();
+
+    String getExpiryData();
+
+    String getShortageData();
+
+    //region delete
+    void deleteTreatments(ArrayList<Treatment> treatments);
+
+    void deleteObjects(DatabaseReference dbr, ArrayList<? extends BaseModel> objs);
+
+    Calendar getNextMorningTime();
+
+    Calendar getNextReminderTime();
 
     interface MedicationCallback {
         void onCallback(Medication medication);
@@ -101,6 +124,10 @@ public interface DataHandler {
     interface UserCallback {
         void onCallback(User user);
     }
+    interface SuccesfulSave {
+        void onCallback();
+    }
+
 
     default ArrayList<Medication> filter(ArrayList<Medication> query, ArrayList<String> targets) {
         ArrayList<Medication> intersect = new ArrayList<>();

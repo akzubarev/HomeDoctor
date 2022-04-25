@@ -7,7 +7,7 @@
     android:background="@color/color2"
     android:orientation="horizontal">
 
-    <EditText
+    <TextView
         android:id="@+id/remind_time"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
@@ -16,13 +16,13 @@
         android:textColor="@color/additional"
         android:textSize="@dimen/dimen5" />
 
-    <ImageButton
-        android:id="@+id/remind_cancel"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:background="@color/transparent"
-        android:padding="5dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_cancel"
-        android:textColor="@color/additional" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/remind_cancel"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/transparent"-->
+<!--        android:padding="5dp"-->
+<!--        android:scaleType="fitCenter"-->
+<!--        android:src="@drawable/ic_cancel"-->
+<!--        android:textColor="@color/additional" />-->
 </LinearLayout>

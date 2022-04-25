@@ -5,14 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.database.Exclude;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MedicationStats extends BaseModel {
     private String name = "";
-    private String courceLength = "1 месяц";
+    private String courseLength = "1 месяц";
     private int dailyFrequency = 1;
 
 
@@ -24,12 +20,12 @@ public class MedicationStats extends BaseModel {
         this.name = name;
     }
 
-    public String getCourceLength() {
-        return courceLength;
+    public String getCourseLength() {
+        return courseLength;
     }
 
-    public void setCourceLength(String courceLength) {
-        this.courceLength = courceLength;
+    public void setCourseLength(String courseLength) {
+        this.courseLength = courseLength;
     }
 
     public int getDailyFrequency() {
@@ -45,7 +41,7 @@ public class MedicationStats extends BaseModel {
 
     public MedicationStats(String name, String courceLength, int dailyFrequency) {
         this.name = name;
-        this.courceLength = courceLength;
+        this.courseLength = courceLength;
         this.dailyFrequency = dailyFrequency;
     }
 
