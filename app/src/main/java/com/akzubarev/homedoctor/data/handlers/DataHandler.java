@@ -85,6 +85,10 @@ public interface DataHandler {
 
     Calendar getNextReminderTime();
 
+    void getAllowedProfiles(String medicationID, AllowedProfilesCallback callback);
+
+    void saveAllowed(String medicationID,ArrayList<String> profileIDs);
+
     interface MedicationCallback {
         void onCallback(Medication medication);
     }
@@ -124,6 +128,11 @@ public interface DataHandler {
     interface UserCallback {
         void onCallback(User user);
     }
+
+    interface AllowedProfilesCallback {
+        void onCallback(ArrayList<String> profiles);
+    }
+
     interface SuccesfulSave {
         void onCallback();
     }

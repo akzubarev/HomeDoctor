@@ -206,7 +206,6 @@ public class TreatmentTimeAdapter
             return result;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.M)
         public void reminderDayDropDown(View v) {
             AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
             boolean[] checked = new boolean[]{false, false, false, false, false, false, false,};
@@ -223,10 +222,10 @@ public class TreatmentTimeAdapter
                         }
                     }).setPositiveButton("OK", (dialog, id) -> {
                 StringBuilder text = new StringBuilder();
-                if (selectedItems.size() == 1)
-                    text.append("Каждый день");
+                if (selectedItems.size() == 0)
+                    text.append("Никогда");
                 else if (selectedItems.size() == 7)
-                    text.append(days_abbr[selectedItems.get(0)]);
+                    text.append("Каждый день");
                 else
                     for (int sel : selectedItems) {
                         if (text.length() > 0)

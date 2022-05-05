@@ -1,11 +1,9 @@
 package com.akzubarev.homedoctor.data.handlers;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import com.akzubarev.homedoctor.data.models.BaseModel;
 import com.akzubarev.homedoctor.data.models.Medication;
@@ -24,9 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class FireBaseHandler implements DataHandler {
 
@@ -36,6 +32,7 @@ public class FireBaseHandler implements DataHandler {
     private static final String PROFILES = "profiles";
     private static final String PRESCRIPTIONS = "prescriptions";
     private static final String TREATMENTS = "treatments";
+    private static final String ACCESS = "access";
     private final DatabaseReference mDatabase;
     private final FirebaseAuth mAuth;
 
@@ -52,8 +49,8 @@ public class FireBaseHandler implements DataHandler {
 //        saveProfile(new Profile("Мама", "Женщина", "01.01.1968"));
 //        saveProfile(new Profile("Дочь", "Женщина", "01.01.2000"));
 
-        Medication paracetamol = new Medication("Парацетамол", "Парацетамол", 1);
-        paracetamol.addAllowed_profile("Дочь");
+        Medication paracetamol = new Medication("Парацетамол", "Парацетамол");
+        paracetamol.addAllowedProfile("Дочь");
 //        saveMedication(paracetamol);
 
 
@@ -100,10 +97,19 @@ public class FireBaseHandler implements DataHandler {
     }
 
     private void writeObjects(DatabaseReference dbr, ArrayList<? extends BaseModel> objs) {
+        dbr.setValue(null);
         Map<String, Object> childUpdates = new HashMap<>();
         for (BaseModel obj : objs)
             childUpdates.put(obj.getDBID(), obj);
 
+        dbr.updateChildren(childUpdates);
+    }
+
+    private void writePrimitives(DatabaseReference dbr, ArrayList<?> objs) {
+        dbr.setValue(null);
+        Map<String, Object> childUpdates = new HashMap<>();
+        for (int i = 0; i < objs.size(); i++)
+            childUpdates.put(Integer.toString(i + 1), objs.get(i));
         dbr.updateChildren(childUpdates);
     }
 
@@ -112,6 +118,21 @@ public class FireBaseHandler implements DataHandler {
     }
 
     //region save
+
+    @Override
+    public void saveAllowed(String medicationID, ArrayList<String> profileIDs) {
+        DatabaseReference dbr = getUserDBR().child(MEDICATIONS).child(medicationID).child(ACCESS);
+        dbr.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        writePrimitives(dbr, profileIDs);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
 
     @Override
     public void saveMedicationStats(MedicationStats medication) {
@@ -271,8 +292,8 @@ public class FireBaseHandler implements DataHandler {
             ArrayList<Medication> meds = new ArrayList<>();
             for (DataSnapshot child : result.getChildren()) {
                 Medication med = child.getValue(Medication.class);
-                Map<String, Boolean> allowed = med.getAllowed_profiles();
-                if (!allowed.containsKey(profileID) || allowed.get(profileID))
+                Map<String, Boolean> allowed = med.getAllowedProfiles();
+                if (allowed.getOrDefault(profileID,false))
                     meds.add(med);
             }
             callback.onCallback(meds);
@@ -328,9 +349,10 @@ public class FireBaseHandler implements DataHandler {
 
     @Override
     public void getMedication(String id, MedicationCallback callback) {
-        mDatabase.child(MEDICATIONS).child(id).get().addOnCompleteListener(task -> {
+        getUserDBR().child(MEDICATIONS).child(id).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
             Medication med = result.getValue(Medication.class);
+//            med.setAllowedProfiles(result.getValue());
             callback.onCallback(med);
         });
     }
@@ -416,11 +438,26 @@ public class FireBaseHandler implements DataHandler {
 
         Calendar calendar = Calendar.getInstance();
 //        calendar.add(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.HOUR_OF_DAY,3);
+        calendar.set(Calendar.HOUR_OF_DAY, 3);
         calendar.set(Calendar.MINUTE, 0);
-        calendar.add(Calendar.SECOND, 5);
+        calendar.add(Calendar.HOUR_OF_DAY, 5);
         return calendar;
     }
+
+    @Override
+    public void getAllowedProfiles(String medicationID, AllowedProfilesCallback callback) {
+        getUserDBR().child(MEDICATIONS).child(medicationID).child(ACCESS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<String> profiles = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                String profileID = child.getValue(String.class);
+                profiles.add(profileID);
+            }
+            callback.onCallback(profiles);
+        });
+
+    }
+
 
     @Override
     public Treatment findNextReminder() {

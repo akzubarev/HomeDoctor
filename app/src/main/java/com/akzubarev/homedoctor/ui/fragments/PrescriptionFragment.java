@@ -1,15 +1,12 @@
 package com.akzubarev.homedoctor.ui.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,7 +16,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.adapters.TreatmentTimeAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
@@ -28,13 +24,7 @@ import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.databinding.FragmentPrescriptionBinding;
 import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,22 +44,19 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentPrescriptionBinding.inflate(inflater, container, false);
-        boolean create_mode = false;
-        if (savedInstanceState != null)
-            create_mode = savedInstanceState.getBoolean("create", true);
 
-        if (create_mode) {
-//            Button b = findViewById(R.id.id);
-        } else {
-            Bundle bundle = this.getArguments();
-            if (bundle != null) {
-                profileID = bundle.getString("Profile");
-                prescriptionID = bundle.getString("Prescription");
-                dataHandler = DataHandler.getInstance(getContext());
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            profileID = bundle.getString("Profile");
+            prescriptionID = bundle.getString("Prescription");
+            dataHandler = DataHandler.getInstance(getContext());
+            if (prescriptionID != null)
                 dataHandler.getPrescription(this::fill, profileID, prescriptionID);
-            }
+            else
+                fill(new Prescription());
         }
-        binding.saveButton.setOnClickListener(this);
+
+        binding.editButton.setOnClickListener(this);
         binding.addMedicationButton.setOnClickListener(this);
         return binding.getRoot();
     }
@@ -83,7 +70,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
     private void fill(Prescription prescription) {
         binding.name.setText(prescription.getName());
-        binding.length.setText(prescription.getLength());
+        binding.endDate.setText(prescription.getEndDate());
         binding.diagnosis.setText(prescription.getDiagnosis());
 //        prescription.getConsumptionTimes();
 
@@ -116,8 +103,17 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
 
     private void savePrescription() {
-        dataHandler.deleteTreatments(oldTreatments);
+        String name = binding.name.getText().toString();
+        String diagnosis = binding.diagnosis.getText().toString();
+        String endDate = binding.endDate.getText().toString();
+        Prescription prescription = new Prescription();
+        prescription.setName(name);
+        prescription.setDiagnosis(diagnosis);
+        prescription.setEndDate(endDate);
+        dataHandler.savePrescription(prescription, profileID);
+        prescriptionID = prescription.getDBID();
 
+        dataHandler.deleteTreatments(oldTreatments);
         HashMap<String, ArrayList<Pair<String, String>>> treatmentsMap = adapter.gatherTreatments();
         ArrayList<Treatment> treatments = new ArrayList<>();
         for (String medicationID : treatmentsMap.keySet()) {
@@ -131,7 +127,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
     private void setAlarm() {
         new NotificationHelper(getContext()).setUpNotification(NotificationHelper.REMIND);
-        Log.d("notifications","SetUp");
+        Log.d("notifications", "SetUp");
     }
 
     private void onSuccessfulSave() {

@@ -7,10 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.adapters.ProfilesAdapter;
 import com.akzubarev.homedoctor.data.handlers.FireBaseHandler;
 import com.akzubarev.homedoctor.data.models.Profile;
@@ -29,6 +33,9 @@ public class ProfilesListFragment extends Fragment {
         binding = FragmentProfilesListBinding.inflate(inflater, container, false);
         dataHandler = new FireBaseHandler(getContext());//DataHandler.getInstance(getContext());
         dataHandler.getProfiles(this::fill);
+
+        NavController navController = NavHostFragment.findNavController(this);
+        binding.fab.setOnClickListener(view -> navController.navigate(R.id.ProfileFragment));
         return binding.getRoot();
     }
 

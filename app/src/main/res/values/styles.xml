@@ -7,7 +7,6 @@
         <item name="android:gravity">center_horizontal|end</item>
         <item name="android:layout_gravity">center_horizontal|end</item>
         <item name="android:background">@null</item>
-        <item name="android:textColor">@drawable/edit_text_selector</item>
         <!--        <item name="android:dropDownHorizontalOffset">-200dp</item>--> <!-- set programmatically -->
         <item name="android:dropDownVerticalOffset">30dp</item>
     </style>
@@ -49,6 +48,16 @@
         <item name="android:backgroundTint">@drawable/edit_text_tint_selector</item>
         <item name="android:textColorHint">@color/shadowed</item>
         <item name="android:dropDownVerticalOffset">30dp</item>
+    </style>
+
+    <style name="ClickableTextView" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_horizontal|end</item>
+        <item name="android:textColor">@drawable/edit_text_selector</item>
+        <item name="android:backgroundTint">@drawable/edit_text_tint_selector</item>
+        <item name="android:textSize">@dimen/dimen4</item>
     </style>
 
     <style name="LinearLayout">
@@ -119,7 +128,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_marginRight">5dp</item>
-        <item name="android:paddingHorizontal" tools:targetApi="o">5dp</item>
+        <item name="android:paddingHorizontal">5dp</item>
 
     </style>
+
+    <style name="FloatingActionButton" parent="ThemeOverlay.Material3.FloatingActionButton.Primary">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
 </resources>

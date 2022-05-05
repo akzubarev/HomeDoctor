@@ -1,16 +1,10 @@
 package com.akzubarev.homedoctor.data.models;
 
-import com.akzubarev.homedoctor.R;
 import com.google.firebase.database.Exclude;
 
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Treatment extends BaseModel {
     private String medicationId;
@@ -20,7 +14,7 @@ public class Treatment extends BaseModel {
     private String day;
     private int amount;
     @Exclude
-    private String[] days = new String[]{"Понедельник", "Вторник", "Среда",
+    private final static String[] days = new String[]{"Понедельник", "Вторник", "Среда",
             "Четверг", "Пятница", "Суббота", "Воскресенье"};
 
     public String getMedicationId() {
@@ -89,6 +83,7 @@ public class Treatment extends BaseModel {
         this.day = day;
     }
 
+    @Exclude
     public Calendar getAbsoluteTime() {
         String[] time = getTime().split(":");
         String day = getDay();

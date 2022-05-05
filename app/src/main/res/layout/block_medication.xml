@@ -27,27 +27,27 @@
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="10dp">
+<!--    <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_marginStart="10dp">-->
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Следующий прием:"
-                android:textColor="@color/additional"
-                android:textSize="@dimen/dimen5" />
+<!--        <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Следующий прием:"-->
+<!--                android:textColor="@color/additional"-->
+<!--                android:textSize="@dimen/dimen5" />-->
 
-        <TextView
-                android:id="@+id/next_consumption"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Парацетамол 14.02 14:00"
-                android:textColor="@color/main"
-                android:textSize="@dimen/dimen5" />
-    </LinearLayout>
+<!--        <TextView-->
+<!--                android:id="@+id/next_consumption"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Парацетамол 14.02 14:00"-->
+<!--                android:textColor="@color/main"-->
+<!--                android:textSize="@dimen/dimen5" />-->
+<!--    </LinearLayout>-->
 </LinearLayout>

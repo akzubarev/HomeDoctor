@@ -11,9 +11,10 @@
     <string name="nav_header_desc">Navigation header</string>
 
     <!-- Menu -->
-    <string name="menu_users">Пользователи</string>
-    <string name="menu_list">Список лекарств</string>
-    <string name="menu_medication">Лекарство</string>
+    <string name="profiles">Профили</string>
+    <string name="medications_list">Список лекарств</string>
+    <string name="owned_medications">Мои лекарства</string>
+    <string name="medication">Лекарство</string>
 
     <!-- InfoActivity -->
     <string name="info_app_name">Home Doctor</string>

@@ -25,7 +25,7 @@
             style="@style/EditText"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:text="Валентина Павловна"
+            android:hint="Введите имя"
             android:textSize="@dimen/dimen4" />
     </LinearLayout>
 
@@ -42,11 +42,9 @@
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
 
-        <EditText
+        <TextView
             android:id="@+id/gender"
-            style="@style/EditText"
-            android:imeOptions="actionDone"
-            android:inputType="text"
+            style="@style/ClickableTextView"
             android:text="Женский"
             android:textSize="@dimen/dimen4" />
     </LinearLayout>
@@ -69,7 +67,7 @@
             style="@style/EditText"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:text="01.01.1968"
+            android:hint="01.01.1968"
             android:textSize="@dimen/dimen4" />
     </LinearLayout>
 
@@ -115,8 +113,6 @@
             android:layout_gravity="center_vertical|start"
             android:gravity="center_vertical|start"
             android:labelFor="@id/medications_list"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:text="Лекарства"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
@@ -151,7 +147,7 @@
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/save_button"
+        android:id="@+id/edit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

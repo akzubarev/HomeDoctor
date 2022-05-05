@@ -60,14 +60,16 @@
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_info.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medication.xml" value="0.33" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medication_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medication_list_owned.xml" value="0.17083333333333334" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medications.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_prescription.xml" value="0.25" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_prescription_list.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_profiles_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_profiles_list.xml" value="0.25" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_sign_in.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/old_prescription.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/owned_fragment_medication_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/spinner_row.xml" value="0.17395833333333333" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/time_selector.xml" value="0.67" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />
       </map>

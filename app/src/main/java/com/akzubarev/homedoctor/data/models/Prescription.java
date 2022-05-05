@@ -2,22 +2,14 @@ package com.akzubarev.homedoctor.data.models;
 
 import com.google.firebase.database.Exclude;
 
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
 public class Prescription extends BaseModel {
     private String name = "";
-    private String length = "1 месяц";
+    private String endDate = "02.05.2022";
     private String diagnosis = "";
 
     public Prescription(String name, String lenght) {
         this.name = name;
-        this.length = lenght;
+        this.endDate = lenght;
     }
 
     public Prescription() {
@@ -31,12 +23,12 @@ public class Prescription extends BaseModel {
         this.name = name;
     }
 
-    public String getLength() {
-        return length;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setLength(String length) {
-        this.length = length;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     //    public Date nextConsumption() {
