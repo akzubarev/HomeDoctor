@@ -34,18 +34,8 @@ public interface DataHandler {
     Object get(String name, Context context);
 
 
-    void saveMedicationStats(MedicationStats medication);
-
-    void saveMedication(Medication medication);
-
-    void savePrescription(Prescription prescription, String profileID);
-
-    void saveTreatments(ArrayList<Treatment> treatments);
-
-    void saveProfile(Profile profile);
-
+    //region getAll
     void getProfiles(ProfilesCallback callback);
-
 
     void getPrescriptions(PrescriptionsCallback callback, String profileID);
 
@@ -55,10 +45,15 @@ public interface DataHandler {
 
     void getTreatments(TreatmentsCallback callback, String prescriptionID);
 
+    void getTreatments(TreatmentsCallback callback);
+
     void getMedicationStats(MedicationStatsCallback callback);
 
-    void getProfile(String name, ProfileCallback callback);
+    void getAllowedProfiles(String medicationID, AllowedProfilesCallback callback);
+    //endregion
 
+    //region get
+    void getProfile(String name, ProfileCallback callback);
 
     void getPrescription(PrescriptionCallback callback, String profileID, String id);
 
@@ -66,28 +61,72 @@ public interface DataHandler {
 
     void getMedicationStat(String id, MedicationStatCallback callback);
 
-    Treatment findNextReminder();
+    //endregion
 
-    void saveNextReminder(Treatment treatment);
+    //region save
+    void saveProfile(Profile profile);
 
-    Treatment getCurrentReminder();
+    void saveMedicationStats(MedicationStats medication);
 
-    String getExpiryData();
+    void saveMedication(Medication medication);
 
-    String getShortageData();
+    void savePrescription(Prescription prescription, String profileID);
+
+    void saveTreatments(ArrayList<Treatment> treatments);
+
+    void saveAllowed(String medicationID, ArrayList<String> profileIDs);
+    //endregion
 
     //region delete
     void deleteTreatments(ArrayList<Treatment> treatments);
 
+    void deletePrescription(Prescription prescription);
+
+    void deleteProfile(Profile profile);
+
+    void deletePrescriptions(ArrayList<Prescription> prescriptions);
+
+    void deleteMedication(Medication medication);
+
+    void deleteObject(DatabaseReference dbr, BaseModel obj);
+
     void deleteObjects(DatabaseReference dbr, ArrayList<? extends BaseModel> objs);
+    //endregion
 
-    Calendar getNextMorningTime();
+    //region notifications
 
-    Calendar getNextReminderTime();
+    void getCurrentReminder(TreatmentCallback callback);
 
-    void getAllowedProfiles(String medicationID, AllowedProfilesCallback callback);
+    void findNextReminder(TreatmentCallback callback);
 
-    void saveAllowed(String medicationID,ArrayList<String> profileIDs);
+    void saveNextReminder(Treatment treatment);
+
+    void getExpiryData(StringCallback callback);
+
+    void getShortageData(StringCallback callback);
+
+    void getNextMorningTime(CalendarCallback callback);
+
+    void getNextReminderTime(CalendarCallback callback);
+    //endregion
+
+    //region callbacksget
+
+    interface ExpirySettingsCallback {
+        void onCallback(String timeframe, int value);
+    }
+
+    interface ShortageSettingsCallback {
+        void onCallback(String method, int value);
+    }
+
+    interface StringCallback {
+        void onCallback(String message);
+    }
+
+    interface CalendarCallback {
+        void onCallback(Calendar calendar);
+    }
 
     interface MedicationCallback {
         void onCallback(Medication medication);
@@ -111,6 +150,10 @@ public interface DataHandler {
 
     interface TreatmentsCallback {
         void onCallback(ArrayList<Treatment> treatments);
+    }
+
+    interface TreatmentCallback {
+        void onCallback(Treatment treatment);
     }
 
     interface PrescriptionsCallback {
@@ -137,17 +180,10 @@ public interface DataHandler {
         void onCallback();
     }
 
+    //endregion
 
     default ArrayList<Medication> filter(ArrayList<Medication> query, ArrayList<String> targets) {
-        ArrayList<Medication> intersect = new ArrayList<>();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
-            intersect = (ArrayList<Medication>) query.stream().filter(x -> targets.contains(x.getDBID())).collect(Collectors.toList());
-        else
-            for (Medication model : query)
-                if (targets.contains(model.getDBID()))
-                    intersect.add(model);
-
-        return intersect;
+        return (ArrayList<Medication>) query.stream().filter(x -> targets.contains(x.getDBID())).collect(Collectors.toList());
     }
 
 }

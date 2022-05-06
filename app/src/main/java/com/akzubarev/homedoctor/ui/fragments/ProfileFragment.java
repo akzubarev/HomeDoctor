@@ -4,21 +4,23 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.adapters.MedicationAdapter;
-import com.akzubarev.homedoctor.data.adapters.PrescriptionAdapter;
+import com.akzubarev.homedoctor.ui.adapters.MedicationAdapter;
+import com.akzubarev.homedoctor.ui.adapters.PrescriptionAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.Prescription;
@@ -26,18 +28,16 @@ import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentProfileBinding;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProfileFragment extends Fragment {
     String TAG = "ProfileFragment";
-    private Profile profile;
+    //    private Profile profile;
     private FragmentProfileBinding binding;
     DataHandler dataHandler;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        setHasOptionsMenu(true);
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         Bundle bundle = this.getArguments();
         dataHandler = DataHandler.getInstance(getContext());
@@ -47,18 +47,19 @@ public class ProfileFragment extends Fragment {
                 dataHandler.getProfile(profileID, this::fill);
             else
                 fill(new Profile());
-        }
 
-        NavController navController = NavHostFragment.findNavController(this);
-        binding.addPrescription.setOnClickListener((View v) -> {
-            Bundle outBundle = new Bundle();
-            outBundle.putString("Profile", profile.getDBID());
-            outBundle.putString("Prescription", null);
-            navController.navigate(R.id.PrescriptionFragment, bundle);
-        });
-        binding.addMedicationButton.setOnClickListener((View v) -> navController.navigate(R.id.OwnedMedicationsListFragment));
-        binding.editButton.setOnClickListener(this::saveProfile);
-        binding.gender.setOnClickListener(this::genderDialog);
+
+            NavController navController = NavHostFragment.findNavController(this);
+            binding.addPrescription.setOnClickListener((View v) -> {
+                Bundle outBundle = new Bundle();
+                outBundle.putString("Profile", profileID);
+                outBundle.putString("Prescription", null);
+                navController.navigate(R.id.PrescriptionFragment, bundle);
+            });
+            binding.addMedicationButton.setOnClickListener((View v) -> navController.navigate(R.id.OwnedMedicationsListFragment));
+            binding.editButton.setOnClickListener(this::saveProfile);
+            binding.gender.setOnClickListener(this::genderDialog);
+        }
         return binding.getRoot();
     }
 
@@ -71,7 +72,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fill(Profile profile) {
-        this.profile = profile;
         binding.name.setText(profile.getName());
         binding.gender.setText(profile.getGender());
         binding.birthday.setText(profile.getBirthday());
@@ -81,7 +81,7 @@ public class ProfileFragment extends Fragment {
 
     private void fillPrescriptions(ArrayList<Prescription> prescriptions) {
         configureRecyclerView(binding.prescriptionsList);
-        binding.prescriptionsList.setAdapter(new PrescriptionAdapter(prescriptions, profile, getActivity()));
+        binding.prescriptionsList.setAdapter(new PrescriptionAdapter(prescriptions, buildProfile(), getActivity()));
     }
 
     private void fillMedications(ArrayList<Medication> medications) {
@@ -90,16 +90,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void saveProfile(View view) {
-        String name = binding.name.getText().toString();
-        String gender = binding.gender.getText().toString();
-        String birthday = binding.birthday.getText().toString();
-
-        profile.setName(name);
-        profile.setGender(gender);
-        profile.setBirthday(birthday);
-
         DataHandler dataBaseHandler = DataHandler.getInstance(getContext());
-        dataBaseHandler.saveProfile(profile);
+        dataBaseHandler.saveProfile(buildProfile());
     }
 
 
@@ -124,6 +116,38 @@ public class ProfileFragment extends Fragment {
         }).show();
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.action_delete).setVisible(true);
+        menu.findItem(R.id.action_info).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.action_delete) {
+            deleteProfile();
+            return true;
+        } else
+            return super.onOptionsItemSelected(menuItem);
+    }
+
+    private Profile buildProfile() {
+        Profile profile = new Profile();
+        profile.setName(binding.name.getText().toString());
+        profile.setGender(binding.gender.getText().toString());
+        profile.setBirthday(binding.birthday.getText().toString());
+        return profile;
+    }
+
+    private void deleteProfile() {
+        Profile profile = buildProfile();
+        Log.d(TAG,"delete profile");
+//        dataHandler.deleteProfile(profile);
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.popBackStack();
+    }
 
     @Override
     public void onDestroyView() {

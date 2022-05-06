@@ -58,6 +58,7 @@
             <EditText
                 android:id="@+id/duration_edit_text"
                 style="@style/EditText"
+                android:layout_height="match_parent"
                 android:width="50dp"
                 android:hint="4"
                 android:imeOptions="actionDone"
@@ -204,6 +205,7 @@
                 android:text="20.11.2022" />
 
         </LinearLayout>
+
         <LinearLayout
             style="@style/LinearLayout"
             android:layout_marginTop="@dimen/activity_vertical_margin">
@@ -222,7 +224,7 @@
             <TextView
                 android:id="@+id/allowed_profiles"
                 style="@style/ClickableTextView"
-                android:text="Всем"/>
+                android:text="Всем" />
 
         </LinearLayout>
     </LinearLayout>

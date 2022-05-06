@@ -150,59 +150,50 @@ public class NotificationHelper {
     }
 
     public void createReminderNotification() {
-        Treatment reminder = datahandler.getCurrentReminder();
-        Log.d("notifications", "got current reminder " + reminder.getNotification());
-        String message = reminder.getNotification();
-        createNotification(REMINDER_ID, message);
+        datahandler.getCurrentReminder(treatment -> {
+            String message = treatment.getNotification();
+            createNotification(REMINDER_ID, message);
+            datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
+            Log.d("notifications", "got current reminder " + treatment.getNotification());
+        });
 
-        Calendar calendar = datahandler.getNextReminderTime();
-        setReminder(calendar, REMIND);
     }
 
     public void createExpiryNotification() {
-        String message = datahandler.getExpiryData();
-        createNotification(EXPIRY_ID, message);
-
-        Calendar calendar = datahandler.getNextMorningTime();
-        setReminder(calendar, EXPIRY);
+        datahandler.getExpiryData(message -> createNotification(SHORTAGE_ID, message));
+        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
     }
 
     public void setUpNotification(String intent) {
-        Calendar calendar;
-        String message;
         switch (intent) {
             case EXPIRY:
-                message = datahandler.getExpiryData();
-                if (message != null)
-                    createExpiryNotification();
-                else {
-                    calendar = datahandler.getNextMorningTime();
-                    setReminder(calendar, EXPIRY);
-                }
+                datahandler.getExpiryData((message) -> {
+                    if (message != null)
+                        createExpiryNotification();
+                    else {
+                        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
+                    }
+                });
                 break;
             case SHORTAGE:
-                message = datahandler.getShortageData();
-                if (message != null)
-                    createShortageNotification();
-                else {
-                    calendar = datahandler.getNextMorningTime();
-                    setReminder(calendar, SHORTAGE);
-                }
+                datahandler.getShortageData((message) -> {
+                    if (message != null)
+                        createShortageNotification();
+                    else {
+                        datahandler.getNextMorningTime(calendar -> setReminder(calendar, SHORTAGE));
+                    }
+                });
                 break;
             case REMIND:
-                calendar = datahandler.getNextReminderTime();
-                Log.d("notifications", "Got next time of " + calendar.getTime());
-                setReminder(calendar, REMIND);
+                datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
                 break;
         }
     }
 
     public void createShortageNotification() {
-        String message = datahandler.getShortageData();
-        createNotification(SHORTAGE_ID, message);
+        datahandler.getShortageData(message -> createNotification(SHORTAGE_ID, message));
+        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
 
-        Calendar calendar = datahandler.getNextMorningTime();
-        setReminder(calendar, EXPIRY);
     }
 }
 

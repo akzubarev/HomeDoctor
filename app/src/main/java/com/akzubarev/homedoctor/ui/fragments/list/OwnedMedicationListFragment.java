@@ -2,6 +2,8 @@ package com.akzubarev.homedoctor.ui.fragments.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,13 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.adapters.MedicationAdapter;
-import com.akzubarev.homedoctor.data.adapters.MedicationStatsAdapter;
+import com.akzubarev.homedoctor.ui.adapters.MedicationAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
-import com.akzubarev.homedoctor.data.models.MedicationStats;
-import com.akzubarev.homedoctor.data.models.Profile;
-import com.akzubarev.homedoctor.databinding.FragmentMedicationListBinding;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationListOwnedBinding;
 
 import java.util.ArrayList;

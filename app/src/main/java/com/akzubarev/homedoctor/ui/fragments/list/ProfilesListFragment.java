@@ -2,23 +2,24 @@ package com.akzubarev.homedoctor.ui.fragments.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.adapters.ProfilesAdapter;
+import com.akzubarev.homedoctor.ui.adapters.ProfilesAdapter;
 import com.akzubarev.homedoctor.data.handlers.FireBaseHandler;
 import com.akzubarev.homedoctor.data.models.Profile;
-import com.akzubarev.homedoctor.databinding.FragmentHomeBinding;
 import com.akzubarev.homedoctor.databinding.FragmentProfilesListBinding;
 
 import java.util.ArrayList;

@@ -17,12 +17,20 @@
             android:id="@+id/sucessfullSignIn"
             app:destination="@id/ProfilesListFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/InfoFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.InfoFragment"
         android:label="Информация"
         tools:layout="@layout/fragment_info" />
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.SettingsFragment"
+        android:label="Настройки"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_SettingsFragment_to_InfoFragment"
+            app:destination="@id/InfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ProfilesListFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.list.ProfilesListFragment"
@@ -32,9 +40,6 @@
             android:id="@+id/action_nav_home_to_nav_list"
             app:destination="@id/MedicationsListFragment" />
         <action
-            android:id="@+id/action_HomeFragment_to_InfoFragment"
-            app:destination="@id/InfoFragment" />
-        <action
             android:id="@+id/action_HomeFragment_to_OwnedMedicationsListFragment"
             app:destination="@id/OwnedMedicationsListFragment" />
         <action
@@ -43,7 +48,19 @@
         <action
             android:id="@+id/action_HomeFragment_to_ProfileFragment"
             app:destination="@id/ProfileFragment" />
+        <action
+            android:id="@+id/action_ProfilesListFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
+        <action
+            android:id="@+id/action_ProfilesListFragment_to_QRActivity"
+            app:destination="@id/QRActivity" />
     </fragment>
+    <activity
+        android:id="@+id/QRActivity"
+        android:name="com.akzubarev.homedoctor.ui.activities.QRActivity"
+        android:label="@string/qr"
+        tools:layout="@layout/activity_qr">
+    </activity>
     <fragment
         android:id="@+id/OwnedMedicationsListFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.list.OwnedMedicationListFragment"

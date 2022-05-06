@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.data.adapters;
+package com.akzubarev.homedoctor.ui.adapters;
 
 import android.app.Activity;
 import android.content.Context;

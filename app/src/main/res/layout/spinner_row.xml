@@ -8,11 +8,11 @@
         android:id="@+id/spinner_row_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
+        android:layout_gravity="center_vertical"
         android:background="@color/color2"
         android:gravity="center_vertical|end"
-        android:text="test_text"
-        android:textColor="@color/main"
+        android:text="недели"
+        android:textColor="@drawable/edit_text_selector"
         android:textColorHint="@color/shadowed"
         android:textSize="@dimen/dimen4" />
 </LinearLayout>

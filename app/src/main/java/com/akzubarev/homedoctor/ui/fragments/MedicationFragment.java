@@ -2,8 +2,12 @@ package com.akzubarev.homedoctor.ui.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,6 +17,8 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
@@ -35,8 +41,8 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
 
     enum Mode {view, create, edit, add}
 
-    Medication medication;
-    MedicationStats medicationStat;
+    //    Medication medication;
+    private MedicationStats medicationStat;
 
     ArrayList<Profile> profiles = new ArrayList<>();
     Map<String, Boolean> allowed = new HashMap<>();
@@ -47,9 +53,10 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentMedicationBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        Bundle bundle = this.getArguments();
         dataHandler = DataHandler.getInstance(getContext());
+        setHasOptionsMenu(true);
+
+        Bundle bundle = this.getArguments();
         if (bundle != null) {
             medicationStatID = bundle.getString("MedicationStat");
             medicationID = bundle.getString("Medication");
@@ -69,12 +76,12 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
             binding.cancelButton.setVisibility(View.GONE);
         }
 
-        return view;
+        return binding.getRoot();
     }
 
     private void refill() {
 //        fillStat(medicationStats);
-        fillMedication(medication);
+        fillMedication(buildMedication());
     }
 
     private void fillStat(MedicationStats medicationStats) {
@@ -103,7 +110,6 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     }
 
     private void fillMedication(Medication medication) {
-        this.medication = medication;
         binding.medicationLayout.setVisibility(View.VISIBLE);
         binding.tabletsEditText.setText(String.valueOf(medication.getAmount()));
         binding.expiryDateEditText.setText(medication.getExpiryDate());
@@ -189,18 +195,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     }
 
     private void saveMedication() {
-        Medication medToSave;
-        if (medication != null)
-            medToSave = medication;
-        else
-            medToSave = new Medication();
-
-        medToSave.setName(binding.nameEditText.getText().toString());
-        medToSave.setExpiryDate(binding.expiryDateEditText.getText().toString());
-        medToSave.setMedicationStatsID(medicationStat.getDBID());
-        medToSave.setAllowedProfiles(allowed);
-
-        dataHandler.saveMedication(medToSave);
+        dataHandler.saveMedication(buildMedication());
         onSuccessfulSave();
     }
 
@@ -231,7 +226,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     public void prepareProfileChoiceDialog() {
         dataHandler.getProfiles((result -> {
             profiles = result;
-            allowed = new HashMap<>(medication.getAllowedProfiles());
+            allowed = new HashMap<>(buildMedication().getAllowedProfiles());
             boolean[] checked = new boolean[profiles.size()];
             String[] items = new String[profiles.size()];
             allowedIdx = new ArrayList<>();
@@ -276,6 +271,40 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
             }
         }
         binding.allowedProfiles.setText(text);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.action_delete).setVisible(true);
+        menu.findItem(R.id.action_info).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.action_delete) {
+            deleteMedication();
+            return true;
+        } else
+            return super.onOptionsItemSelected(menuItem);
+    }
+
+    private Medication buildMedication() {
+        Medication medication = new Medication();
+        medication.setName(binding.nameEditText.getText().toString());
+        medication.setExpiryDate(binding.expiryDateEditText.getText().toString());
+        medication.setMedicationStatsID(medicationStat.getDBID());
+        medication.setAllowedProfiles(allowed);
+        return medication;
+    }
+
+    private void deleteMedication() {
+        Medication medication = buildMedication();
+        Log.d(TAG,"delete medication");
+//        dataHandler.deleteMedication(medication);
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.popBackStack();
     }
 
     @Override

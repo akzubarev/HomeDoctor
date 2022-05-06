@@ -6,19 +6,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/HomeFragment"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_profiles"
             android:title="Профили" />
         <item
             android:id="@+id/OwnedMedicationsListFragment"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_owned"
             android:title="Мои лекарства" />
         <item
             android:id="@+id/MedicationsListFragment"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_list"
             android:title="@string/medications_list" />
-<!--        <item-->
-<!--            android:id="@+id/MedicationFragment"-->
-<!--            android:icon="@drawable/ic_menu_slideshow"-->
-<!--            android:title="Добавить лекарство" />-->
+        <item
+            android:id="@+id/QRActivity"
+            android:icon="@drawable/ic_qr_code_scanner"
+            android:title="Добавить лекарство" />
     </group>
 </menu>

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,7 +19,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.akzubarev.homedoctor.data.adapters.TreatmentTimeAdapter;
+import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.ui.adapters.TreatmentTimeAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.Prescription;
@@ -42,7 +46,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        setHasOptionsMenu(true);
         binding = FragmentPrescriptionBinding.inflate(inflater, container, false);
 
         Bundle bundle = this.getArguments();
@@ -101,15 +105,16 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         dataHandler.getMedications(this::fillMedications, profileID);
     }
 
+    private Prescription buildPrescription() {
+        Prescription prescription = new Prescription();
+        prescription.setName(binding.name.getText().toString());
+        prescription.setDiagnosis(binding.diagnosis.getText().toString());
+        prescription.setEndDate(binding.endDate.getText().toString());
+        return prescription;
+    }
 
     private void savePrescription() {
-        String name = binding.name.getText().toString();
-        String diagnosis = binding.diagnosis.getText().toString();
-        String endDate = binding.endDate.getText().toString();
-        Prescription prescription = new Prescription();
-        prescription.setName(name);
-        prescription.setDiagnosis(diagnosis);
-        prescription.setEndDate(endDate);
+        Prescription prescription = buildPrescription();
         dataHandler.savePrescription(prescription, profileID);
         prescriptionID = prescription.getDBID();
 
@@ -128,11 +133,6 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     private void setAlarm() {
         new NotificationHelper(getContext()).setUpNotification(NotificationHelper.REMIND);
         Log.d("notifications", "SetUp");
-    }
-
-    private void onSuccessfulSave() {
-        NavController navController = NavHostFragment.findNavController(this);
-        navController.popBackStack();
     }
 
     @Override
@@ -162,6 +162,31 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
     private void addMedication(Medication medication) {
         adapter.add(medication);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.action_delete).setVisible(true);
+        menu.findItem(R.id.action_info).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.action_delete) {
+            deletePrescription();
+            return true;
+        } else
+            return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void deletePrescription() {
+        Prescription prescription = buildPrescription();
+        Log.d(TAG,"delete prescription");
+//        dataHandler.deletePrescription(prescription);
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.popBackStack();
     }
 
     @Override

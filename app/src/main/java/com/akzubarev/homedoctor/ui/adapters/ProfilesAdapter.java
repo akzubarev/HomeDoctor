@@ -1,4 +1,4 @@
-package com.akzubarev.homedoctor.data.adapters;
+package com.akzubarev.homedoctor.ui.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.models.Profile;
-import com.akzubarev.homedoctor.data.models.User;
 
 import java.util.ArrayList;
 

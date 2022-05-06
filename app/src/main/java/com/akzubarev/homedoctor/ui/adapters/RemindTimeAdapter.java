@@ -1,8 +1,7 @@
-package com.akzubarev.homedoctor.data.adapters;
+package com.akzubarev.homedoctor.ui.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.models.Treatment;
-import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 
 public class RemindTimeAdapter
         extends RecyclerView.Adapter<RemindTimeAdapter.RemindTimeViewHolder> {
