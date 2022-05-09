@@ -81,15 +81,15 @@ public class NotificationHelper {
 
         switch (id) {
             case REMINDER_ID:
-                builder.addAction(R.drawable.ic_launcher_background, "Подтвердить", makeIntent(CONFIRM))
-                        .addAction(R.drawable.ic_launcher_background, "Отложить на 10 мин.", makeIntent(DELAY))
+                builder.addAction(R.drawable.ic_alarm_on, "Подтвердить", makeIntent(CONFIRM))
+                        .addAction(R.drawable.ic_alarm_on, "Отложить на 10 мин.", makeIntent(DELAY))
                         .setContentIntent(makeIntent(OPEN))
                         .setAutoCancel(false);
                 break;
             case EXPIRY_ID:
             case SHORTAGE_ID:
-                builder.addAction(R.drawable.ic_launcher_background, "Посмотреть", makeIntent(OPEN))
-                        .addAction(R.drawable.ic_launcher_background, "Закрыть", makeIntent(CLOSE));
+                builder.addAction(R.drawable.ic_alarm_on, "Посмотреть", makeIntent(OPEN))
+                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(CLOSE));
                 break;
         }
         return builder;

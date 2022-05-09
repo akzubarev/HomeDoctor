@@ -4,7 +4,7 @@
     android:id="@+id/activity_authors"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color2"
+    android:background="@color/background_main"
     android:orientation="vertical">
 
 
@@ -21,7 +21,7 @@
             android:labelFor="@id/morning"
             android:text="Утреннее время"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <EditText
             android:id="@+id/morning"
@@ -50,7 +50,7 @@
             android:gravity="center"
             android:text="Напоминания о заканчивающихся лекарствах"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <LinearLayout
             style="@style/LinearLayout"
@@ -65,7 +65,7 @@
                 android:includeFontPadding="false"
                 android:text="Способ определения"
                 android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+                android:textSize="@dimen/subheading" />
 
             <EditText
                 android:id="@+id/method"
@@ -89,7 +89,7 @@
                 android:gravity="center_vertical|start"
                 android:text="Оставшиеся дозы"
                 android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+                android:textSize="@dimen/subheading" />
 
             <EditText
                 android:id="@+id/shortage_value"
@@ -119,7 +119,7 @@
             android:gravity="center"
             android:text="Напоминания о истекающем сроке годности"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <LinearLayout
             style="@style/LinearLayout"
@@ -133,7 +133,7 @@
                 android:gravity="center_vertical|start"
                 android:text="Временной промежуток "
                 android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+                android:textSize="@dimen/subheading" />
 
             <View
                 android:layout_width="0dp"

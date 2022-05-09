@@ -103,7 +103,7 @@ public class Treatment extends BaseModel {
             calendar.add(Calendar.DAY_OF_MONTH, 7);
         return calendar;
     }
-
+    @Exclude
     public String getNotification() {
         return getDBID();
     }

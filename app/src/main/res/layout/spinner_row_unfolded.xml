@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
             android:background="@color/color4"
-            android:textSize="@dimen/dimen4"
+            android:textSize="@dimen/subheading"
             android:gravity="center_vertical|start"
             android:text="test_text"
             android:textColor="@color/main"

@@ -1,18 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.HomeDoctor" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.HomeDoctor" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color1</item>
-        <!--        <item name="colorPrimaryVariant">@color/color1</item>-->
+        <item name="colorPrimary">@color/background_main</item>
+        <item name="colorPrimaryVariant">@color/background_main</item>
         <item name="colorOnPrimary">@color/main</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color2</item>
-        <!--        <item name="colorSecondaryVariant">@color/teal_200</item>-->
-        <item name="colorOnSecondary">@color/additional</item>
+        <item name="colorSecondary">@color/background_main</item>
+        <item name="colorSecondaryVariant">@color/background_main</item>
+        <item name="colorOnSecondary">@color/primary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">
-            ?attr/colorPrimaryVariant
-        </item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:checkboxStyle">@style/checkbox</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/main</item>
+        <item name="android:textColorSecondary">@color/primary</item>
+        <item name="fontFamily">sans-serif-light</item>
     </style>
+
+    <style name="Theme.HomeDoctor.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.HomeDoctor.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.HomeDoctor.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

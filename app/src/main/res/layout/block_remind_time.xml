@@ -4,7 +4,7 @@
     android:id="@+id/remind_time_block"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/color2"
+    android:background="@color/background_main"
     android:orientation="horizontal">
 
     <TextView
@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:text="14:00"
         android:textAlignment="center"
-        android:textColor="@color/additional"
-        android:textSize="@dimen/dimen5" />
+        android:textColor="@color/primary"
+        android:textSize="@dimen/normal" />
 
 <!--    <ImageButton-->
 <!--        android:id="@+id/remind_cancel"-->

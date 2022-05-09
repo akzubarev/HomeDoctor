@@ -3,39 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/activity_vertical_margin"
     card_view:cardBackgroundColor="@color/background_main"
     card_view:cardCornerRadius="20dp"
-    tools:showIn="@layout/fragment_medication_list">
+    tools:showIn="@layout/fragment_profiles_list">
+
 
     <LinearLayout
         android:id="@+id/tourblock"
         style="@style/LinearLayout"
-        android:layout_marginVertical="@dimen/default_gap"
-        android:background="@color/transparent">
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
+        tools:context=".ui.activities.MainActivity">
 
         <ImageView
             android:id="@+id/user_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_medication"
+            android:src="@drawable/ic_user"
             android:textSize="@dimen/normal"
             app:tint="@color/primary" />
 
         <TextView
-            android:id="@+id/medication_name"
-            android:layout_width="150dp"
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:gravity="center"
-            android:text="Парацетамол"
+            android:includeFontPadding="false"
+            android:text="Бабушка"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
-        <include layout="@layout/next_reminder_med" />
-    </LinearLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
+        <include layout="@layout/next_reminder" />
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

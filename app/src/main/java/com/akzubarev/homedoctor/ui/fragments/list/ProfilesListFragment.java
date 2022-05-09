@@ -45,8 +45,8 @@ public class ProfilesListFragment extends Fragment {
         profiles = profilesData;
         RecyclerView userList = binding.profilesList;
         userList.setHasFixedSize(true);
-        userList.addItemDecoration(new DividerItemDecoration(
-                userList.getContext(), DividerItemDecoration.VERTICAL));
+//        userList.addItemDecoration(new DividerItemDecoration(
+//                userList.getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager userLayoutManager = new LinearLayoutManager(getContext());
 
         ProfilesAdapter profilesAdapter = new ProfilesAdapter(profiles, getContext());

@@ -3,15 +3,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="color1">#212121</color>
-    <color name="color2">#303030</color>
-    <color name="color3">#5a5a5a</color>
+<!--    <color name="background_main">#FFFFFF</color>-->
+    <color name="background_main">#EEE5E9</color>
+    <color name="background_shadowed">#809C9C9C</color>
+    <color name="background_second">#FFFFFF</color>
     <color name="color4">#787878</color>
 
-    <color name="main">#f2f2f2</color>
-    <color name="shadowed">#7f7f7f</color>
-    <color name="additional">#86ccc4</color>
+    <color name="main">#000000</color>
+    <color name="shadowed">#616161</color>
+    <color name="primary">#009688</color>
+    <color name="secondary">#BA274A</color>
 
     <color name="transparent">@android:color/transparent</color>
-
 </resources>

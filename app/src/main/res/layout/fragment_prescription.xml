@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color2"
+    android:background="@color/background_main"
     android:orientation="vertical">
 
     <LinearLayout style="@style/LinearLayout">
@@ -18,7 +18,7 @@
             android:labelFor="@id/name"
             android:text="Название"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <EditText
             android:id="@+id/name"
@@ -26,7 +26,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:text="Ангина 2022.03"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
     </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
@@ -40,7 +40,7 @@
             android:labelFor="@id/gender"
             android:text="Диагноз"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <EditText
             android:id="@+id/diagnosis"
@@ -48,7 +48,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:text="Ангина"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
     </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
@@ -62,7 +62,7 @@
             android:labelFor="@id/birthday"
             android:text="Конец приема"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <EditText
             android:id="@+id/end_date"
@@ -70,7 +70,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:text="20.05.2022"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
     </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
@@ -83,7 +83,7 @@
             android:labelFor="@id/medications_list"
             android:text="Лекарства"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <ImageButton
             android:id="@+id/add_medication_button"
@@ -94,8 +94,8 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_add"
             android:tag="add_medication"
-            android:textColor="@color/additional"
-            android:textSize="@dimen/dimen5" />
+            android:textColor="@color/primary"
+            android:textSize="@dimen/normal" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -113,9 +113,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:backgroundTint="@color/color3"
+        android:backgroundTint="@color/background_second"
         android:tag="save"
         android:text="Сохранить изменения"
-        android:textColor="@color/additional" />
+        android:textColor="@color/primary" />
 
 </LinearLayout>

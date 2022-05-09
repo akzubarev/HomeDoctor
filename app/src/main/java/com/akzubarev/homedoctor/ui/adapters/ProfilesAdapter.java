@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,7 +50,7 @@ public class ProfilesAdapter
     @Override
     public ProfileViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.block_user, viewGroup, false);
+                .inflate(R.layout.block_profile, viewGroup, false);
         return new ProfileViewHolder(view, listener);
     }
 
@@ -69,8 +68,6 @@ public class ProfilesAdapter
 
         TextView userName = UserViewHolder.profileName;
         userName.setText(info);
-
-        Button arrow = UserViewHolder.arrow;
 
         if (listener == null) {
             UserViewHolder.itemView.setOnClickListener(v -> {
@@ -92,13 +89,11 @@ public class ProfilesAdapter
 
         TextView profileNextTime;
         TextView profileName;
-        Button arrow;
 
         public ProfileViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
             super(itemView);
             profileNextTime = itemView.findViewById(R.id.next_consumption);
             profileName = itemView.findViewById(R.id.profile_name);
-            arrow = itemView.findViewById(R.id.arrow);
         }
     }
 }

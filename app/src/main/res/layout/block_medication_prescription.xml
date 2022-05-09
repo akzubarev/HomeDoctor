@@ -6,7 +6,7 @@
     style="@style/LinearLayout"
     android:layout_marginTop="@dimen/default_gap"
     android:layout_marginBottom="@dimen/default_gap"
-    android:background="@color/color2"
+    android:background="@color/background_main"
     android:orientation="vertical"
     android:paddingHorizontal="0dp">
 
@@ -25,8 +25,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_medicine"
-            android:textSize="@dimen/dimen5"
-            app:tint="@color/additional" />
+            android:textSize="@dimen/normal"
+            app:tint="@color/primary" />
 
         <TextView
             android:id="@+id/medication_name"
@@ -36,7 +36,7 @@
             android:gravity="center"
             android:text="Парацетамол"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -49,8 +49,8 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Следующий прием:"
-                android:textColor="@color/additional"
-                android:textSize="@dimen/dimen5" />
+                android:textColor="@color/primary"
+                android:textSize="@dimen/normal" />
 
             <TextView
                 android:id="@+id/next_consumption"
@@ -60,7 +60,7 @@
                 android:gravity="center"
                 android:text="Парацетамол\n 14.02 14:00"
                 android:textColor="@color/main"
-                android:textSize="@dimen/dimen5" />
+                android:textSize="@dimen/normal" />
         </LinearLayout>
 
 
@@ -79,7 +79,7 @@
             android:labelFor="@id/birthday"
             android:text="Добавить время"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen5" />
+            android:textSize="@dimen/normal" />
 
         <TextView
             android:id="@+id/remind_day"
@@ -88,8 +88,8 @@
             android:layout_marginRight="5dp"
             android:gravity="center"
             android:text="Понедельник"
-            android:textColor="@color/additional"
-            android:textSize="@dimen/dimen5" />
+            android:textColor="@color/primary"
+            android:textSize="@dimen/normal" />
 
         <TextView
             android:id="@+id/remind_time"
@@ -99,8 +99,8 @@
             android:gravity="center"
             android:text="14:00"
             android:textAlignment="center"
-            android:textColor="@color/additional"
-            android:textSize="@dimen/dimen5" />
+            android:textColor="@color/primary"
+            android:textSize="@dimen/normal" />
 
         <ImageButton
             android:id="@+id/remind_add_button"
@@ -111,8 +111,8 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_add"
             android:textAlignment="center"
-            android:textColor="@color/additional"
-            android:textSize="@dimen/dimen5" />
+            android:textColor="@color/primary"
+            android:textSize="@dimen/normal" />
     </LinearLayout>
 
     <LinearLayout

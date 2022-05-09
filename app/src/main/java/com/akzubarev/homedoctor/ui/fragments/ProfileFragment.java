@@ -65,7 +65,7 @@ public class ProfileFragment extends Fragment {
 
     private void configureRecyclerView(RecyclerView rv) {
         rv.setHasFixedSize(false);
-        rv.addItemDecoration(new DividerItemDecoration(rv.getContext(), DividerItemDecoration.VERTICAL));
+//        rv.addItemDecoration(new DividerItemDecoration(rv.getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
 //        rv.setAdapter(rvAdapter);

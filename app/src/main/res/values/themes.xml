@@ -1,16 +1,16 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.HomeDoctor" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color1</item>
-        <item name="colorPrimaryVariant">@color/color1</item>
-        <item name="colorOnPrimary">@color/main</item>
+        <item name="colorPrimary">@color/primary</item>
+<!--        <item name="colorPrimaryVariant">@color/background_main</item>-->
+        <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color2</item>
-        <item name="colorSecondaryVariant">@color/color2</item>
-        <item name="colorOnSecondary">@color/additional</item>
+        <item name="colorSecondary">@color/shadowed</item>
+<!--        <item name="colorSecondaryVariant">@color/background_main</item>-->
+        <item name="colorOnSecondary">@color/primary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/primary</item>
         <!-- Customize your theme here. -->
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
@@ -18,7 +18,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textColorPrimary">@color/main</item>
-        <item name="android:textColorSecondary">@color/additional</item>
+        <item name="android:textColorSecondary">@color/primary</item>
         <item name="fontFamily">sans-serif-light</item>
     </style>
 

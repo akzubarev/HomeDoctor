@@ -35,7 +35,7 @@
         android:id="@+id/ProfilesListFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.list.ProfilesListFragment"
         android:label="@string/profiles"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_profiles_list">
         <action
             android:id="@+id/action_nav_home_to_nav_list"
             app:destination="@id/MedicationsListFragment" />

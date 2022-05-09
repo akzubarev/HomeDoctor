@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color1"
+    android:background="@color/background_shadowed"
     tools:context=".ui.fragments.list.ProfilesListFragment">
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:gravity="center_vertical|start"
             android:text="Аккаунт"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <LinearLayout style="@style/LinearLayout">
 
@@ -37,7 +37,7 @@
                 android:gravity="center_vertical|start"
                 android:text="E-mail"
                 android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+                android:textSize="@dimen/subheading" />
 
             <TextView
                 android:id="@+id/email"
@@ -47,7 +47,7 @@
                 android:gravity="center_vertical|end"
                 android:text="example@gmail.com"
                 android:textColor="@color/shadowed"
-                android:textSize="@dimen/dimen4" />
+                android:textSize="@dimen/subheading" />
         </LinearLayout>
 
         <LinearLayout style="@style/LinearLayout">
@@ -60,7 +60,7 @@
                 android:gravity="center_vertical|start"
                 android:text="ID"
                 android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+                android:textSize="@dimen/subheading" />
 
             <TextView
                 android:id="@+id/id"
@@ -70,7 +70,7 @@
                 android:gravity="center_vertical|end"
                 android:text="zd;gfkjnnawer;aoiwe;j12"
                 android:textColor="@color/shadowed"
-                android:textSize="@dimen/dimen4" />
+                android:textSize="@dimen/subheading" />
 
         </LinearLayout>
 
@@ -81,7 +81,7 @@
             android:padding="4dp"
             android:scrollbars="vertical"
             tools:itemCount="3"
-            tools:listitem="@layout/block_user" />
+            tools:listitem="@layout/block_profile" />
 
     </LinearLayout>
 

@@ -10,7 +10,7 @@
     <ToggleButton
         android:id="@+id/day_button"
         style="@style/WeekButtons"
-        android:buttonTint="@color/additional"
+        android:buttonTint="@color/primary"
         android:textOff="пн"
         android:textOn="пн" />
 

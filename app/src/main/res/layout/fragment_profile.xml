@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color2"
+    android:background="@color/background_shadowed"
     android:orientation="vertical">
 
     <LinearLayout style="@style/LinearLayout">
@@ -18,7 +18,7 @@
             android:labelFor="@id/name"
             android:text="Имя"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <EditText
             android:id="@+id/name"
@@ -26,7 +26,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:hint="Введите имя"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
     </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
@@ -40,13 +40,13 @@
             android:labelFor="@id/gender"
             android:text="Пол"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <TextView
             android:id="@+id/gender"
             style="@style/ClickableTextView"
             android:text="Женский"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
     </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
@@ -60,7 +60,7 @@
             android:labelFor="@id/birthday"
             android:text="Дата рождения"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <EditText
             android:id="@+id/birthday"
@@ -68,7 +68,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:hint="01.01.1968"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
     </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
@@ -81,7 +81,7 @@
             android:labelFor="@id/prescriptions_list"
             android:text="Рецепты"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <ImageButton
             android:id="@+id/add_prescription"
@@ -92,14 +92,15 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_add"
             android:tag="add_medication"
-            android:textColor="@color/additional"
-            android:textSize="@dimen/dimen5" />
+            android:textColor="@color/primary"
+            android:textSize="@dimen/normal" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/prescriptions_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:padding="4dp"
         android:scrollbars="vertical"
         tools:itemCount="2"
@@ -115,7 +116,7 @@
             android:labelFor="@id/medications_list"
             android:text="Лекарства"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/subheading" />
 
         <ImageButton
             android:id="@+id/add_medication_button"
@@ -126,12 +127,13 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_add"
             android:tag="add_medication"
-            android:textColor="@color/additional"
-            android:textSize="@dimen/dimen5" />
+            android:textColor="@color/primary"
+            android:textSize="@dimen/normal" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medications_list"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
@@ -151,8 +153,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:backgroundTint="@color/color3"
+        android:backgroundTint="@color/background_second"
         android:text="Сохранить изменения"
-        android:textColor="@color/additional" />
+        android:textColor="@color/primary" />
 
 </LinearLayout>
