@@ -253,7 +253,7 @@ public class FireBaseHandler implements DataHandler {
     }
 
     @Override
-    public void getPrescriptions(PrescriptionsCallback callback, String profileID) {
+    public void getPrescriptions(String profileID, PrescriptionsCallback callback) {
         getUserDBR().child(PRESCRIPTIONS).child(profileID).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
             ArrayList<Prescription> prescriptions = new ArrayList<>();
@@ -280,7 +280,7 @@ public class FireBaseHandler implements DataHandler {
     }
 
     @Override
-    public void getMedications(MedicationsCallback callback, String profileID) {
+    public void getMedications(String profileID, MedicationsCallback callback) {
         getUserDBR().child(MEDICATIONS).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
             ArrayList<Medication> meds = new ArrayList<>();
@@ -295,13 +295,27 @@ public class FireBaseHandler implements DataHandler {
     }
 
     @Override
-    public void getTreatments(TreatmentsCallback callback, String prescriptionID) {
+    public void getTreatments(String prescriptionID, TreatmentsCallback callback) {
         getUserDBR().child(TREATMENTS).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
             ArrayList<Treatment> treatments = new ArrayList<>();
             for (DataSnapshot child : result.getChildren()) {
                 Treatment tr = child.getValue(Treatment.class);
                 if (tr.getPrescriptionId().equals(prescriptionID))
+                    treatments.add(tr);
+            }
+            callback.onCallback(treatments);
+        });
+    }
+
+    @Override
+    public void getTreatmentsForProfile(String profileID, TreatmentsCallback callback) {
+        getUserDBR().child(TREATMENTS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<Treatment> treatments = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                Treatment tr = child.getValue(Treatment.class);
+                if (tr.getProfileID().equals(profileID))
                     treatments.add(tr);
             }
             callback.onCallback(treatments);
@@ -364,7 +378,7 @@ public class FireBaseHandler implements DataHandler {
     }
 
     @Override
-    public void getPrescription(PrescriptionCallback callback, String profileID, String id) {
+    public void getPrescription(String profileID, String id, PrescriptionCallback callback) {
         getUserDBR().child(PRESCRIPTIONS).child(profileID).child(id).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
             Prescription prescription = result.getValue(Prescription.class);
@@ -436,14 +450,14 @@ public class FireBaseHandler implements DataHandler {
     public void deletePrescription(Prescription prescription) {
         DatabaseReference dbr = getUserDBR().child(PRESCRIPTIONS).child(prescription.getDBID());
         deleteObject(dbr, prescription);
-        getTreatments(this::deleteTreatments, prescription.getDBID());
+        getTreatments(prescription.getDBID(), this::deleteTreatments);
     }
 
     @Override
     public void deleteProfile(Profile profile) {
         DatabaseReference dbr = getUserDBR().child(PROFILES).child(profile.getDBID());
         deleteObject(dbr, profile);
-        getPrescriptions(this::deletePrescriptions, profile.getDBID());
+        getPrescriptions(profile.getDBID(), this::deletePrescriptions);
     }
 
     @Override
@@ -451,7 +465,7 @@ public class FireBaseHandler implements DataHandler {
         DatabaseReference dbr = getUserDBR().child(PRESCRIPTIONS);
         deleteObjects(dbr, prescriptions);
         for (Prescription prescription : prescriptions)
-            getTreatments(this::deleteTreatments, prescription.getDBID());
+            getTreatments(prescription.getDBID(), this::deleteTreatments);
     }
 
     @Override
@@ -521,6 +535,48 @@ public class FireBaseHandler implements DataHandler {
             Stream<Treatment> sorted = treatments.stream().sorted(Comparator.comparing(Treatment::getAbsoluteTime));
             Optional<Treatment> next = sorted.findFirst();
             next.ifPresent(callback::onCallback);
+        });
+    }
+
+    @Override
+    public void findNextReminder(String medicationID, TreatmentCallback callback, EmptyCallback failCallback) {
+        getTreatments(treatments -> {
+            Stream<Treatment> sorted = treatments.stream().filter(x ->
+                    x.getMedicationId().equals(medicationID)).sorted(
+                    Comparator.comparing(Treatment::getAbsoluteTime));
+            Optional<Treatment> next = sorted.findFirst();
+
+            if (next.isPresent())
+                callback.onCallback(next.get());
+            else
+                failCallback.onCallback();
+        });
+    }
+
+    @Override
+    public void findNextReminderForProfile(String profileID, TreatmentCallback callback, EmptyCallback failCallback) {
+        getTreatmentsForProfile(profileID, treatments -> {
+            Stream<Treatment> sorted = treatments.stream().sorted(
+                    Comparator.comparing(Treatment::getAbsoluteTime));
+            Optional<Treatment> next = sorted.findFirst();
+
+            if (next.isPresent())
+                callback.onCallback(next.get());
+            else
+                failCallback.onCallback();
+        });
+    }
+
+    @Override
+    public void findNextReminderForPrescription(String prescriptionID, TreatmentCallback callback, EmptyCallback failCallback) {
+        getTreatments(prescriptionID, treatments -> {
+            Stream<Treatment> sorted = treatments.stream().sorted(
+                    Comparator.comparing(Treatment::getAbsoluteTime));
+            Optional<Treatment> next = sorted.findFirst();
+            if (next.isPresent())
+                callback.onCallback(next.get());
+            else
+                failCallback.onCallback();
         });
     }
 

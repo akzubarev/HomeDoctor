@@ -23,9 +23,9 @@
         <EditText
             android:id="@+id/name"
             style="@style/EditText"
+            android:hint="Введите имя"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:hint="Введите имя"
             android:textSize="@dimen/subheading" />
     </LinearLayout>
 
@@ -65,9 +65,9 @@
         <EditText
             android:id="@+id/birthday"
             style="@style/EditText"
+            android:hint="01.01.1968"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:hint="01.01.1968"
             android:textSize="@dimen/subheading" />
     </LinearLayout>
 
@@ -133,9 +133,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medications_list"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:padding="4dp"
         android:scrollbars="vertical"
         tools:itemCount="3"

@@ -1,6 +1,7 @@
 package com.akzubarev.homedoctor.ui.fragments.list;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -25,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 public class MedicationListFragment extends Fragment {
-
+    private final String TAG = "MedicationListFragment";
     private FragmentMedicationListBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,20 +38,39 @@ public class MedicationListFragment extends Fragment {
         binding.fab.setOnClickListener(view -> navController.navigate(R.id.MedicationFragment));
         if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals("/users/dgsYX8q5uig3E8YbGIgQVQfeKRr2"))
             binding.fab.setVisibility(View.GONE);
+
         return binding.getRoot();
     }
 
     private void fill(ArrayList<MedicationStats> medications) {
         RecyclerView medicationsList = binding.medicationsList;
         medicationsList.setHasFixedSize(true);
-        medicationsList.addItemDecoration(new DividerItemDecoration(
-                medicationsList.getContext(), DividerItemDecoration.VERTICAL));
+//        medicationsList.addItemDecoration(new DividerItemDecoration(
+//                medicationsList.getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
 
         MedicationStatsAdapter medicationsAdapter = new MedicationStatsAdapter(medications, getActivity());
         medicationsList.setLayoutManager(medicationsLayoutManager);
         medicationsList.setAdapter(medicationsAdapter);
+
+        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                medicationsAdapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                Log.d(TAG, query);
+                medicationsAdapter.filter(query);
+                return true;
+            }
+        });
+
+        binding.search.setOnClickListener(v -> binding.search.setIconified(false));
     }
+
 
     @Override
     public void onDestroyView() {

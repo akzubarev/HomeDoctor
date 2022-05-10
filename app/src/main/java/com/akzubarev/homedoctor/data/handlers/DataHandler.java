@@ -37,13 +37,15 @@ public interface DataHandler {
     //region getAll
     void getProfiles(ProfilesCallback callback);
 
-    void getPrescriptions(PrescriptionsCallback callback, String profileID);
+    void getPrescriptions(String profileID, PrescriptionsCallback callback);
 
     void getMedications(MedicationsCallback callback);
 
-    void getMedications(MedicationsCallback callback, String profileID);
+    void getMedications(String profileID, MedicationsCallback callback);
 
-    void getTreatments(TreatmentsCallback callback, String prescriptionID);
+    void getTreatments(String prescriptionID, TreatmentsCallback callback);
+
+    void getTreatmentsForProfile(String profileID, TreatmentsCallback callback);
 
     void getTreatments(TreatmentsCallback callback);
 
@@ -55,7 +57,7 @@ public interface DataHandler {
     //region get
     void getProfile(String name, ProfileCallback callback);
 
-    void getPrescription(PrescriptionCallback callback, String profileID, String id);
+    void getPrescription(String profileID, String id,PrescriptionCallback callback);
 
     void getMedication(String medicationName, MedicationCallback callback);
 
@@ -99,6 +101,12 @@ public interface DataHandler {
 
     void findNextReminder(TreatmentCallback callback);
 
+    void findNextReminderForProfile(String profileID, TreatmentCallback callback, EmptyCallback failCallback);
+
+    void findNextReminder(String medicationID, TreatmentCallback callback, EmptyCallback failCallback);
+
+    void findNextReminderForPrescription(String prescriptionID, TreatmentCallback callback, EmptyCallback failCallback);
+
     void saveNextReminder(Treatment treatment);
 
     void getExpiryData(StringCallback callback);
@@ -108,6 +116,7 @@ public interface DataHandler {
     void getNextMorningTime(CalendarCallback callback);
 
     void getNextReminderTime(CalendarCallback callback);
+
     //endregion
 
     //region callbacksget
@@ -176,10 +185,9 @@ public interface DataHandler {
         void onCallback(ArrayList<String> profiles);
     }
 
-    interface SuccesfulSave {
+    interface EmptyCallback {
         void onCallback();
     }
-
     //endregion
 
     default ArrayList<Medication> filter(ArrayList<Medication> query, ArrayList<String> targets) {

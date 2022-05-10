@@ -2,9 +2,13 @@ package com.akzubarev.homedoctor.data.models;
 
 import com.google.firebase.database.Exclude;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Treatment extends BaseModel {
     private String medicationId;
@@ -84,17 +88,21 @@ public class Treatment extends BaseModel {
     }
 
     @Exclude
+    public String getDateTime() {
+        Calendar calendar = getAbsoluteTime();
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM HH:mm", new Locale("ru"));
+        return format.format(calendar.getTime());
+    }
+
+    @Exclude
     public Calendar getAbsoluteTime() {
         String[] time = getTime().split(":");
         String day = getDay();
         int hours = Integer.parseInt(time[0]);
         int minutes = Integer.parseInt(time[1]);
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.DAY_OF_WEEK, DayOfWeek.MONDAY);
-//        calendar.set(Calendar.HOUR_OF_DAY, );
-//        calendar.set(Calendar.MINUTE, );
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_YEAR, Arrays.asList(days).indexOf(day));
+
+        Calendar calendar = Calendar.getInstance(new Locale("ru"));
+        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeekConversion(day));
         calendar.set(Calendar.HOUR_OF_DAY, hours);
         calendar.set(Calendar.MINUTE, minutes);
         calendar.set(Calendar.SECOND, 0);
@@ -103,6 +111,15 @@ public class Treatment extends BaseModel {
             calendar.add(Calendar.DAY_OF_MONTH, 7);
         return calendar;
     }
+
+    private int dayOfWeekConversion(String day) {
+        int num = Arrays.asList(days).indexOf(day) + 1;
+        num++; //fist day of the week is Sunday
+        if (num == 8)
+            num = 1;
+        return num;
+    }
+
     @Exclude
     public String getNotification() {
         return getDBID();

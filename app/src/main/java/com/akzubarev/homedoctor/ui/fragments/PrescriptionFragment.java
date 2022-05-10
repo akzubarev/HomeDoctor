@@ -55,7 +55,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             prescriptionID = bundle.getString("Prescription");
             dataHandler = DataHandler.getInstance(getContext());
             if (prescriptionID != null)
-                dataHandler.getPrescription(this::fill, profileID, prescriptionID);
+                dataHandler.getPrescription(profileID, prescriptionID, this::fill);
             else
                 fill(new Prescription());
         }
@@ -78,7 +78,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         binding.diagnosis.setText(prescription.getDiagnosis());
 //        prescription.getConsumptionTimes();
 
-        dataHandler.getTreatments(this::fillTreatments, prescriptionID);
+        dataHandler.getTreatments(prescriptionID, this::fillTreatments);
     }
 
     private void fillMedications(ArrayList<Medication> medications) {
@@ -102,7 +102,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
                 oldTreatments.add(treatment);
             }
         }
-        dataHandler.getMedications(this::fillMedications, profileID);
+        dataHandler.getMedications(profileID, this::fillMedications);
     }
 
     private Prescription buildPrescription() {
@@ -183,7 +183,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
     private void deletePrescription() {
         Prescription prescription = buildPrescription();
-        Log.d(TAG,"delete prescription");
+        Log.d(TAG, "delete prescription");
 //        dataHandler.deletePrescription(prescription);
         NavController navController = NavHostFragment.findNavController(this);
         navController.popBackStack();

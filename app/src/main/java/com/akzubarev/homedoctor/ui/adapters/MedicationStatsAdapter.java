@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,11 +27,13 @@ import com.akzubarev.homedoctor.data.models.MedicationStats;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class MedicationStatsAdapter
         extends RecyclerView.Adapter<MedicationStatsAdapter.MedicationStatsViewHolder> {
     private static final String TAG = "MedicationStatsAdapter";
     private ArrayList<MedicationStats> medicationStats;
+    private ArrayList<MedicationStats> medicationStatsAll;
     HashMap<String, String> actualMeds = new HashMap<>();
     NavController navController;
     private OnUserClickListener listener;
@@ -53,30 +58,38 @@ public class MedicationStatsAdapter
 
     public MedicationStatsAdapter(ArrayList<MedicationStats> medicationStats, Activity activity) {
         this.medicationStats = medicationStats;
+        this.medicationStatsAll = new ArrayList<>(medicationStats);
         this.context = activity;
         this.navController = Navigation.findNavController(activity, R.id.nav_host_fragment);
         DataHandler.getInstance(context).getMedications(this::setMedicationStats);
     }
 
     public void setMedicationStats(ArrayList<Medication> medications) {
-        for (MedicationStats medicationStat : medicationStats)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Optional<Medication> result = medications.stream()
-                        .filter(med -> med.getMedicationStatsID().equals(medicationStat.getDBID())).findFirst();
-                if (result.isPresent())
-                    actualMeds.put(medicationStat.getDBID(), result.get().getDBID());
-                else
-                    actualMeds.put(medicationStat.getDBID(), null);
+        for (MedicationStats medicationStat : medicationStats) {
+            Optional<Medication> result = medications.stream()
+                    .filter(med -> med.getMedicationStatsID().equals(medicationStat.getDBID())).findFirst();
+            if (result.isPresent())
+                actualMeds.put(medicationStat.getDBID(), result.get().getDBID());
+            else
+                actualMeds.put(medicationStat.getDBID(), null);
 
-            } else {
-                String result = null;
-                for (Medication med : medications)
-                    if (med.getMedicationStatsID().equals(medicationStat.getDBID())) {
-                        result = med.getDBID();
-                        break;
-                    }
-                actualMeds.put(medicationStat.getDBID(), result);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void filter(String text) {
+        medicationStats.clear();
+        if (text.isEmpty()) {
+            medicationStats.addAll(medicationStatsAll);
+        } else {
+            text = text.toLowerCase();
+            for (MedicationStats med : medicationStatsAll) {
+                Log.d(TAG, med.getName());
+                if (med.getName().toLowerCase().contains(text)) {
+                    medicationStats.add(med);
+                }
             }
+        }
         notifyDataSetChanged();
     }
 
@@ -95,30 +108,30 @@ public class MedicationStatsAdapter
         medicationName.setText(medicationStat.getName());
         String medID = actualMeds.get(medicationStat.getDBID());
 
-        medicationViewHolder.itemView.setOnClickListener(v -> {
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("Add", false);
-                    bundle.putString("Medication", medID);
-                    bundle.putString("MedicationStat", medicationStat.getDBID());
-                    navController.navigate(R.id.MedicationFragment, bundle);
-                }
-        );
+        View.OnClickListener normalOpener = v -> {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("Add", false);
+            bundle.putString("Medication", medID);
+            bundle.putString("MedicationStat", medicationStat.getDBID());
+            navController.navigate(R.id.MedicationFragment, bundle);
+        };
+        View.OnClickListener adder = v -> {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("Add", true);
+            bundle.putString("Medication", medID);
+            bundle.putString("MedicationStat", medicationStat.getDBID());
+            navController.navigate(R.id.MedicationFragment, bundle);
+        };
 
-        medicationViewHolder.add.setOnClickListener(v -> {
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("Add", true);
-                    bundle.putString("Medication", medID);
-                    bundle.putString("MedicationStat", medicationStat.getDBID());
-                    navController.navigate(R.id.MedicationFragment, bundle);
-                }
-        );
+        medicationViewHolder.itemView.setOnClickListener(normalOpener);
 
+        ImageButton img = medicationViewHolder.add;
         if (medID != null) {
-            medicationViewHolder.checkBox.setVisibility(View.VISIBLE);
-            medicationViewHolder.add.setVisibility(View.GONE);
+            img.setImageResource(R.drawable.ic_done);
+            img.setOnClickListener(normalOpener);
         } else {
-            medicationViewHolder.checkBox.setVisibility(View.GONE);
-            medicationViewHolder.add.setVisibility(View.VISIBLE);
+            img.setImageResource(R.drawable.ic_add);
+            img.setOnClickListener(adder);
         }
     }
 
@@ -131,13 +144,11 @@ public class MedicationStatsAdapter
 
         TextView medicationName;
         ImageButton add;
-        CheckBox checkBox;
 
         public MedicationStatsViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
             super(itemView);
             medicationName = itemView.findViewById(R.id.medication_name);
             add = itemView.findViewById(R.id.button_add);
-            checkBox = itemView.findViewById(R.id.checkbox);
 
         }
     }

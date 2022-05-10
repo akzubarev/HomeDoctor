@@ -29,6 +29,10 @@ public class RemindTimeAdapter
         return context;
     }
 
+    public boolean contains(String time) {
+        return dates.contains(time);
+    }
+
     public void addTime(String time) {
         dates.add(time);
         notifyItemInserted(dates.size() - 1);

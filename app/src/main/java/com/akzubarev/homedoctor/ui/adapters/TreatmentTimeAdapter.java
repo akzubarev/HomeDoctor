@@ -152,12 +152,19 @@ public class TreatmentTimeAdapter
             remindDay.setOnClickListener(this::reminderDayDropDown);
             addButton.setOnClickListener(this::addTreatments);
 
-            rvs.put(daysNames[0], itemView.findViewById(R.id.remind_list));
+//            rvs.put(daysNames[0], itemView.findViewById(R.id.remind_list));
             selectedItems.add(0);
             remindDay.setText(daysNames[0]);
 
-            for (int i = 1; i < daysNames.length; i++) {
+            for (int i = 0; i < daysNames.length; i++) {
                 LinearLayout lyt = (LinearLayout) View.inflate(itemView.getContext(), R.layout.block_treatment, null);
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1.0f
+                );
+
+                lyt.setLayoutParams(param);
                 RecyclerView rv = lyt.findViewById(R.id.remind_list);
                 ToggleButton bt = lyt.findViewById(R.id.day_button);
                 bt.setText(days_abbr[i]);
@@ -220,6 +227,8 @@ public class TreatmentTimeAdapter
                 StringBuilder text = new StringBuilder();
                 if (selectedItems.size() == 0)
                     text.append("Никогда");
+                else if (selectedItems.size() == 1)
+                    text.append(days_abbr[selectedItems.get(0)]);
                 else if (selectedItems.size() == 7)
                     text.append("Каждый день");
                 else
@@ -240,7 +249,8 @@ public class TreatmentTimeAdapter
             for (int selection : selectedItems) {
                 String day = daysNames[selection];
                 RemindTimeAdapter adapter = adapters.get(day);
-                adapter.addTime(time);
+                if (!adapter.contains(time))
+                    adapter.addTime(time);
             }
         }
 

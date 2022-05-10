@@ -1,136 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tourblock"
-    style="@style/LinearLayout"
-    android:layout_marginTop="@dimen/default_gap"
-    android:layout_marginBottom="@dimen/default_gap"
-    android:background="@color/background_main"
-    android:orientation="vertical"
-    android:paddingHorizontal="0dp">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-        android:layout_marginVertical="5dp"
-        android:background="@color/shadowed" />
-
-    <LinearLayout style="@style/LinearLayout"
-        android:id="@+id/medication_layout">
-
-        <ImageView
-            android:id="@+id/user_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_medicine"
-            android:textSize="@dimen/normal"
-            app:tint="@color/primary" />
-
-        <TextView
-            android:id="@+id/medication_name"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:gravity="center"
-            android:text="Парацетамол"
-            android:textColor="@color/main"
-            android:textSize="@dimen/subheading" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Следующий прием:"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/normal" />
-
-            <TextView
-                android:id="@+id/next_consumption"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Парацетамол\n 14.02 14:00"
-                android:textColor="@color/main"
-                android:textSize="@dimen/normal" />
-        </LinearLayout>
-
-
-    </LinearLayout>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+    android:layout_marginVertical="@dimen/activity_vertical_margin"
+    app:elevation="5dp"
+    card_view:cardBackgroundColor="@color/background_main"
+    card_view:cardCornerRadius="20dp"
+    tools:showIn="@layout/fragment_prescription">
 
     <LinearLayout
-        style="@style/LinearLayout"
-        android:layout_height="40dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|start"
-            android:layout_weight="1"
-            android:gravity="center_vertical|start"
-            android:labelFor="@id/birthday"
-            android:text="Добавить время"
-            android:textColor="@color/main"
-            android:textSize="@dimen/normal" />
-
-        <TextView
-            android:id="@+id/remind_day"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:gravity="center"
-            android:text="Понедельник"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/normal" />
-
-        <TextView
-            android:id="@+id/remind_time"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:gravity="center"
-            android:text="14:00"
-            android:textAlignment="center"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/normal" />
-
-        <ImageButton
-            android:id="@+id/remind_add_button"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_add"
-            android:textAlignment="center"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/normal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/treatment_layout"
+        android:id="@+id/tourblock"
         style="@style/LinearLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="5dp"
         android:paddingHorizontal="0dp">
 
-        <include layout="@layout/block_treatment" />
-        <!--        <include layout="@layout/block_treatment"/>-->
-        <!--        <include layout="@layout/block_treatment"/>-->
-        <!--        <include layout="@layout/block_treatment"/>-->
-        <!--        <include layout="@layout/block_treatment"/>-->
-        <!--        <include layout="@layout/block_treatment"/>-->
-        <!--        <include layout="@layout/block_treatment"/>-->
+        <LinearLayout
+            android:id="@+id/medication_layout"
+            style="@style/LinearLayout">
 
+            <ImageView
+                android:id="@+id/user_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_medication"
+                android:textSize="@dimen/normal"
+                app:tint="@color/primary" />
+
+            <TextView
+                android:id="@+id/medication_name"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:gravity="center"
+                android:text="Парацетамол"
+                android:textColor="@color/main"
+                android:textSize="@dimen/subheading" />
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
+            android:padding="5dp"
+            app:elevation="5dp"
+            card_view:cardBackgroundColor="@color/background_second"
+            card_view:cardCornerRadius="20dp">
+
+            <LinearLayout
+                style="@style/LinearLayout"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|start"
+                    android:gravity="center_vertical|start"
+                    android:labelFor="@id/birthday"
+                    android:text="Добавить"
+                    android:textColor="@color/main"
+                    android:textSize="@dimen/normal" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2" />
+
+                <TextView
+                    android:id="@+id/remind_day"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="Понедельник"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/normal" />
+
+                <TextView
+                    android:id="@+id/remind_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="14:00"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/normal" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/remind_add_button"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_add"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/normal" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/treatment_layout"
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="0dp">
+
+            <!--            <include layout="@layout/block_treatment" />-->
+            <!--            <include layout="@layout/block_treatment" />-->
+            <!--            <include layout="@layout/block_treatment" />-->
+            <!--            <include layout="@layout/block_treatment" />-->
+            <!--            <include layout="@layout/block_treatment" />-->
+            <!--            <include layout="@layout/block_treatment" />-->
+            <!--            <include layout="@layout/block_treatment" />-->
+
+        </LinearLayout>
     </LinearLayout>
-
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

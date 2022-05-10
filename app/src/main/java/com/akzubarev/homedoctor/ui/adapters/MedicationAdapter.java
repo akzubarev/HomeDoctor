@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,14 +15,18 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
+import com.akzubarev.homedoctor.data.models.Treatment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MedicationAdapter
         extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
 
     private ArrayList<Medication> medications;
+    private ArrayList<Medication> medicationsAll;
     NavController navController;
     private OnUserClickListener listener;
     private Context context;
@@ -45,6 +50,7 @@ public class MedicationAdapter
 
     public MedicationAdapter(ArrayList<Medication> medications, Activity activity) {
         this.medications = medications;
+        this.medicationsAll = new ArrayList<>(medications);
         this.context = activity;
         this.navController = Navigation.findNavController(activity, R.id.nav_host_fragment);
     }
@@ -64,8 +70,7 @@ public class MedicationAdapter
         TextView medicationName = medicationViewHolder.medicationName;
         medicationName.setText(medication.getName());
 
-        TextView medicationNextTime = medicationViewHolder.medicationNextTime;
-//        medicationNextTime.setText(Medication.nextConsumption().toString());
+        medicationViewHolder.setNextTime(medication);
         medicationViewHolder.itemView.setOnClickListener(v -> {
                     Bundle bundle = new Bundle();
                     bundle.putString("Medication", medication.getDBID());
@@ -73,6 +78,21 @@ public class MedicationAdapter
                     navController.navigate(R.id.MedicationFragment, bundle);
                 }
         );
+    }
+
+    public void filter(String text) {
+        medications.clear();
+        if (text.isEmpty()) {
+            medications.addAll(medicationsAll);
+        } else {
+            text = text.toLowerCase();
+            for (Medication med : medicationsAll) {
+                if (med.getName().toLowerCase().contains(text)) {
+                    medications.add(med);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -84,12 +104,23 @@ public class MedicationAdapter
 
         TextView medicationNextTime;
         TextView medicationName;
+        ImageView alarm;
 
         public MedicationViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
             super(itemView);
-            medicationNextTime = itemView.findViewById(R.id.next_consumption);
+            medicationNextTime = itemView.findViewById(R.id.reminder);
             medicationName = itemView.findViewById(R.id.medication_name);
+            alarm = itemView.findViewById(R.id.alarm);
+        }
 
+        public void setNextTime(Medication medication) {
+            DataHandler dataHandler = DataHandler.getInstance(itemView.getContext());
+            dataHandler.findNextReminder(medication.getDBID(), (Treatment treatment) -> medicationNextTime.setText(treatment.getDateTime()),
+                    () ->
+                    {
+                        medicationNextTime.setText("");
+                        alarm.setImageResource(R.drawable.ic_alarm_off);
+                    });
         }
     }
 }

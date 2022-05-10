@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/remindTimeLayout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="center"
     android:orientation="vertical"
     android:paddingHorizontal="0dp"
-    android:layout_weight="1">
+    tools:showIn="@layout/block_medication_prescription">
 
-    <ToggleButton
-        android:id="@+id/day_button"
-        style="@style/WeekButtons"
-        android:buttonTint="@color/primary"
-        android:textOff="пн"
-        android:textOn="пн" />
-
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        card_view:cardBackgroundColor="@color/background_second"
+        card_view:cardCornerRadius="10dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/remind_list"
-            style="@style/RecyclerView"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="2"
-            tools:listitem="@layout/block_remind_time" />
-    </LinearLayout>
+        <ToggleButton
+            android:id="@+id/day_button"
+            style="@style/WeekButtons"
+            android:textOff="пн"
+            android:textOn="пн" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/remind_list"
+        style="@style/RecyclerView"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="2"
+        tools:listitem="@layout/block_remind_time" />
 
 </LinearLayout>

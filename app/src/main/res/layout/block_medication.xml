@@ -30,10 +30,15 @@
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
-            android:gravity="center"
+            android:gravity="center_vertical|start"
             android:text="Парацетамол"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <include layout="@layout/next_reminder_med" />
     </LinearLayout>

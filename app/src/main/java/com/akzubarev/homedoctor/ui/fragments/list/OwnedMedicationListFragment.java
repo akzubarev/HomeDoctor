@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -40,13 +41,28 @@ public class OwnedMedicationListFragment extends Fragment {
     private void fill(ArrayList<Medication> medications) {
         RecyclerView medicationsList = binding.medicationsList;
         medicationsList.setHasFixedSize(true);
-        medicationsList.addItemDecoration(new DividerItemDecoration(
-                medicationsList.getContext(), DividerItemDecoration.VERTICAL));
+//        medicationsList.addItemDecoration(new DividerItemDecoration(
+//                medicationsList.getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
 
         MedicationAdapter medicationsAdapter = new MedicationAdapter(medications, getActivity());
         medicationsList.setLayoutManager(medicationsLayoutManager);
         medicationsList.setAdapter(medicationsAdapter);
+
+        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                medicationsAdapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                medicationsAdapter.filter(query);
+                return true;
+            }
+        });
+        binding.search.setOnClickListener(v -> binding.search.setIconified(false));
     }
 
     @Override
