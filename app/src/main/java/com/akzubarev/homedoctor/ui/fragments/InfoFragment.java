@@ -24,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class InfoFragment extends Fragment {
 
-    private DatabaseReference mDatabase;
     private static final String TAG = "InfoFragment";
     private FragmentInfoBinding binding;
 
@@ -38,7 +37,6 @@ public class InfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
 //        TextView donate = findViewById(R.id.github);
 //        SpannableString ss = new SpannableString("");

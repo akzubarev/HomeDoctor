@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         AppBarConfiguration mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.HomeFragment, R.id.MedicationsListFragment,
-                R.id.QRActivity
+                R.id.ProfilesListFragment, R.id.OwnedMedicationsListFragment,
+                R.id.MedicationsListFragment, R.id.QRFragment
         ).setOpenableLayout(drawer).build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);

@@ -11,9 +11,6 @@
         android:label="Регистрация"
         tools:layout="@layout/fragment_sign_in">
         <action
-            android:id="@+id/action_SignInFragment_to_nav_home"
-            app:destination="@id/HomeFragment" />
-        <action
             android:id="@+id/sucessfullSignIn"
             app:destination="@id/ProfilesListFragment" />
     </fragment>
@@ -52,15 +49,17 @@
             android:id="@+id/action_ProfilesListFragment_to_SettingsFragment"
             app:destination="@id/SettingsFragment" />
         <action
-            android:id="@+id/action_ProfilesListFragment_to_QRActivity"
-            app:destination="@id/QRActivity" />
+            android:id="@+id/action_ProfilesListFragment_to_QRFragment"
+            app:destination="@id/QRFragment" />
+        <action
+            android:id="@+id/action_ProfilesListFragment_self"
+            app:destination="@id/ProfilesListFragment" />
     </fragment>
-    <activity
-        android:id="@+id/QRActivity"
-        android:name="com.akzubarev.homedoctor.ui.activities.QRActivity"
+    <fragment
+        android:id="@+id/QRFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.QRFragment"
         android:label="@string/qr"
-        tools:layout="@layout/activity_qr">
-    </activity>
+        tools:layout="@layout/fragment_qr" />
     <fragment
         android:id="@+id/OwnedMedicationsListFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.list.OwnedMedicationListFragment"

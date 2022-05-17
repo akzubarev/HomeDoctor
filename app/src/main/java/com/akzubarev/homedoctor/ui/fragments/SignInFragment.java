@@ -16,9 +16,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.models.User;
 import com.akzubarev.homedoctor.databinding.FragmentSignInBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -62,7 +59,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         // Check auth on Activity start
         if (mAuth.getCurrentUser() != null) {
-            onAuthSuccess();
+            alreadySigned();
         } else {
             binding.toggleLoginSignUpTextView.setOnClickListener(this::toggleLoginMode);
             signUpModeActive = false;
@@ -101,13 +98,13 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loginSignUpUser() {
-//        if (!validateInput()) {
-//            Toast.makeText(getContext(), "Not valid input", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (!validateInput()) {
+            Toast.makeText(getContext(), "Not valid input", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        String email = "alexkzubarev@gmail.com"; //binding.emailEditText.getText().toString().trim();
-        String password = "enotoman1a!adsdasd"; //binding.passwordEditText.getText().toString().trim();
+        String email = binding.emailEditText.getText().toString().trim();
+        String password = binding.passwordEditText.getText().toString().trim();
 
         if (signUpModeActive)
             mAuth.createUserWithEmailAndPassword(email, password)
@@ -118,7 +115,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                             FirebaseUser user = task.getResult().getUser();
                             String username = usernameFromEmail(user.getEmail());
                             writeNewUser(user, username, user.getEmail());
-                            onAuthSuccess();
+                            sign();
                         } else {
                             Toast.makeText(getContext(), "Sign Up Failed " + email,
                                     Toast.LENGTH_SHORT).show();
@@ -130,7 +127,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                         Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
-                            onAuthSuccess();
+                            sign();
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getContext(), "Sign In Failed",
@@ -154,10 +151,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         mDatabase.child("users").child(fbUser.getUid()).setValue(user);
     }
 
-    private void onAuthSuccess() {
-        NavHostFragment.findNavController(this).navigate(R.id.sucessfullSignIn);
+    private void alreadySigned() {
+        NavHostFragment.findNavController(this).navigate(R.id.ProfilesListFragment);
     }
 
+
+    private void sign() {
+        NavHostFragment.findNavController(this).navigate(R.id.ProfileFragment);
+    }
 
     public void toggleLoginMode(View view) {
         signUpModeActive = !signUpModeActive;
