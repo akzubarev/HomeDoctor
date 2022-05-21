@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Profile extends BaseModel {
     private String name = "";
-    private String gender;
+    private String gender = "Другой";
     private String birthday;
 
     public Profile(String name, String gender, String birthday, ArrayList<Prescription> prescriptions) {

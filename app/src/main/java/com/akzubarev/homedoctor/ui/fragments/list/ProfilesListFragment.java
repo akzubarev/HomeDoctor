@@ -31,6 +31,7 @@ public class ProfilesListFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         binding = FragmentProfilesListBinding.inflate(inflater, container, false);
         dataHandler = new FireBaseHandler(getContext());//DataHandler.getInstance(getContext());
         dataHandler.getProfiles(this::fill);
@@ -52,6 +53,17 @@ public class ProfilesListFragment extends Fragment {
         ProfilesAdapter profilesAdapter = new ProfilesAdapter(profiles, getContext());
         userList.setLayoutManager(userLayoutManager);
         userList.setAdapter(profilesAdapter);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.action_settings) {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.SettingsFragment);
+            return true;
+        } else
+            return super.onOptionsItemSelected(menuItem);
     }
 
     @Override

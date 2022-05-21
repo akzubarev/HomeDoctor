@@ -23,8 +23,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FireBaseHandler implements DataHandler {
@@ -150,6 +152,20 @@ public class FireBaseHandler implements DataHandler {
 
     @Override
     public void saveMedication(Medication medication) {
+        DatabaseReference dbr = getUserDBR().child(MEDICATIONS);
+        dbr.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        writeObject(dbr, medication);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+    public void saveMedication(Medication medication, EmptyCallback callback) {
         DatabaseReference dbr = getUserDBR().child(MEDICATIONS);
         dbr.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -512,29 +528,66 @@ public class FireBaseHandler implements DataHandler {
     }
 
     @Override
-    public void getCurrentReminder(TreatmentCallback callback) {
-        DatabaseReference dbr = getUserDBR().child(SETTINGS).child(NEXTREMINDER);
+    public void getCurrentReminder(TreatmentsCallback callback) {
+        DatabaseReference dbr = getUserDBR().child(NEXTREMINDER);
         dbr.get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
-            Treatment treatment = result.getValue(Treatment.class);
-            callback.onCallback(treatment);
+            ArrayList<Treatment> treatments = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                treatments.add(child.getValue(Treatment.class));
+            }
+            callback.onCallback(treatments);
         });
+
     }
 
     @Override
     public void getNextReminderTime(CalendarCallback callback) {
-        findNextReminder((nextReminder) -> {
-            saveNextReminder(nextReminder);
-            callback.onCallback(nextReminder.getAbsoluteTime());
+        findNextReminders((nextReminders) -> {
+            saveNextReminders(nextReminders);
+            if (nextReminders.size() > 0)
+                callback.onCallback(nextReminders.get(0).getAbsoluteTime());
         });
     }
 
     @Override
-    public void findNextReminder(TreatmentCallback callback) {
+    public void saveSettings(String morningTime, String expireTimeFrame,
+                             int expiryValue, String shortageMethod, int shortageValue) {
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("morningTime", morningTime);
+        childUpdates.put(EXPIRATION + "/expireTimeFrame", expireTimeFrame);
+        childUpdates.put(EXPIRATION + "/expiryValue", expiryValue);
+        childUpdates.put(SHORTAGE + "/shortageMethod", shortageMethod);
+        childUpdates.put(SHORTAGE + "/shortageValue", shortageValue);
+        DatabaseReference dbr = getUserDBR().child(SETTINGS);
+        dbr.updateChildren(childUpdates);
+    }
+
+//    @Override
+//    public void getSettings() {
+//        Map<String, Object> f = new HashMap<>();
+//        childUpdates.put("morningTime", morningTime);
+//        childUpdates.put("expireTimeFrame", expireTimeFrame);
+//        childUpdates.put("expiryValue", expiryValue);
+//        childUpdates.put("shortageMethod", shortageMethod);
+//        childUpdates.put("shortageValue", shortageValue);
+//        DatabaseReference dbr = getUserDBR().child(SETTINGS);
+//        dbr.updateChildren(childUpdates);
+//    }
+
+    @Override
+    public void findNextReminders(TreatmentsCallback callback) {
         getTreatments(treatments -> {
-            Stream<Treatment> sorted = treatments.stream().sorted(Comparator.comparing(Treatment::getAbsoluteTime));
-            Optional<Treatment> next = sorted.findFirst();
-            next.ifPresent(callback::onCallback);
+            List<Treatment> sorted = treatments.stream().sorted(Comparator.comparing(Treatment::getAbsoluteTime)).collect(Collectors.toList());
+            if (sorted.size() > 0) {
+                ArrayList<Treatment> treats = new ArrayList<>();
+                Treatment next = sorted.get(0);
+                for (Treatment t : sorted)
+                    if (t.getAbsoluteTime().equals(next.getAbsoluteTime()))
+                        treats.add(t);
+                callback.onCallback(treats);
+            }
         });
     }
 
@@ -581,12 +634,12 @@ public class FireBaseHandler implements DataHandler {
     }
 
     @Override
-    public void saveNextReminder(Treatment treatment) {
-        DatabaseReference dbr = getUserDBR().child(SETTINGS).child(NEXTREMINDER);
+    public void saveNextReminders(ArrayList<Treatment> treatments) {
+        DatabaseReference dbr = getUserDBR().child(NEXTREMINDER);
         dbr.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        writeObject(dbr, treatment);
+                        writeObjects(dbr, treatments);
                     }
 
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -599,21 +652,21 @@ public class FireBaseHandler implements DataHandler {
     public void getExpiryData(StringCallback callback) {
         getExpirySettings((timeframe, value) ->
                 getMedications(medications -> {
-                    int daysToexpire = 0;
+                    int daysToExpire = 0;
                     switch (timeframe) {
                         case "day":
-                            daysToexpire = value;
+                            daysToExpire = value;
                             break;
                         case "week":
-                            daysToexpire = value * 7;
+                            daysToExpire = value * 7;
                             break;
                         case "month":
-                            daysToexpire = value * 30;
+                            daysToExpire = value * 30;
                             break;
                     }
                     StringBuilder text = new StringBuilder();
                     for (Medication med : medications) {
-                        if (med.doesExpire(daysToexpire))
+                        if (med.doesExpire(daysToExpire))
                             text.append(med.getExpiryMessage()).append("\n");
                     }
                     callback.onCallback(text.toString());
@@ -635,23 +688,34 @@ public class FireBaseHandler implements DataHandler {
         );
     }
 
-    private void getShortageSettings(ShortageSettingsCallback callback) {
+    @Override
+    public void getShortageSettings(ShortageSettingsCallback callback) {
         getUserDBR().child(SETTINGS).child(SHORTAGE).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
-            String method = result.child("method").getValue(String.class);
-            int value = result.child("value").getValue(Integer.class);
+            String method = result.child("shortageMethod").getValue(String.class);
+            int value = result.child("shortageValue").getValue(Integer.class);
 
             callback.onCallback(method, value);
         });
     }
 
-    private void getExpirySettings(ExpirySettingsCallback callback) {
+    @Override
+    public void getExpirySettings(ExpirySettingsCallback callback) {
         getUserDBR().child(SETTINGS).child(EXPIRATION).get().addOnCompleteListener(task -> {
             DataSnapshot result = task.getResult();
-            String timeframe = result.child("timeframe").getValue(String.class);
-            int value = result.child("value").getValue(Integer.class);
+            String timeframe = result.child("expiryTimeframe").getValue(String.class);
+            int value = result.child("expiryValue").getValue(Integer.class);
 
             callback.onCallback(timeframe, value);
+        });
+    }
+
+    @Override
+    public void getMorningSettings(StringCallback callback) {
+        getUserDBR().child(SETTINGS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            String morning = result.child(MORNINGTIME).getValue(String.class);
+            callback.onCallback(morning);
         });
     }
     //endregion

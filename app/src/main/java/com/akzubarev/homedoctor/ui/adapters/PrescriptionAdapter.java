@@ -27,7 +27,6 @@ public class PrescriptionAdapter
 
     private ArrayList<Prescription> prescriptions;
     private Profile profile;
-    private OnUserClickListener listener;
     private Context context;
 
     public Context getContext() {
@@ -36,15 +35,6 @@ public class PrescriptionAdapter
 
     public void setContext(Context context) {
         this.context = context;
-    }
-
-
-    public interface OnUserClickListener {
-        void onUserClick(int position);
-    }
-
-    public void setOnUserClickListener(OnUserClickListener listener) {
-        this.listener = listener;
     }
 
     public PrescriptionAdapter(ArrayList<Prescription> prescriptions, Profile profile, Context context) {
@@ -58,7 +48,7 @@ public class PrescriptionAdapter
     public PrescriptionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.block_prescription, viewGroup, false);
-        return new PrescriptionViewHolder(view, listener);
+        return new PrescriptionViewHolder(view);
     }
 
     @Override
@@ -68,16 +58,14 @@ public class PrescriptionAdapter
         TextView prescriptionName = viewHolder.prescriptionName;
         prescriptionName.setText(prescription.getName());
 
-        if (listener == null) {
-            viewHolder.itemView.setOnClickListener(v -> {
-                        NavController navController = Navigation.findNavController(viewHolder.itemView);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Profile", profile.getDBID());
-                        bundle.putString("Prescription", prescription.getDBID());
-                        navController.navigate(R.id.PrescriptionFragment, bundle);
-                    }
-            );
-        }
+        viewHolder.itemView.setOnClickListener(v -> {
+                    NavController navController = Navigation.findNavController(viewHolder.itemView);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Profile", profile.getDBID());
+                    bundle.putString("Prescription", prescription.getDBID());
+                    navController.navigate(R.id.PrescriptionFragment, bundle);
+                }
+        );
         viewHolder.setNextTime(prescription);
     }
 
@@ -93,7 +81,7 @@ public class PrescriptionAdapter
         TextView prescriptionName;
         ImageView alarm;
 
-        public PrescriptionViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+        public PrescriptionViewHolder(@NonNull View itemView) {
             super(itemView);
             prescriptionNextTime = itemView.findViewById(R.id.next_consumption);
             prescriptionNextName = itemView.findViewById(R.id.medication_name);

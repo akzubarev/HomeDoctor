@@ -21,7 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    private FloatingActionButton fab;
     private NavController navController;
 
     @Override
@@ -49,20 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         menu.findItem(R.id.action_delete).setVisible(false);
         menu.findItem(R.id.action_info).setVisible(false);
         menu.findItem(R.id.action_settings).setVisible(true);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.action_settings) {
-            navController.navigate(R.id.SettingsFragment);
-            return true;
-        } else
-            return super.onOptionsItemSelected(menuItem);
     }
 }

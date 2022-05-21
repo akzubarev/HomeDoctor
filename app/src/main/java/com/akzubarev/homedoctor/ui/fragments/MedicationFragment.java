@@ -12,8 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,8 +31,11 @@ import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationBinding;
 import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MedicationFragment extends Fragment implements View.OnClickListener {
@@ -72,6 +78,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
 
             binding.editButton.setOnClickListener(this);
             binding.cancelButton.setOnClickListener(this);
+            binding.expiryDateEditText.setOnClickListener((View v) -> prepareDatePickerDialog());
             binding.allowedProfiles.setOnClickListener((View v) -> builder.show());
             binding.cancelButton.setVisibility(View.GONE);
         }
@@ -195,8 +202,12 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     }
 
     private void saveMedication() {
-        dataHandler.saveMedication(buildMedication());
-        onSuccessfulSave();
+        Medication med = buildMedication();
+        if (med.validate()) {
+            dataHandler.saveMedication(med, this::onSuccessfulSave);
+            Toast.makeText(getContext(), "Успешно сохранено", Toast.LENGTH_LONG).show();
+        } else
+            Toast.makeText(getContext(), "Ошибка, провертье заполненные поля", Toast.LENGTH_LONG).show();
     }
 
     private void onSuccessfulSave() {
@@ -256,6 +267,28 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         }));
     }
 
+    public void prepareDatePickerDialog() {
+        DatePicker datePicker = (DatePicker) DatePicker.inflate(getContext(),
+                R.layout.date_selector, null);
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setTitle("Введите время напоминания").setView(datePicker)
+                .setPositiveButton("Ок", (dialog1, which) ->
+                        {
+
+                            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy",
+                                    new Locale("ru", "RU"));
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(datePicker.getYear(),
+                                    datePicker.getMonth(),
+                                    datePicker.getDayOfMonth()
+                            );
+                            String text = format.format(calendar.getTime());
+                            binding.expiryDateEditText.setText(text);
+                        }
+                ).setNegativeButton("Отмена", (dialog1, which) -> {
+                }).show();
+    }
 
     private void handleDialogResult() {
         StringBuilder text = new StringBuilder();
@@ -301,7 +334,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
 
     private void deleteMedication() {
         Medication medication = buildMedication();
-        Log.d(TAG,"delete medication");
+        Log.d(TAG, "delete medication");
 //        dataHandler.deleteMedication(medication);
         NavController navController = NavHostFragment.findNavController(this);
         navController.popBackStack();

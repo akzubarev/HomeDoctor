@@ -11,32 +11,28 @@ public class NotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         NotificationHelper notificationHelper = new NotificationHelper(context);
 
-        Log.d("notifications","Received some intent");
+        Log.d("notifications", "Received some intent");
         String action = intent.getAction();
-
+        int id = intent.getIntExtra("id", -1);
         switch (action) {
             case NotificationHelper.CLOSE:
-                notificationHelper.cancel(NotificationHelper.REMINDER_ID);
+                notificationHelper.cancel(id);
                 notificationHelper.repeat();
                 break;
             case NotificationHelper.DELAY:
-                notificationHelper.cancel(NotificationHelper.REMINDER_ID);
+                notificationHelper.cancel(id);
                 notificationHelper.delay();
                 break;
             case NotificationHelper.REMIND:
-                Log.d("notifications","Received REMIND intent");
+                Log.d("notifications", "Received REMIND intent");
                 notificationHelper.createReminderNotification();
 //                notificationHelper.repeat();
                 break;
-//            case NotificationHelper.MAKEDELAYED:
-////                if (!Utils.reachedGoal(context))
-////                    notificationHelper.createNotification();
-//                break;
             case NotificationHelper.EXPIRY:
-                    notificationHelper.createExpiryNotification();
+                notificationHelper.createExpiryNotification();
                 break;
             case NotificationHelper.SHORTAGE:
-                    notificationHelper.createShortageNotification();
+                notificationHelper.createShortageNotification();
                 break;
         }
 

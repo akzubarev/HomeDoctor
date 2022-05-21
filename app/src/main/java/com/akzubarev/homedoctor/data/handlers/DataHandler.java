@@ -97,9 +97,9 @@ public interface DataHandler {
 
     //region notifications
 
-    void getCurrentReminder(TreatmentCallback callback);
+    void getCurrentReminder(TreatmentsCallback callback);
 
-    void findNextReminder(TreatmentCallback callback);
+    void findNextReminders(TreatmentsCallback callback);
 
     void findNextReminderForProfile(String profileID, TreatmentCallback callback, EmptyCallback failCallback);
 
@@ -107,7 +107,7 @@ public interface DataHandler {
 
     void findNextReminderForPrescription(String prescriptionID, TreatmentCallback callback, EmptyCallback failCallback);
 
-    void saveNextReminder(Treatment treatment);
+    void saveNextReminders(ArrayList<Treatment> treatments);
 
     void getExpiryData(StringCallback callback);
 
@@ -116,6 +116,17 @@ public interface DataHandler {
     void getNextMorningTime(CalendarCallback callback);
 
     void getNextReminderTime(CalendarCallback callback);
+
+    void saveSettings(String morningTime, String expireTimeFrame,
+                      int expiryValue, String shortageMethod, int shortageValue);
+
+    void getShortageSettings(ShortageSettingsCallback callback);
+
+    void getExpirySettings(ExpirySettingsCallback callback);
+
+    void getMorningSettings(StringCallback callback);
+
+    void saveMedication(Medication buildMedication, EmptyCallback callback);
 
     //endregion
 

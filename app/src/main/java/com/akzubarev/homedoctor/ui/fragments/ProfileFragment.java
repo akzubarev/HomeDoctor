@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
     String TAG = "ProfileFragment";
-    //    private Profile profile;
+    private String profileID = null;
     private FragmentProfileBinding binding;
     DataHandler dataHandler;
 
@@ -41,25 +41,25 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         Bundle bundle = this.getArguments();
         dataHandler = DataHandler.getInstance(getContext());
-        if (bundle != null) {
-            String profileID = bundle.getString("Profile");
-            if (profileID != null)
-                dataHandler.getProfile(profileID, this::fill);
-            else
-                fill(new Profile());
+        if (bundle != null)
+            profileID = bundle.getString("Profile");
+
+        if (profileID != null)
+            dataHandler.getProfile(profileID, this::fill);
+        else
+            fill(new Profile());
 
 
-            NavController navController = NavHostFragment.findNavController(this);
-            binding.addPrescription.setOnClickListener((View v) -> {
-                Bundle outBundle = new Bundle();
-                outBundle.putString("Profile", profileID);
-                outBundle.putString("Prescription", null);
-                navController.navigate(R.id.PrescriptionFragment, bundle);
-            });
-            binding.addMedicationButton.setOnClickListener((View v) -> navController.navigate(R.id.OwnedMedicationsListFragment));
-            binding.editButton.setOnClickListener(this::saveProfile);
-            binding.gender.setOnClickListener(this::genderDialog);
-        }
+        NavController navController = NavHostFragment.findNavController(this);
+        binding.addPrescription.setOnClickListener((View v) -> {
+            Bundle outBundle = new Bundle();
+            outBundle.putString("Profile", profileID);
+            outBundle.putString("Prescription", null);
+            navController.navigate(R.id.PrescriptionFragment, bundle);
+        });
+        binding.addMedicationButton.setOnClickListener((View v) -> navController.navigate(R.id.OwnedMedicationsListFragment));
+        binding.editButton.setOnClickListener(this::saveProfile);
+        binding.gender.setOnClickListener(this::genderDialog);
         return binding.getRoot();
     }
 
@@ -112,8 +112,8 @@ public class ProfileFragment extends Fragment {
                     int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                     binding.gender.setText(genders[selectedPosition]);
                 }).setNegativeButton("Отмена", (dialog, whichButton) -> {
-            dialog.dismiss();
-        }).show();
+                    dialog.dismiss();
+                }).show();
     }
 
     @Override

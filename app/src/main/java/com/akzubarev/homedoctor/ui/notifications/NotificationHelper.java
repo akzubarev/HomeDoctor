@@ -27,7 +27,7 @@ public class NotificationHelper {
     private static final String NOTIFICATION_CHANNEL_ID = "10001";
 
     public static final String REMIND = "remind";
-    public static final int REMINDER_ID = 0;
+    public static final int REMINDER_ID = 3;
 
     public static final String EXPIRY = "expiry";
     public static final int EXPIRY_ID = 1;
@@ -81,15 +81,17 @@ public class NotificationHelper {
 
         switch (id) {
             case REMINDER_ID:
-                builder.addAction(R.drawable.ic_alarm_on, "Подтвердить", makeIntent(CONFIRM))
-                        .addAction(R.drawable.ic_alarm_on, "Отложить на 10 мин.", makeIntent(DELAY))
-                        .setContentIntent(makeIntent(OPEN))
+            default:
+                builder.addAction(R.drawable.ic_alarm_on, "Подтвердить", makeIntent(id, CONFIRM))
+                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(id, CLOSE))
+//                        .addAction(R.drawable.ic_alarm_on, "Отложить на 10 мин.", makeIntent(DELAY))
+                        .setContentIntent(makeIntent(id, OPEN))
                         .setAutoCancel(false);
                 break;
             case EXPIRY_ID:
             case SHORTAGE_ID:
-                builder.addAction(R.drawable.ic_alarm_on, "Посмотреть", makeIntent(OPEN))
-                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(CLOSE));
+                builder.addAction(R.drawable.ic_alarm_on, "Посмотреть", makeIntent(id, OPEN))
+                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(id, CLOSE));
                 break;
         }
         return builder;
@@ -100,7 +102,9 @@ public class NotificationHelper {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
         if (alarmManager != null) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), makeIntent(intentName));
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+                    makeIntent(-1, intentName));
             Log.d("notifications", "ExactSet");
         }
     }
@@ -125,17 +129,26 @@ public class NotificationHelper {
     }
 
 
-    public PendingIntent makeIntent(String name) {
+    public PendingIntent makeIntent(int id, String name) {
         Intent intent;
         switch (name) {
             case OPEN:
                 intent = new Intent(context, MainActivity.class);
+                intent.putExtra("id", id);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.setAction(name);
                 return PendingIntent.getActivity(context, 0, intent,
                         PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+            case CONFIRM:
+            case CLOSE:
+            case DELAY:
+            case REMIND:
+            case SHORTAGE:
+            case EXPIRY:
             default:
                 intent = new Intent(context, NotificationReceiver.class);
+                intent.putExtra("id", id);
                 intent.setAction(name);
                 return PendingIntent.getBroadcast(context, 1, intent,
                         PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
@@ -150,11 +163,12 @@ public class NotificationHelper {
     }
 
     public void createReminderNotification() {
-        datahandler.getCurrentReminder(treatment -> {
-            String message = treatment.getNotification();
-            createNotification(REMINDER_ID, message);
+        datahandler.getCurrentReminder(treatments -> {
+            int count = 0;
+            for (Treatment treatment : treatments)
+                createNotification(REMINDER_ID + count++, treatment.getNotification());
             datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
-            Log.d("notifications", "got current reminder " + treatment.getNotification());
+            Log.d("notifications", "got current reminder " + treatments.get(0).getNotification());
         });
 
     }

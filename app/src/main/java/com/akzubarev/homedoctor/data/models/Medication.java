@@ -117,4 +117,8 @@ public class Medication extends BaseModel {
         return getName();
     }
 
+    public boolean validate() {
+        return !name.equals("") && !medicationStatsID.equals("")
+                && !expiryDate.equals("");
+    }
 }

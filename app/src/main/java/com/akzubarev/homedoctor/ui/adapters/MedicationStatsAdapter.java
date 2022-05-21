@@ -36,7 +36,6 @@ public class MedicationStatsAdapter
     private ArrayList<MedicationStats> medicationStatsAll;
     HashMap<String, String> actualMeds = new HashMap<>();
     NavController navController;
-    private OnUserClickListener listener;
     private Context context;
 
     public Context getContext() {
@@ -45,15 +44,6 @@ public class MedicationStatsAdapter
 
     public void setContext(Context context) {
         this.context = context;
-    }
-
-
-    public interface OnUserClickListener {
-        void onUserClick(int position);
-    }
-
-    public void setOnUserClickListener(OnUserClickListener listener) {
-        this.listener = listener;
     }
 
     public MedicationStatsAdapter(ArrayList<MedicationStats> medicationStats, Activity activity) {
@@ -98,7 +88,7 @@ public class MedicationStatsAdapter
     public MedicationStatsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.block_medication_stat, viewGroup, false);
-        return new MedicationStatsViewHolder(view, listener);
+        return new MedicationStatsViewHolder(view);
     }
 
     @Override
@@ -145,7 +135,7 @@ public class MedicationStatsAdapter
         TextView medicationName;
         ImageButton add;
 
-        public MedicationStatsViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+        public MedicationStatsViewHolder(@NonNull View itemView) {
             super(itemView);
             medicationName = itemView.findViewById(R.id.medication_name);
             add = itemView.findViewById(R.id.button_add);

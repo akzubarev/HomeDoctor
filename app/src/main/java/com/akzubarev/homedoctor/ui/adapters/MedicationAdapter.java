@@ -28,7 +28,6 @@ public class MedicationAdapter
     private ArrayList<Medication> medications;
     private ArrayList<Medication> medicationsAll;
     NavController navController;
-    private OnUserClickListener listener;
     private Context context;
 
     public Context getContext() {
@@ -39,14 +38,6 @@ public class MedicationAdapter
         this.context = context;
     }
 
-
-    public interface OnUserClickListener {
-        void onUserClick(int position);
-    }
-
-    public void setOnUserClickListener(OnUserClickListener listener) {
-        this.listener = listener;
-    }
 
     public MedicationAdapter(ArrayList<Medication> medications, Activity activity) {
         this.medications = medications;
@@ -60,7 +51,7 @@ public class MedicationAdapter
     public MedicationViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.block_medication, viewGroup, false);
-        return new MedicationViewHolder(view, listener);
+        return new MedicationViewHolder(view);
     }
 
     @Override
@@ -106,7 +97,7 @@ public class MedicationAdapter
         TextView medicationName;
         ImageView alarm;
 
-        public MedicationViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+        public MedicationViewHolder(@NonNull View itemView) {
             super(itemView);
             medicationNextTime = itemView.findViewById(R.id.reminder);
             medicationName = itemView.findViewById(R.id.medication_name);

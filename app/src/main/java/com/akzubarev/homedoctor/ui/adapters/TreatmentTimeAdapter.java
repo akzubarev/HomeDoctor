@@ -38,7 +38,6 @@ public class TreatmentTimeAdapter
     private final HashMap<String, Medication> medications;
     private final HashMap<String, TreatmentViewHolder> viewholders = new HashMap<>();
     private final ArrayList<String> fixedKeyList = new ArrayList<>();
-    private OnUserClickListener listener;
     private Context context;
     NavController navController;
 
@@ -59,15 +58,6 @@ public class TreatmentTimeAdapter
         notifyDataSetChanged();
     }
 
-
-    public interface OnUserClickListener {
-        void onUserClick(int position);
-    }
-
-    public void setOnUserClickListener(OnUserClickListener listener) {
-        this.listener = listener;
-    }
-
     public TreatmentTimeAdapter(HashMap<String, ArrayList<Treatment>> treatments, HashMap<String, Medication> medications, Activity activity) {
         this.treatments = treatments;
         this.medications = medications;
@@ -81,20 +71,16 @@ public class TreatmentTimeAdapter
     public TreatmentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.block_medication_prescription, viewGroup, false);
-        return new TreatmentViewHolder(view, listener);
+        return new TreatmentViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TreatmentViewHolder viewHolder, int position) {
         String key = fixedKeyList.get(position);
         Medication medication = medications.get(key);
-        ArrayList<Treatment> treatmentsList = treatments.get(key);
-
         TextView medicationName = viewHolder.medicationName;
         medicationName.setText(medication.getName());
 
-        TextView medicationNextTime = viewHolder.medicationNextTime;
-//        medicationNextTime.setText(Medication.nextConsumption().toString());
         viewHolder.fillTreatments(treatments.get(medication.getDBID()));
         viewHolder.medication_layout.setOnClickListener(v -> {
                     Bundle bundle = new Bundle();
@@ -136,7 +122,7 @@ public class TreatmentTimeAdapter
         private final String[] daysNames;
         private final String[] days_abbr = new String[]{"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};
 
-        public TreatmentViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+        public TreatmentViewHolder(@NonNull View itemView) {
             super(itemView);
             remindTime = itemView.findViewById(R.id.remind_time);
             remindDay = itemView.findViewById(R.id.remind_day);

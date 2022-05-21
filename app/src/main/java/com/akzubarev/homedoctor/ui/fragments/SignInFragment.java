@@ -3,6 +3,9 @@ package com.akzubarev.homedoctor.ui.fragments;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -176,6 +179,19 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             binding.toggleLoginSignUpTextView.setText("Нажмите чтобы создать аккаунт");
             binding.repeatPasswordEditText.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.action_delete).setVisible(false);
+        menu.findItem(R.id.action_info).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
+        return super.onOptionsItemSelected(menuItem);
     }
 
     public void onClick(View v) {

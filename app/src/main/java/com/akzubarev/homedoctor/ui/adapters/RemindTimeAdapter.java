@@ -20,8 +20,7 @@ import java.util.Calendar;
 public class RemindTimeAdapter
         extends RecyclerView.Adapter<RemindTimeAdapter.RemindTimeViewHolder> {
 
-    private ArrayList<String> dates = new ArrayList<>();
-    private OnUserClickListener listener;
+    private ArrayList<String> dates;
     private Context context;
     private ArrayList<RemindTimeViewHolder> viewholders = new ArrayList<>();
 
@@ -42,14 +41,6 @@ public class RemindTimeAdapter
         this.context = context;
     }
 
-    public interface OnUserClickListener {
-        void onUserClick(int position);
-    }
-
-    public void setOnUserClickListener(OnUserClickListener listener) {
-        this.listener = listener;
-    }
-
     public RemindTimeAdapter(ArrayList<String> dates, Context context) {
         this.dates = dates;
         this.context = context;
@@ -68,7 +59,7 @@ public class RemindTimeAdapter
     public RemindTimeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.block_remind_time, viewGroup, false);
-        return new RemindTimeViewHolder(view, listener);
+        return new RemindTimeViewHolder(view);
     }
 
     @Override
@@ -95,7 +86,7 @@ public class RemindTimeAdapter
         handleDeletion deletionCallback;
         TextView remindTime;
 
-        public RemindTimeViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+        public RemindTimeViewHolder(@NonNull View itemView) {
             super(itemView);
             remindTime = itemView.findViewById(R.id.remind_time);
             remindTime.setOnClickListener(this::reminderDropDown);

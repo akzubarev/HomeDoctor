@@ -141,15 +141,16 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             savePrescription();
         else {
             List<String> ops = allMedications.stream().map(Medication::getName).collect(Collectors.toList());
-            new AlertDialog.Builder(getContext())
-                    .setSingleChoiceItems(arrayListToArray(ops), 0, null)
-                    .setPositiveButton("Ок", (dialog, whichButton) -> {
-                        dialog.dismiss();
-                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        addMedication(allMedications.get(selectedPosition));
-                    }).setNegativeButton("Отмена", (dialog, whichButton) -> {
-                dialog.dismiss();
-            }).show();
+            if (ops.size() > 0)
+                new AlertDialog.Builder(getContext())
+                        .setSingleChoiceItems(arrayListToArray(ops), 0, null)
+                        .setPositiveButton("Ок", (dialog, whichButton) -> {
+                            dialog.dismiss();
+                            int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                            addMedication(allMedications.get(selectedPosition));
+                        }).setNegativeButton("Отмена", (dialog, whichButton) -> {
+                            dialog.dismiss();
+                        }).show();
         }
     }
 

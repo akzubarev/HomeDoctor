@@ -25,7 +25,6 @@ public class ProfilesAdapter
         extends RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder> {
 
     private ArrayList<Profile> profiles;
-    private OnUserClickListener listener;
     private Context context;
 
     public Context getContext() {
@@ -34,15 +33,6 @@ public class ProfilesAdapter
 
     public void setContext(Context context) {
         this.context = context;
-    }
-
-
-    public interface OnUserClickListener {
-        void onUserClick(int position);
-    }
-
-    public void setOnUserClickListener(OnUserClickListener listener) {
-        this.listener = listener;
     }
 
     public ProfilesAdapter(ArrayList<Profile> profiles, Context context) {
@@ -55,33 +45,24 @@ public class ProfilesAdapter
     public ProfileViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.block_profile, viewGroup, false);
-        return new ProfileViewHolder(view, listener);
+        return new ProfileViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProfileViewHolder userViewHolder, int UserNumber) {
         Profile profile = profiles.get(UserNumber);
         String info = profile.getName();
-//        Medication nextConsumption = User.nextConsumption();
-//        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm dd.MM");
-//        String nextConsumptionText = String.format("%s %s",
-//                nextConsumption.getName(), sdf.format(nextConsumption.nextConsumption()));
-
-        TextView userNextTime = userViewHolder.nextTreatmentTime;
-//        userNextTime.setText(nextConsumptionText);
 
         TextView userName = userViewHolder.profileName;
         userName.setText(info);
 
-        if (listener == null) {
-            userViewHolder.itemView.setOnClickListener(v -> {
-                        NavController navController = Navigation.findNavController(userViewHolder.itemView);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Profile", profile.getDBID());
-                        navController.navigate(R.id.ProfileFragment, bundle);
-                    }
-            );
-        }
+        userViewHolder.itemView.setOnClickListener(v -> {
+                    NavController navController = Navigation.findNavController(userViewHolder.itemView);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Profile", profile.getDBID());
+                    navController.navigate(R.id.ProfileFragment, bundle);
+                }
+        );
 
         userViewHolder.setNextTime(profile);
     }
@@ -98,7 +79,7 @@ public class ProfilesAdapter
         TextView nextTreatmentMed;
         ImageView alarm;
 
-        public ProfileViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
+        public ProfileViewHolder(@NonNull View itemView) {
             super(itemView);
             nextTreatmentTime = itemView.findViewById(R.id.next_consumption);
             nextTreatmentMed = itemView.findViewById(R.id.medication_name);
