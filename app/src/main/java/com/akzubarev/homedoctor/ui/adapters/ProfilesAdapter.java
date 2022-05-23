@@ -51,15 +51,14 @@ public class ProfilesAdapter
     @Override
     public void onBindViewHolder(@NonNull ProfileViewHolder userViewHolder, int UserNumber) {
         Profile profile = profiles.get(UserNumber);
-        String info = profile.getName();
 
         TextView userName = userViewHolder.profileName;
-        userName.setText(info);
+        userName.setText(profile.getName());
 
         userViewHolder.itemView.setOnClickListener(v -> {
                     NavController navController = Navigation.findNavController(userViewHolder.itemView);
                     Bundle bundle = new Bundle();
-                    bundle.putString("Profile", profile.getDBID());
+                    bundle.putString("Profile", profile.getDbID());
                     navController.navigate(R.id.ProfileFragment, bundle);
                 }
         );
@@ -89,7 +88,7 @@ public class ProfilesAdapter
 
         public void setNextTime(Profile profile) {
             DataHandler dataHandler = DataHandler.getInstance(itemView.getContext());
-            dataHandler.findNextReminderForProfile(profile.getDBID(),
+            dataHandler.findNextReminderForProfile(profile.getDbID(),
                     (Treatment treatment) -> {
                         nextTreatmentTime.setText(treatment.getDateTime());
                         dataHandler.getMedication(treatment.getMedicationId(), (Medication med) -> nextTreatmentMed.setText(med.getName()));

@@ -57,11 +57,11 @@ public class MedicationStatsAdapter
     public void setMedicationStats(ArrayList<Medication> medications) {
         for (MedicationStats medicationStat : medicationStats) {
             Optional<Medication> result = medications.stream()
-                    .filter(med -> med.getMedicationStatsID().equals(medicationStat.getDBID())).findFirst();
+                    .filter(med -> med.getMedicationStatsID().equals(medicationStat.getDbID())).findFirst();
             if (result.isPresent())
-                actualMeds.put(medicationStat.getDBID(), result.get().getDBID());
+                actualMeds.put(medicationStat.getDbID(), result.get().getDbID());
             else
-                actualMeds.put(medicationStat.getDBID(), null);
+                actualMeds.put(medicationStat.getDbID(), null);
 
         }
         notifyDataSetChanged();
@@ -96,20 +96,20 @@ public class MedicationStatsAdapter
         MedicationStats medicationStat = this.medicationStats.get(medicationNumber);
         TextView medicationName = medicationViewHolder.medicationName;
         medicationName.setText(medicationStat.getName());
-        String medID = actualMeds.get(medicationStat.getDBID());
+        String medID = actualMeds.get(medicationStat.getDbID());
 
         View.OnClickListener normalOpener = v -> {
             Bundle bundle = new Bundle();
             bundle.putBoolean("Add", false);
             bundle.putString("Medication", medID);
-            bundle.putString("MedicationStat", medicationStat.getDBID());
+            bundle.putString("MedicationStat", medicationStat.getDbID());
             navController.navigate(R.id.MedicationFragment, bundle);
         };
         View.OnClickListener adder = v -> {
             Bundle bundle = new Bundle();
             bundle.putBoolean("Add", true);
             bundle.putString("Medication", medID);
-            bundle.putString("MedicationStat", medicationStat.getDBID());
+            bundle.putString("MedicationStat", medicationStat.getDbID());
             navController.navigate(R.id.MedicationFragment, bundle);
         };
 

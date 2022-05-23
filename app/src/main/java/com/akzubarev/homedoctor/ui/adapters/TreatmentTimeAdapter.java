@@ -50,11 +50,11 @@ public class TreatmentTimeAdapter
     }
 
     public void add(Medication medication) {
-        if (medications.containsKey(medication.getDBID()))
+        if (medications.containsKey(medication.getDbID()))
             return;
-        fixedKeyList.add(medication.getDBID());
-        medications.put(medication.getDBID(), medication);
-        treatments.put(medication.getDBID(), new ArrayList<>());
+        fixedKeyList.add(medication.getDbID());
+        medications.put(medication.getDbID(), medication);
+        treatments.put(medication.getDbID(), new ArrayList<>());
         notifyDataSetChanged();
     }
 
@@ -81,15 +81,15 @@ public class TreatmentTimeAdapter
         TextView medicationName = viewHolder.medicationName;
         medicationName.setText(medication.getName());
 
-        viewHolder.fillTreatments(treatments.get(medication.getDBID()));
+        viewHolder.fillTreatments(treatments.get(medication.getDbID()));
         viewHolder.medication_layout.setOnClickListener(v -> {
                     Bundle bundle = new Bundle();
-                    bundle.putString("Medication", medication.getDBID());
+                    bundle.putString("Medication", medication.getDbID());
                     bundle.putString("MedicationStat", medication.getMedicationStatsID());
                     navController.navigate(R.id.MedicationFragment, bundle);
                 }
         );
-        viewholders.put(medication.getDBID(), viewHolder);
+        viewholders.put(medication.getDbID(), viewHolder);
     }
 
     public HashMap<String, ArrayList<Pair<String, String>>> gatherTreatments() {

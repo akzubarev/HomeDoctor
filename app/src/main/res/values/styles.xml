@@ -41,14 +41,24 @@
 
 
     <style name="EditText" parent="@style/Widget.AppCompat.EditText">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">250dp</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:state_multiline">true</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center_horizontal|end</item>
         <item name="android:textColor">@drawable/edit_text_selector</item>
         <item name="android:backgroundTint">@drawable/edit_text_tint_selector</item>
         <item name="android:textColorHint">@color/shadowed</item>
         <item name="android:dropDownVerticalOffset">30dp</item>
+    </style>
+
+    <style name="NormalTextView" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:layout_width">275dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:textSize">@dimen/normal</item>
     </style>
 
     <style name="ClickableTextView" parent="@style/Widget.AppCompat.TextView">
@@ -135,6 +145,10 @@
         <item name="android:backgroundTint">@color/background_main</item>
         <item name="backgroundTint">@color/primary</item>
         <item name="borderWidth">1dp</item>
+    </style>
+
+    <style name="switchText"  parent="TextAppearance.AppCompat.Widget.Switch">
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

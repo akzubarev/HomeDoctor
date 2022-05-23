@@ -61,8 +61,8 @@ public class PrescriptionAdapter
         viewHolder.itemView.setOnClickListener(v -> {
                     NavController navController = Navigation.findNavController(viewHolder.itemView);
                     Bundle bundle = new Bundle();
-                    bundle.putString("Profile", profile.getDBID());
-                    bundle.putString("Prescription", prescription.getDBID());
+                    bundle.putString("Profile", profile.getDbID());
+                    bundle.putString("Prescription", prescription.getDbID());
                     navController.navigate(R.id.PrescriptionFragment, bundle);
                 }
         );
@@ -91,7 +91,7 @@ public class PrescriptionAdapter
 
         public void setNextTime(Prescription prescription) {
             DataHandler dataHandler = DataHandler.getInstance(itemView.getContext());
-            dataHandler.findNextReminderForPrescription(prescription.getDBID(),
+            dataHandler.findNextReminderForPrescription(prescription.getDbID(),
                     (Treatment treatment) -> {
                         prescriptionNextTime.setText(treatment.getDateTime());
                         dataHandler.getMedication(treatment.getMedicationId(), (Medication med) -> prescriptionNextName.setText(med.getName()));

@@ -64,7 +64,7 @@ public class MedicationAdapter
         medicationViewHolder.setNextTime(medication);
         medicationViewHolder.itemView.setOnClickListener(v -> {
                     Bundle bundle = new Bundle();
-                    bundle.putString("Medication", medication.getDBID());
+                    bundle.putString("Medication", medication.getDbID());
                     bundle.putString("MedicationStat", medication.getMedicationStatsID());
                     navController.navigate(R.id.MedicationFragment, bundle);
                 }
@@ -106,7 +106,7 @@ public class MedicationAdapter
 
         public void setNextTime(Medication medication) {
             DataHandler dataHandler = DataHandler.getInstance(itemView.getContext());
-            dataHandler.findNextReminder(medication.getDBID(), (Treatment treatment) -> medicationNextTime.setText(treatment.getDateTime()),
+            dataHandler.findNextReminder(medication.getDbID(), (Treatment treatment) -> medicationNextTime.setText(treatment.getDateTime()),
                     () ->
                     {
                         medicationNextTime.setText("");

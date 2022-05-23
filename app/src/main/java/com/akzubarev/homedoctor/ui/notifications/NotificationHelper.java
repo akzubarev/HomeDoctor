@@ -15,6 +15,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.models.Prescription;
 import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.ui.activities.MainActivity;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
@@ -26,14 +27,18 @@ public class NotificationHelper {
     private final Context context;
     private static final String NOTIFICATION_CHANNEL_ID = "10001";
 
+
     public static final String REMIND = "remind";
-    public static final int REMINDER_ID = 3;
+    public static final int REMINDER_ID = 4;
 
     public static final String EXPIRY = "expiry";
     public static final int EXPIRY_ID = 1;
 
     public static final String SHORTAGE = "shortage";
     public static final int SHORTAGE_ID = 2;
+
+    public static final String PRESCRIPTION_END = "prescription";
+    private static final int PRESCRIPTION_END_ID = 3;
 
     public static final String CLOSE = "close";
     public static final String DELAY = "delay";
@@ -202,12 +207,16 @@ public class NotificationHelper {
                 datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
                 break;
         }
+        datahandler.checkEndedPrescriptions(this::createPrescriptionEndNotification);
     }
 
     public void createShortageNotification() {
         datahandler.getShortageData(message -> createNotification(SHORTAGE_ID, message));
         datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
+    }
 
+    public void createPrescriptionEndNotification(String prescriptionsText) {
+        datahandler.getShortageData(message -> createNotification(PRESCRIPTION_END_ID, prescriptionsText));
     }
 }
 

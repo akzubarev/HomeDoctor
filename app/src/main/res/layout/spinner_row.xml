@@ -11,7 +11,7 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical|end"
         android:text="недели"
-        android:textColor="@drawable/edit_text_selector"
+        android:textColor="@color/primary"
         android:textColorHint="@color/shadowed"
         android:textSize="@dimen/subheading" />
 </LinearLayout>

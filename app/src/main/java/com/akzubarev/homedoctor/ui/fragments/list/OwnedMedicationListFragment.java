@@ -23,6 +23,8 @@ import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationListOwnedBinding;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class OwnedMedicationListFragment extends Fragment {
 
@@ -39,6 +41,7 @@ public class OwnedMedicationListFragment extends Fragment {
     }
 
     private void fill(ArrayList<Medication> medications) {
+        medications = (ArrayList<Medication>) medications.stream().sorted(Comparator.comparing(Medication::getName)).collect(Collectors.toList());
         RecyclerView medicationsList = binding.medicationsList;
         medicationsList.setHasFixedSize(true);
 //        medicationsList.addItemDecoration(new DividerItemDecoration(

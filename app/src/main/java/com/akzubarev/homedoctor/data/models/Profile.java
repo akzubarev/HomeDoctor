@@ -27,12 +27,6 @@ public class Profile extends BaseModel {
     public Profile() {
     }
 
-    @Override
-    @Exclude
-    public String getDBID() {
-        return getName();
-    }
-
     public String getName() {
         return name;
     }

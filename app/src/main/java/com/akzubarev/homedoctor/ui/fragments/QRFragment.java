@@ -131,11 +131,11 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
                             builder.setTitle(medStat.get().getName())
                                     .setMessage("Лекарство найдено в базе")
                                     .setPositiveButton("Открыть лекарство", (dialog, id) -> {
-                                        String medID = medStat.get().getDBID();
+                                        String medID = medStat.get().getDbID();
                                         navController = NavHostFragment.findNavController(this);
                                         Bundle bundle = new Bundle();
                                         if (medication.isPresent()) {
-                                            bundle.putString("Medication", medication.get().getDBID());
+                                            bundle.putString("Medication", medication.get().getDbID());
                                             bundle.putBoolean("Add", false);
                                         } else
                                             bundle.putBoolean("Add", true);

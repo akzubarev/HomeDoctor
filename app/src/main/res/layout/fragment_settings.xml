@@ -1,193 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.activities.MainActivity"
-        android:background="@color/background_main"
-        android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_main"
+    android:orientation="vertical"
+    tools:context=".ui.activities.MainActivity">
 
 
-<!--    <LinearLayout-->
-<!--            style="@style/LinearLayout"-->
-<!--            android:layout_marginTop="@dimen/activity_vertical_margin">-->
+    <!--    <LinearLayout-->
+    <!--            style="@style/LinearLayout"-->
+    <!--            android:layout_marginTop="@dimen/activity_vertical_margin">-->
 
-<!--        <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_gravity="center_vertical|start"-->
-<!--                android:layout_weight="1"-->
-<!--                android:gravity="center_vertical|start"-->
-<!--                android:labelFor="@id/morning"-->
-<!--                android:text="Тема приложения"-->
-<!--                android:textColor="@color/main"-->
-<!--                android:textSize="@dimen/subheading" />-->
+    <!--        <TextView-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_gravity="center_vertical|start"-->
+    <!--                android:layout_weight="1"-->
+    <!--                android:gravity="center_vertical|start"-->
+    <!--                android:labelFor="@id/morning"-->
+    <!--                android:text="Тема приложения"-->
+    <!--                android:textColor="@color/main"-->
+    <!--                android:textSize="@dimen/subheading" />-->
 
-<!--        <Spinner-->
-<!--                android:id="@+id/theme_spinner"-->
-<!--                style="@style/Spinner"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:entries="@array/theme_dropdown"-->
-<!--                tools:listitem="@layout/spinner_row" />-->
-<!--    </LinearLayout>-->
+    <!--        <Spinner-->
+    <!--                android:id="@+id/theme_spinner"-->
+    <!--                style="@style/Spinner"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:entries="@array/theme_dropdown"-->
+    <!--                tools:listitem="@layout/spinner_row" />-->
+    <!--    </LinearLayout>-->
 
 
     <LinearLayout
-            style="@style/LinearLayout"
-            android:layout_marginTop="@dimen/activity_vertical_margin">
+        style="@style/LinearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:labelFor="@id/morning"
+            android:text="Утреннее время"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
+
+        <TextView
+            android:id="@+id/morning"
+            android:layout_width="wrap_content"
+            style="@style/ClickableTextView"
+            android:hint="4"
+            android:text="10:00" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="5dp"
+        android:background="@color/shadowed" />
+
+    <LinearLayout
+        style="@style/LinearLayout"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:text="Напоминания о заканчивающихся лекарствах"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
+
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:paddingHorizontal="0dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:includeFontPadding="false"
+                android:text="Способ определения"
+                android:textColor="@color/main"
+                android:textSize="@dimen/subheading" />
+
+            <Spinner
+                android:id="@+id/shortage_method"
+                style="@style/Spinner"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/method_dropdown"
+                tools:listitem="@layout/spinner_row" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:paddingHorizontal="0dp">
+
+            <TextView
+                android:id="@+id/shortage_text"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:labelFor="@id/morning"
-                android:text="Утреннее время"
+                android:text="Оставшиеся приемы"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
-        <EditText
-                android:id="@+id/morning"
+            <EditText
+                android:id="@+id/shortage_value"
                 style="@style/EditText"
+                android:layout_width="70dp"
                 android:hint="4"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:text="10:00" />
-    </LinearLayout>
-
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:layout_marginVertical="5dp"
-            android:background="@color/shadowed" />
-
-    <LinearLayout
-            style="@style/LinearLayout"
-            android:orientation="vertical">
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-                android:gravity="center"
-                android:text="Напоминания о заканчивающихся лекарствах"
-                android:textColor="@color/main"
-                android:textSize="@dimen/subheading" />
-
-        <LinearLayout
-                style="@style/LinearLayout"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:paddingHorizontal="0dp">
-
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|start"
-                    android:includeFontPadding="false"
-                    android:text="Способ определения"
-                    android:textColor="@color/main"
-                    android:textSize="@dimen/subheading" />
-
-            <!--                <Spinner-->
-            <!--                android:id="@+id/way_spinner"-->
-            <!--                style="@style/Spinner"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:entries="@array/way_dropdown"-->
-            <!--                tools:listitem="@layout/spinner_row" />-->
-            <EditText
-                    android:id="@+id/shortage_method"
-                    style="@style/EditText"
-                    android:hint="4"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:enabled="false"
-                    android:text="Количество доз" />
-        </LinearLayout>
-
-        <LinearLayout
-                style="@style/LinearLayout"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:paddingHorizontal="0dp">
-
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical|start"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|start"
-                    android:text="Оставшиеся дозы"
-                    android:textColor="@color/main"
-                    android:textSize="@dimen/subheading" />
-
-            <EditText
-                    android:id="@+id/shortage_value"
-                    style="@style/EditText"
-                    android:hint="4"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:text="3" />
+                android:text="3" />
         </LinearLayout>
     </LinearLayout>
 
     <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:layout_marginVertical="5dp"
-            android:background="@color/shadowed" />
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="5dp"
+        android:background="@color/shadowed" />
 
     <LinearLayout
-            style="@style/LinearLayout"
-            android:orientation="vertical">
+        style="@style/LinearLayout"
+        android:orientation="vertical">
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-                android:gravity="center"
-                android:text="Напоминания о истекающем сроке годности"
-                android:textColor="@color/main"
-                android:textSize="@dimen/subheading" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:text="Напоминания о истекающем сроке годности"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
 
         <LinearLayout
-                style="@style/LinearLayout"
-                android:paddingHorizontal="0dp"
-                android:layout_marginTop="@dimen/activity_vertical_margin">
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:paddingHorizontal="0dp">
 
             <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|start"
-                    android:gravity="center_vertical|start"
-                    android:text="Временной промежуток "
-                    android:textColor="@color/main"
-                    android:textSize="@dimen/subheading" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:text="Единицы измерения"
+                android:textColor="@color/main"
+                android:textSize="@dimen/subheading" />
 
             <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:width="0dp" />
-
-            <EditText
-                    android:id="@+id/expiry_value"
-                    style="@style/EditText"
-                    android:layout_height="match_parent"
-                    android:width="50dp"
-                    android:hint="4"
-                    android:text="4"
-                    android:imeOptions="actionDone"
-                    android:inputType="number" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:width="0dp" />
 
             <Spinner
-                    android:id="@+id/expiry_timeframe"
-                    style="@style/Spinner"
-                    android:layout_height="match_parent"
-                    android:entries="@array/duration_dropdown"
-                    tools:listitem="@layout/spinner_row" />
+                android:id="@+id/expiry_timeframe"
+                style="@style/Spinner"
+                android:layout_height="match_parent"
+                android:entries="@array/duration_dropdown"
+                tools:listitem="@layout/spinner_row" />
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LinearLayout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:paddingHorizontal="0dp">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                android:text="Количество"
+                android:textColor="@color/main"
+                android:textSize="@dimen/subheading" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:width="0dp" />
+
+            <EditText
+                android:id="@+id/expiry_value"
+                style="@style/EditText"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:width="50dp"
+                android:hint="4"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:text="4" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

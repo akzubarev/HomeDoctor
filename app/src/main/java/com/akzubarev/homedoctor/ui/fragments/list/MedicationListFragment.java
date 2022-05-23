@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.ui.adapters.MedicationStatsAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.MedicationStats;
@@ -25,6 +26,8 @@ import com.akzubarev.homedoctor.databinding.FragmentMedicationListBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class MedicationListFragment extends Fragment {
     private final String TAG = "MedicationListFragment";
@@ -43,6 +46,7 @@ public class MedicationListFragment extends Fragment {
     }
 
     private void fill(ArrayList<MedicationStats> medications) {
+        medications = (ArrayList<MedicationStats>) medications.stream().sorted(Comparator.comparing(MedicationStats::getName)).collect(Collectors.toList());
         RecyclerView medicationsList = binding.medicationsList;
         medicationsList.setHasFixedSize(true);
 //        medicationsList.addItemDecoration(new DividerItemDecoration(

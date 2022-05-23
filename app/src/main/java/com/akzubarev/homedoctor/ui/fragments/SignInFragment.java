@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.User;
 import com.akzubarev.homedoctor.databinding.FragmentSignInBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -151,7 +152,15 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
     private void writeNewUser(FirebaseUser fbUser, String name, String email) {
         User user = new User(name, email);
-        mDatabase.child("users").child(fbUser.getUid()).setValue(user);
+        DataHandler dataHandler = DataHandler.getInstance(getContext());
+        dataHandler.createUser(fbUser, user);
+
+        String morningTime = "10:00";
+        String expireTimeFrame = "week";
+        int expiryValue = 3;
+        String shortageMethod = "Количество";
+        int shortageValue = 1;
+        dataHandler.saveSettings(morningTime, expireTimeFrame, expiryValue, shortageMethod, shortageValue);
     }
 
     private void alreadySigned() {

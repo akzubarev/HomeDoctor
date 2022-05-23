@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -54,6 +55,8 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             profileID = bundle.getString("Profile");
             prescriptionID = bundle.getString("Prescription");
             dataHandler = DataHandler.getInstance(getContext());
+            Log.d(TAG, profileID);
+            Log.d(TAG, prescriptionID);
             if (prescriptionID != null)
                 dataHandler.getPrescription(profileID, prescriptionID, this::fill);
             else
@@ -76,7 +79,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         binding.name.setText(prescription.getName());
         binding.endDate.setText(prescription.getEndDate());
         binding.diagnosis.setText(prescription.getDiagnosis());
-//        prescription.getConsumptionTimes();
+        binding.autoOff.setChecked(prescription.getAutoDisable());
 
         dataHandler.getTreatments(prescriptionID, this::fillTreatments);
     }
@@ -85,7 +88,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         allMedications = medications;
         medicationsMap = new HashMap<>();
         for (Medication med : dataHandler.filter(medications, new ArrayList<>(treatments.keySet())))
-            medicationsMap.put(med.getDBID(), med);
+            medicationsMap.put(med.getDbID(), med);
 
         configureRecyclerView(binding.medicationsList);
         adapter = new TreatmentTimeAdapter(treatments, medicationsMap, getActivity());
@@ -110,13 +113,15 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         prescription.setName(binding.name.getText().toString());
         prescription.setDiagnosis(binding.diagnosis.getText().toString());
         prescription.setEndDate(binding.endDate.getText().toString());
+        prescription.setAutoDisable(binding.autoOff.isChecked());
+        prescription.setDbID(prescriptionID);
         return prescription;
     }
 
     private void savePrescription() {
         Prescription prescription = buildPrescription();
         dataHandler.savePrescription(prescription, profileID);
-        prescriptionID = prescription.getDBID();
+        prescriptionID = prescription.getDbID();
 
         dataHandler.deleteTreatments(oldTreatments);
         HashMap<String, ArrayList<Pair<String, String>>> treatmentsMap = adapter.gatherTreatments();
@@ -151,6 +156,8 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
                         }).setNegativeButton("Отмена", (dialog, whichButton) -> {
                             dialog.dismiss();
                         }).show();
+            else
+                Toast.makeText(getContext(), "Нет доступных лекарств", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -185,7 +192,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     private void deletePrescription() {
         Prescription prescription = buildPrescription();
         Log.d(TAG, "delete prescription");
-//        dataHandler.deletePrescription(prescription);
+        dataHandler.deletePrescription(prescription);
         NavController navController = NavHostFragment.findNavController(this);
         navController.popBackStack();
     }

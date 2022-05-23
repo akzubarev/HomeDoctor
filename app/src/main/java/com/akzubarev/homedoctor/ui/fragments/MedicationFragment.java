@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -70,11 +69,11 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
             if (add)
                 mode = Mode.add;
             dataHandler.getMedicationStat(medicationStatID, this::fillStat);
-            configureSpinner(binding.durationSpinner, R.array.duration_dropdown, (int choice) -> {
-                String[] options = getResources().getStringArray(R.array.duration_dropdown);
-                String duration = options[choice];
-//            DataReader.SaveInt(goal_minutes, "", getContext());
-            }, 0); // DataReader.GetInt(DataReader.GOAL, getContext()) / 5 - 1);
+//            configureSpinner(binding.durationSpinner, R.array.duration_dropdown, (int choice) -> {
+//                String[] options = getResources().getStringArray(R.array.duration_dropdown);
+//                String duration = options[choice];
+////            DataReader.SaveInt(goal_minutes, "", getContext());
+//            }, 0); // DataReader.GetInt(DataReader.GOAL, getContext()) / 5 - 1);
 
             binding.editButton.setOnClickListener(this);
             binding.cancelButton.setOnClickListener(this);
@@ -94,22 +93,23 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     private void fillStat(MedicationStats medicationStats) {
         this.medicationStat = medicationStats;
         binding.nameEditText.setText(medicationStats.getName());
-        binding.frequencyEditText.setText(Integer.toString(medicationStats.getDailyFrequency()));
-        String[] course = medicationStats.getCourseLength().split(" ");
-        binding.durationEditText.setText(course[0]);
-        int index = 0;
-        switch (course[1]) {
-            case "дней":
-                index = 0;
-                break;
-            case "недель":
-                index = 1;
-                break;
-            case "месяцев":
-                index = 2;
-                break;
-        }
-        binding.durationSpinner.setSelection(index);
+        binding.form.setText(medicationStats.getForm());
+        binding.group.setText(medicationStats.getGroup());
+//        String[] course = medicationStats.getGroup().split(" ");
+//        binding.durationEditText.setText(course[0]);
+//        int index = 0;
+//        switch (course[1]) {
+//            case "дней":
+//                index = 0;
+//                break;
+//            case "недель":
+//                index = 1;
+//                break;
+//            case "месяцев":
+//                index = 2;
+//                break;
+//        }
+//        binding.durationSpinner.setSelection(index);
         if (medicationID != null)
             dataHandler.getMedication(medicationID, this::fillMedication);
 
@@ -120,17 +120,20 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         binding.medicationLayout.setVisibility(View.VISIBLE);
         binding.tabletsEditText.setText(String.valueOf(medication.getAmount()));
         binding.expiryDateEditText.setText(medication.getExpiryDate());
+        binding.notify.setChecked(medication.getReminders());
+        allowed = new HashMap<>(medication.getAllowedProfiles());
         prepareProfileChoiceDialog();
     }
 
 
     private void switchMode(Mode mode) {
         this.mode = mode;
-        View[] statViews = new View[]{binding.nameEditText, binding.frequencyEditText,
-                binding.durationEditText, binding.durationSpinner,
-                binding.packEditText, binding.usageEditText
+        View[] statViews = new View[]{binding.nameEditText, binding.group,
+                binding.form,
+//                binding.durationSpinner,binding.packEditText, binding.usageEditText
         };
-        View[] medViews = new View[]{binding.tabletsEditText, binding.expiryDateEditText, binding.allowedProfiles};
+        View[] medViews = new View[]{binding.tabletsEditText, binding.expiryDateEditText,
+                binding.allowedProfiles, binding.notify};
 
         switch (mode) {
             case add:
@@ -237,12 +240,11 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     public void prepareProfileChoiceDialog() {
         dataHandler.getProfiles((result -> {
             profiles = result;
-            allowed = new HashMap<>(buildMedication().getAllowedProfiles());
             boolean[] checked = new boolean[profiles.size()];
             String[] items = new String[profiles.size()];
             allowedIdx = new ArrayList<>();
             for (int i = 0; i < profiles.size(); i++) {
-                String profileID = profiles.get(i).getDBID();
+                String profileID = profiles.get(i).getDbID();
                 boolean allows = allowed.getOrDefault(profileID, false);
                 checked[i] = allows;
                 items[i] = profiles.get(i).getName();
@@ -261,7 +263,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
             }).setPositiveButton("OK", (dialog, id) -> {
                 handleDialogResult();
                 for (int i = 0; i < profiles.size(); i++)
-                    allowed.put(profiles.get(i).getDBID(), allowedIdx.contains(i));
+                    allowed.put(profiles.get(i).getDbID(), allowedIdx.contains(i));
 //            dataHandler.saveAllowed(medicationID, allowed);
             });
         }));
@@ -276,7 +278,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
                 .setPositiveButton("Ок", (dialog1, which) ->
                         {
 
-                            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy",
+                            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy",
                                     new Locale("ru", "RU"));
                             Calendar calendar = Calendar.getInstance();
                             calendar.set(datePicker.getYear(),
@@ -327,15 +329,17 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         Medication medication = new Medication();
         medication.setName(binding.nameEditText.getText().toString());
         medication.setExpiryDate(binding.expiryDateEditText.getText().toString());
-        medication.setMedicationStatsID(medicationStat.getDBID());
+        medication.setMedicationStatsID(medicationStat.getDbID());
+        medication.setReminders(binding.notify.isChecked());
         medication.setAllowedProfiles(allowed);
+        medication.setDbID(medicationID);
         return medication;
     }
 
     private void deleteMedication() {
         Medication medication = buildMedication();
         Log.d(TAG, "delete medication");
-//        dataHandler.deleteMedication(medication);
+        dataHandler.deleteMedication(medication);
         NavController navController = NavHostFragment.findNavController(this);
         navController.popBackStack();
     }

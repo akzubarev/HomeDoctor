@@ -44,7 +44,7 @@
 
         <TextView
             android:id="@+id/gender"
-            style="@style/ClickableTextView"
+            style="@style/EditText"
             android:text="Женский"
             android:textSize="@dimen/subheading" />
     </LinearLayout>
@@ -71,7 +71,8 @@
             android:textSize="@dimen/subheading" />
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout">
+    <LinearLayout style="@style/LinearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,7 +80,7 @@
             android:layout_gravity="center_vertical|start"
             android:gravity="center_vertical|start"
             android:labelFor="@id/prescriptions_list"
-            android:text="Рецепты"
+            android:text="Схемы лечения"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 

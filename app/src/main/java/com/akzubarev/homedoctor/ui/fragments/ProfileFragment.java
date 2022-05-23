@@ -75,8 +75,8 @@ public class ProfileFragment extends Fragment {
         binding.name.setText(profile.getName());
         binding.gender.setText(profile.getGender());
         binding.birthday.setText(profile.getBirthday());
-        dataHandler.getPrescriptions(profile.getDBID(), this::fillPrescriptions);
-        dataHandler.getMedications(profile.getDBID(), this::fillMedications);
+        dataHandler.getPrescriptions(profile.getDbID(), this::fillPrescriptions);
+        dataHandler.getMedications(profile.getDbID(), this::fillMedications);
     }
 
     private void fillPrescriptions(ArrayList<Prescription> prescriptions) {
@@ -138,13 +138,14 @@ public class ProfileFragment extends Fragment {
         profile.setName(binding.name.getText().toString());
         profile.setGender(binding.gender.getText().toString());
         profile.setBirthday(binding.birthday.getText().toString());
+        profile.setDbID(profileID);
         return profile;
     }
 
     private void deleteProfile() {
         Profile profile = buildProfile();
         Log.d(TAG, "delete profile");
-//        dataHandler.deleteProfile(profile);
+        dataHandler.deleteProfile(profile);
         NavController navController = NavHostFragment.findNavController(this);
         navController.popBackStack();
     }

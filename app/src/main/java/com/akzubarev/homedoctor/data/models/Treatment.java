@@ -67,7 +67,7 @@ public class Treatment extends BaseModel {
 
     @Override
     @Exclude
-    public String getDBID() {
+    public String getDbID() {
         return String.format("%s | %s | %s | %s | %s", medicationId, profileID, day, time, prescriptionId);
     }
 
@@ -122,6 +122,6 @@ public class Treatment extends BaseModel {
 
     @Exclude
     public String getNotification() {
-        return getDBID();
+        return getDbID();
     }
 }

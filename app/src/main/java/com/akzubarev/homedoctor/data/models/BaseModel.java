@@ -13,11 +13,18 @@ import java.util.Locale;
 import java.util.Map;
 
 public abstract class BaseModel {
+    protected String dbID = "";
+
     public BaseModel() {
     }
 
-    @Exclude
-    public abstract String getDBID();
+    public String getDbID() {
+        return dbID;
+    }
+
+    public void setDbID(String dbID) {
+        this.dbID = dbID;
+    }
 
     public String serialize() {
         String json = "";

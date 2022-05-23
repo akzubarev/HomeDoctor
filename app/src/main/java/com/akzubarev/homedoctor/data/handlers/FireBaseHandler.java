@@ -12,7 +12,9 @@ import com.akzubarev.homedoctor.data.models.Prescription;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.data.models.User;
+import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +43,8 @@ public class FireBaseHandler implements DataHandler {
     private static final String SETTINGS = "settings";
     private static final String NEXTREMINDER = "nextreminder";
     private static final String MORNINGTIME = "morningTime";
-    private static final String SHORTAGE = "whenToShortage";
-    private static final String EXPIRATION = "whenToExpire";
+    private static final String SHORTAGE = "ShortageSettings";
+    private static final String EXPIRATION = "ExpirySettings";
     private final DatabaseReference mDatabase;
     private final FirebaseAuth mAuth;
 
@@ -53,7 +55,7 @@ public class FireBaseHandler implements DataHandler {
     }
 
     private void init() {
-        MedicationStats ms = new MedicationStats("Парацетамол", "30 дней", 2);
+        MedicationStats ms = new MedicationStats("Парацетамол", "Анальгетик", "Таблетки");
 //        saveMedicationStats(ms);
 
 //        saveProfile(new Profile("Мама", "Женщина", "01.01.1968"));
@@ -69,9 +71,9 @@ public class FireBaseHandler implements DataHandler {
 //
 
         ArrayList<Treatment> treatmetsPara = new ArrayList<>();
-        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "Понедельник", "14:00", 1));
-        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "Понедельник", "11:00", 1));
-        treatmetsPara.add(new Treatment(paracetamol.getDBID(), angina.getName(), "Дочь", "Вторник", "17:00", 2));
+        treatmetsPara.add(new Treatment(paracetamol.getDbID(), angina.getName(), "Дочь", "Понедельник", "14:00", 1));
+        treatmetsPara.add(new Treatment(paracetamol.getDbID(), angina.getName(), "Дочь", "Понедельник", "11:00", 1));
+        treatmetsPara.add(new Treatment(paracetamol.getDbID(), angina.getName(), "Дочь", "Вторник", "17:00", 2));
 //        saveTreatments(treatmetsPara);
 
     }
@@ -91,17 +93,26 @@ public class FireBaseHandler implements DataHandler {
     //region basic
     private void writeObject(DatabaseReference dbr, BaseModel obj) {
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(obj.getDBID(), obj);
-
+        String dbID = obj.getDbID();
+        if (dbID.isEmpty()) {
+            dbID = dbr.push().getKey();
+            obj.setDbID(dbID);
+        }
+        childUpdates.put(dbID, obj);
         dbr.updateChildren(childUpdates);
     }
 
     private void writeObjects(DatabaseReference dbr, ArrayList<? extends BaseModel> objs) {
         dbr.setValue(null);
         Map<String, Object> childUpdates = new HashMap<>();
-        for (BaseModel obj : objs)
-            childUpdates.put(obj.getDBID(), obj);
-
+        for (BaseModel obj : objs) {
+            String dbID = obj.getDbID();
+            if (dbID.isEmpty()) {
+                dbID = dbr.push().getKey();
+                obj.setDbID(dbID);
+            }
+            childUpdates.put(dbID, obj);
+        }
         dbr.updateChildren(childUpdates);
     }
 
@@ -119,6 +130,11 @@ public class FireBaseHandler implements DataHandler {
 //endregion
 
     //region save
+
+    @Override
+    public void createUser(FirebaseUser fbUser, User user) {
+        mDatabase.child("users").child(fbUser.getUid()).setValue(user);
+    }
 
     @Override
     public void saveAllowed(String medicationID, ArrayList<String> profileIDs) {
@@ -435,7 +451,7 @@ public class FireBaseHandler implements DataHandler {
 
     private void createProfileStructure(Profile profile) {
         DatabaseReference userDBR = getUserDBR();
-        DatabaseReference profileDBR = userDBR.child(profile.getDBID());
+        DatabaseReference profileDBR = userDBR.child(profile.getDbID());
         Map<String, Object> childUpdates = new HashMap<>();
 
         childUpdates.put(PRESCRIPTIONS, null);
@@ -464,16 +480,16 @@ public class FireBaseHandler implements DataHandler {
 
     @Override
     public void deletePrescription(Prescription prescription) {
-        DatabaseReference dbr = getUserDBR().child(PRESCRIPTIONS).child(prescription.getDBID());
+        DatabaseReference dbr = getUserDBR().child(PRESCRIPTIONS).child(prescription.getDbID());
         deleteObject(dbr, prescription);
-        getTreatments(prescription.getDBID(), this::deleteTreatments);
+        getTreatments(prescription.getDbID(), this::deleteTreatments);
     }
 
     @Override
     public void deleteProfile(Profile profile) {
-        DatabaseReference dbr = getUserDBR().child(PROFILES).child(profile.getDBID());
+        DatabaseReference dbr = getUserDBR().child(PROFILES).child(profile.getDbID());
         deleteObject(dbr, profile);
-        getPrescriptions(profile.getDBID(), this::deletePrescriptions);
+        getPrescriptions(profile.getDbID(), this::deletePrescriptions);
     }
 
     @Override
@@ -481,7 +497,7 @@ public class FireBaseHandler implements DataHandler {
         DatabaseReference dbr = getUserDBR().child(PRESCRIPTIONS);
         deleteObjects(dbr, prescriptions);
         for (Prescription prescription : prescriptions)
-            getTreatments(prescription.getDBID(), this::deleteTreatments);
+            getTreatments(prescription.getDbID(), this::deleteTreatments);
     }
 
     @Override
@@ -490,21 +506,21 @@ public class FireBaseHandler implements DataHandler {
         deleteObject(dbr, medication);
         getTreatments(treatments -> {
             for (Treatment treatment : treatments)
-                if (treatment.getMedicationId().equals(medication.getDBID()))
+                if (treatment.getMedicationId().equals(medication.getDbID()))
                     deleteObject(getUserDBR().child(TREATMENTS), treatment);
         });
     }
 
     @Override
     public void deleteObject(DatabaseReference dbr, BaseModel obj) {
-        dbr.child(obj.getDBID()).setValue(null);
+        dbr.child(obj.getDbID()).setValue(null);
     }
 
     @Override
     public void deleteObjects(DatabaseReference dbr, ArrayList<? extends BaseModel> objs) {
         Map<String, Object> childUpdates = new HashMap<>();
         for (BaseModel obj : objs)
-            childUpdates.put(obj.getDBID(), null);
+            childUpdates.put(obj.getDbID(), null);
         dbr.updateChildren(childUpdates);
     }
 //endregion
@@ -680,8 +696,14 @@ public class FireBaseHandler implements DataHandler {
                 getMedications(medications -> {
                     StringBuilder text = new StringBuilder();
                     for (Medication med : medications) {
-                        if (med.isShortage(method, value))
-                            text.append(med.getExpiryMessage()).append("\n");
+                        getTreatments(treatments -> {
+                            treatments = (ArrayList<Treatment>) treatments.stream().filter(
+                                            (treatment) -> treatment.getMedicationId().equals(med.getDbID()))
+                                    .collect(Collectors.toList());
+                            if (med.isShortage(method, value, treatments))
+                                text.append(med.getExpiryMessage()).append("\n");
+                        });
+
                     }
                     callback.onCallback(text.toString());
                 })
@@ -719,6 +741,31 @@ public class FireBaseHandler implements DataHandler {
         });
     }
     //endregion
+
+    @Override
+    public void checkEndedPrescriptions(StringCallback callback) {
+        DatabaseReference dbr = getUserDBR().child(TREATMENTS);
+        ArrayList<Prescription> endedPrescriptions = new ArrayList<>();
+        getProfiles(profiles -> {
+            for (Profile profile : profiles)
+                getPrescriptions(profile.getDbID(), prescriptions -> {
+                    for (Prescription prescription : prescriptions) {
+                        if (prescription.getAutoDisable() && prescription.ended())
+                            getTreatments(prescription.getDbID(),
+                                    treatments -> {
+                                        if (treatments.size() > 0) {
+                                            deleteObjects(dbr, treatments);
+                                            endedPrescriptions.add(prescription);
+                                        }
+                                    });
+                    }
+                });
+        });
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Prescription prescription : endedPrescriptions)
+            stringBuilder.append(prescription.getName()).append(" схема лечения подошла к концу\n");
+        callback.onCallback(stringBuilder.toString());
+    }
 }
 
 

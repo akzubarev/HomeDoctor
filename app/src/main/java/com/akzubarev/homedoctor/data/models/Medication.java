@@ -2,6 +2,7 @@ package com.akzubarev.homedoctor.data.models;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ public class Medication extends BaseModel {
     private String medicationStatsID;
     private int amount = 1;
     private String expiryDate = "";
+    private boolean reminders = true;
     private Map<String, Boolean> allowedProfiles = new HashMap<>();
 
 
@@ -107,18 +109,32 @@ public class Medication extends BaseModel {
     }
 
     @Exclude
-    public boolean isShortage(String method, int value) {
-        return amount <= value;
-    }
-
-    @Override
-    @Exclude
-    public String getDBID() {
-        return getName();
+    public boolean isShortage(String method, int value, ArrayList<Treatment> treatments) {
+        boolean result = false;
+        switch (method) {
+            case "Количество":
+                result = amount <= value;
+                break;
+            case "По неделям":
+                int sum = 0;
+                for (Treatment treatment : treatments)
+                    sum += treatment.getAmount();
+                result = amount <= sum * value;
+                break;
+        }
+        return result;
     }
 
     public boolean validate() {
         return !name.equals("") && !medicationStatsID.equals("")
                 && !expiryDate.equals("");
+    }
+
+    public boolean getReminders() {
+        return reminders;
+    }
+
+    public void setReminders(boolean reminders) {
+        this.reminders = reminders;
     }
 }

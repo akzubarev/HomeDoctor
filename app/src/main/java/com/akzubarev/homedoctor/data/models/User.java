@@ -1,15 +1,8 @@
 package com.akzubarev.homedoctor.data.models;
 
-import com.google.firebase.database.Exclude;
-
-import java.util.ArrayList;
-
 public class User {
     private String name = "";
     private String email = "";
-    private ArrayList<Prescription> prescriptions;
-    private ArrayList<Profile> profiles;
-    private ArrayList<Medication> medications;
 
     public User() {
     }
@@ -35,8 +28,4 @@ public class User {
         this.email = email;
     }
 
-    @Exclude
-    public String getDBID() {
-        return getName();
-    }
 }

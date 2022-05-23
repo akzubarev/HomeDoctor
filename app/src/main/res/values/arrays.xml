@@ -2,20 +2,20 @@
 <resources>
     <string-array name="layout_dropdown">a</string-array>
     <string-array name="duration_dropdown">
-        <item>дней</item>
-        <item>недель</item>
-        <item>месяцев</item>
-    </string-array>
-    <string-array name="theme_dropdown">
-        <item>системная</item>
-        <item>темная</item>
-        <item>светлая</item>
+        <item>дни</item>
+        <item>недели</item>
+        <item>месяцы</item>
     </string-array>
 
-    <string-array name="way_dropdown">
-        <item>количество доз</item>
-<!--        <item></item>-->
-<!--        <item>светлая</item>-->
+    <string-array name="theme_dropdown">
+        <item>Системная</item>
+        <item>Темная</item>
+        <item>Светлая</item>
+    </string-array>
+
+    <string-array name="method_dropdown">
+        <item>Количество</item>
+        <item>По неделям</item>
     </string-array>
 
     <string-array name="reminder_day_options">

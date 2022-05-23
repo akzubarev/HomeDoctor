@@ -8,8 +8,8 @@ import java.io.IOException;
 
 public class MedicationStats extends BaseModel {
     private String name = "";
-    private String courseLength = "1 месяц";
-    private int dailyFrequency = 1;
+    private String group = "Нет данных";
+    private String form = "Нет данных";
 
 
     public String getName() {
@@ -20,36 +20,31 @@ public class MedicationStats extends BaseModel {
         this.name = name;
     }
 
-    public String getCourseLength() {
-        return courseLength;
+    public String getGroup() {
+        return group;
     }
 
-    public void setCourseLength(String courseLength) {
-        this.courseLength = courseLength;
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    public int getDailyFrequency() {
-        return dailyFrequency;
+    public String getForm() {
+        return form;
     }
 
-    public void setDailyFrequency(int dailyFrequency) {
-        this.dailyFrequency = dailyFrequency;
+    public void setForm(String form) {
+        this.form = form;
     }
 
     public MedicationStats() {
     }
 
-    public MedicationStats(String name, String courceLength, int dailyFrequency) {
+    public MedicationStats(String name, String group, String form) {
         this.name = name;
-        this.courseLength = courceLength;
-        this.dailyFrequency = dailyFrequency;
+        this.group = group;
+        this.form = form;
     }
 
-    @Override
-    @Exclude
-    public String getDBID() {
-        return getName();
-    }
 
     public String serialize() {
         String json = "";

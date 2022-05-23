@@ -12,6 +12,7 @@ import com.akzubarev.homedoctor.data.models.Prescription;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.data.models.User;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
@@ -128,6 +129,11 @@ public interface DataHandler {
 
     void saveMedication(Medication buildMedication, EmptyCallback callback);
 
+    void checkEndedPrescriptions(StringCallback callback);
+
+    void createUser(FirebaseUser fbUser, User user);
+
+
     //endregion
 
     //region callbacksget
@@ -202,7 +208,7 @@ public interface DataHandler {
     //endregion
 
     default ArrayList<Medication> filter(ArrayList<Medication> query, ArrayList<String> targets) {
-        return (ArrayList<Medication>) query.stream().filter(x -> targets.contains(x.getDBID())).collect(Collectors.toList());
+        return (ArrayList<Medication>) query.stream().filter(x -> targets.contains(x.getDbID())).collect(Collectors.toList());
     }
 
 }
