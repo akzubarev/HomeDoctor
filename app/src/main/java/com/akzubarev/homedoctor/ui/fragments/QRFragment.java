@@ -33,12 +33,23 @@ import java.util.Optional;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QRFragment extends Fragment implements ZXingScannerView.ResultHandler {
+    private static final String TAG = "QRFragment";
     private NavController navController;
     private ZXingScannerView mScannerView;
+    private String medicationIDToApprove;
+    DataHandler dataHandler;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentQrBinding binding = FragmentQrBinding.inflate(inflater, container, false);
         mScannerView = binding.scanner;
+        Bundle bundle = this.getArguments();
+        dataHandler = DataHandler.getInstance(getContext());
+        navController = NavHostFragment.findNavController(this);
+        if (bundle != null) {
+            Log.d(TAG, bundle.getString("treatmentID"));
+            dataHandler.getTreatment(bundle.getString("treatmentID"), treatment ->
+                    medicationIDToApprove = treatment.getMedicationId());
+        }
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 123);
         }
@@ -118,7 +129,6 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
             e.printStackTrace();
         }
         if (medicationName != null) {
-            DataHandler dataHandler = DataHandler.getInstance(getContext());
             dataHandler.getMedicationStats(medicationStats ->
                     dataHandler.getMedications(medications -> {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -126,39 +136,86 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
                                 (med -> med.getName().equals(medicationName)).findFirst();
                         Optional<Medication> medication = medications.stream().filter
                                 (med -> med.getName().equals(medicationName)).findFirst();
-
-                        if (medStat.isPresent()) {
-                            builder.setTitle(medStat.get().getName())
-                                    .setMessage("Лекарство найдено в базе")
-                                    .setPositiveButton("Открыть лекарство", (dialog, id) -> {
-                                        String medID = medStat.get().getDbID();
-                                        navController = NavHostFragment.findNavController(this);
-                                        Bundle bundle = new Bundle();
-                                        if (medication.isPresent()) {
-                                            bundle.putString("Medication", medication.get().getDbID());
-                                            bundle.putBoolean("Add", false);
-                                        } else
-                                            bundle.putBoolean("Add", true);
-
-                                        bundle.putString("MedicationStat", medID);
-                                        navController.navigate(R.id.MedicationFragment, bundle);
-                                    })
-                                    .setNegativeButton("Отмена", (dialog, id) -> {
-                                        dialog.dismiss();
-                                        mScannerView.resumeCameraPreview(this);
-                                    });
-                        } else {
-                            builder.setTitle("Ошибка")
-                                    .setMessage("Лекарство не найдено в базе, попробуйте еще раз")
-                                    .setPositiveButton("Ок", (dialog, id) -> {
-                                        dialog.dismiss();
-                                        mScannerView.resumeCameraPreview(this);
-                                    });
-                        }
-                        builder.show();
+                        if (medicationIDToApprove == null)
+                            checkForID(medStat, medication, builder);
+                        else
+                            checkIdOk(medStat, medication, builder);
                     })
             );
         }
     }
 
+    private void checkIdOk(Optional<MedicationStats> medStat, Optional<Medication> medication, AlertDialog.Builder builder) {
+        if (medStat.isPresent() && medication.isPresent()) {
+            Medication med = medication.get();
+            if (med.getDbID().equals(medicationIDToApprove)) {
+                med.take();
+                dataHandler.saveMedication(med);
+                builder.setTitle(medStat.get().getName())
+                        .setMessage("Лекарство подтверждено")
+                        .setPositiveButton("Открыть лекарство", (dialog, id) -> {
+                            String medID = medStat.get().getDbID();
+                            navController = NavHostFragment.findNavController(this);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("Medication", med.getDbID());
+                            bundle.putBoolean("Add", false);
+                            bundle.putString("MedicationStat", medID);
+                            navController.navigate(R.id.MedicationFragment, bundle);
+                        })
+                        .setNegativeButton("На главную", (dialog, id) -> {
+                            dialog.dismiss();
+                            navController.navigate(R.id.profiles_list);
+                        });
+            }
+            else {
+                builder.setTitle("Ошибка")
+                        .setMessage("Лекарство отсканировано не верно")
+                        .setPositiveButton("Поробовать снова", (dialog, id) -> {
+                            dialog.dismiss();
+                            mScannerView.resumeCameraPreview(this);
+                        });
+            }
+        } else {
+            builder.setTitle("Ошибка")
+                    .setMessage("Лекарство не найдено в базе")
+                    .setPositiveButton("Попробовать снова", (dialog, id) -> {
+                        dialog.dismiss();
+                        mScannerView.resumeCameraPreview(this);
+                    });
+        }
+        builder.show();
+    }
+
+
+    private void checkForID(Optional<MedicationStats> medStat, Optional<Medication> medication, AlertDialog.Builder builder) {
+        if (medStat.isPresent()) {
+            builder.setTitle(medStat.get().getName())
+                    .setMessage("Лекарство найдено в базе")
+                    .setPositiveButton("Открыть лекарство", (dialog, id) -> {
+                        String medID = medStat.get().getDbID();
+                        Bundle bundle = new Bundle();
+                        if (medication.isPresent()) {
+                            bundle.putString("Medication", medication.get().getDbID());
+                            bundle.putBoolean("Add", false);
+                        } else
+                            bundle.putBoolean("Add", true);
+
+                        bundle.putString("MedicationStat", medID);
+                        navController.navigate(R.id.MedicationFragment, bundle);
+                    })
+                    .setNegativeButton("Отмена", (dialog, id) -> {
+                        dialog.dismiss();
+                        mScannerView.resumeCameraPreview(this);
+                    });
+        } else {
+            builder.setTitle("Ошибка")
+                    .setMessage("Лекарство не найдено в базе, попробуйте еще раз")
+                    .setPositiveButton("Ок", (dialog, id) -> {
+                        dialog.dismiss();
+                        mScannerView.resumeCameraPreview(this);
+                    });
+        }
+        builder.show();
+
+    }
 }

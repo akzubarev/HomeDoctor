@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/activity_vertical_margin"
+    card_view:cardBackgroundColor="@color/background_main"
+    card_view:cardCornerRadius="20dp"
+    tools:showIn="@layout/fragment_old_treatments_list">
+
+    <RelativeLayout
+        android:id="@+id/tourblock"
+        style="@style/LinearLayout"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
+        tools:context=".ui.activities.MainActivity">
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="40dp"
+            android:layout_centerVertical="true"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_medication"
+            app:tint="@color/primary" />
+
+        <TextView
+            android:id="@+id/med_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/user_icon"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="Парацетамол"
+            android:textColor="@color/main"
+            android:textSize="@dimen/normal" />
+
+
+        <TextView
+            android:id="@+id/treat_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/profile_name"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="17:00 24.04.2022"
+            android:textColor="@color/main"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:id="@+id/prescription_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@id/med_name"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_toRightOf="@id/user_icon"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="Простуда"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@id/med_name"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_toRightOf="@id/prescription_name"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="Мама"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/normal" />
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -1,6 +1,7 @@
 package com.akzubarev.homedoctor.ui.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +17,14 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.databinding.ActivityMainBinding;
+import com.akzubarev.homedoctor.ui.fragments.QRFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     private NavController navController;
 
     @Override
@@ -38,11 +42,22 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         AppBarConfiguration mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.ProfilesListFragment, R.id.OwnedMedicationsListFragment,
-                R.id.MedicationsListFragment, R.id.QRFragment
+                R.id.MedicationsListFragment, R.id.OldTreatmentListFragment, R.id.QRFragment
         ).setOpenableLayout(drawer).build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        String destination = getIntent().getStringExtra("destination");
+        if (destination != null)
+            if (destination.equals("QR")) {
+                String treatmentID = getIntent().getStringExtra("treatmentID");
+                Bundle outBundle = new Bundle();
+                Log.d(TAG, treatmentID);
+                outBundle.putString("treatmentID", treatmentID);
+                navController.navigate(R.id.QRFragment, outBundle);
+            }
+
     }
 
 

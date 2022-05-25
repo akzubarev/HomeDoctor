@@ -9,16 +9,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.ui.adapters.MedicationAdapter;
 import com.akzubarev.homedoctor.ui.adapters.PrescriptionAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
@@ -27,7 +28,14 @@ import com.akzubarev.homedoctor.data.models.Prescription;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentProfileBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ProfileFragment extends Fragment {
     String TAG = "ProfileFragment";
@@ -58,9 +66,36 @@ public class ProfileFragment extends Fragment {
             navController.navigate(R.id.PrescriptionFragment, bundle);
         });
         binding.addMedicationButton.setOnClickListener((View v) -> navController.navigate(R.id.OwnedMedicationsListFragment));
+        binding.birthday.setOnClickListener(view -> birthdayDialog());
         binding.editButton.setOnClickListener(this::saveProfile);
         binding.gender.setOnClickListener(this::genderDialog);
         return binding.getRoot();
+    }
+
+    private void contradictions(ArrayList<Medication> medications) {
+        ArrayList<String> contradictions = new ArrayList<>();
+        dataHandler.getMedicationStats(medicationStats ->
+        {
+            MedicationStats medStat;
+            for (Medication med : medications) {
+                medStat = medicationStats.stream().filter(ms -> ms.getDbID().equals(med.getMedicationStatsID())).findFirst().get();
+                for (Medication other : medications)
+                    if (medStat.getRelationships().getOrDefault(other.getMedicationStatsID(), "None").equals(MedicationStats.CONTRADICTION) &&
+                            !contradictions.contains(other.getName() + " - " + med.getName()))
+                        contradictions.add(med.getName() + " - " + other.getName());
+            }
+            if (contradictions.size() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String contradiction : contradictions)
+                    stringBuilder.append(contradiction).append("; ");
+                binding.contradictions.setText(stringBuilder.toString());
+                binding.contradictionsTitle.setVisibility(View.VISIBLE);
+                binding.contradictions.setVisibility(View.VISIBLE);
+            } else {
+                binding.contradictionsTitle.setVisibility(View.GONE);
+                binding.contradictions.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void configureRecyclerView(RecyclerView rv) {
@@ -69,6 +104,29 @@ public class ProfileFragment extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(lm);
 //        rv.setAdapter(rvAdapter);
+    }
+
+    private void birthdayDialog() {
+        DatePicker datePicker = (DatePicker) DatePicker.inflate(getContext(),
+                R.layout.selector_date, null);
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setView(datePicker)
+                .setPositiveButton("Ок", (dialog1, which) ->
+                        {
+
+                            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy",
+                                    new Locale("ru", "RU"));
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(datePicker.getYear(),
+                                    datePicker.getMonth(),
+                                    datePicker.getDayOfMonth()
+                            );
+                            String text = format.format(calendar.getTime());
+                            binding.birthday.setText(text);
+                        }
+                ).setNegativeButton("Отмена", (dialog1, which) -> {
+                }).show();
     }
 
     private void fill(Profile profile) {
@@ -87,6 +145,7 @@ public class ProfileFragment extends Fragment {
     private void fillMedications(ArrayList<Medication> medications) {
         configureRecyclerView(binding.medicationsList);
         binding.medicationsList.setAdapter(new MedicationAdapter(medications, getActivity()));
+        contradictions(medications);
     }
 
     private void saveProfile(View view) {

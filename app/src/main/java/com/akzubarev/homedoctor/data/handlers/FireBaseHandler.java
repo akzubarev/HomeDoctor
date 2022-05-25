@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 
 public class FireBaseHandler implements DataHandler {
 
-    private static final String TAG = "NewPostFragment";
+    private static final String TAG = "FIREBASEHANDLER";
     private static final String MEDICATIONS = "medications";
     private static final String USERS = "users";
     private static final String PROFILES = "profiles";
@@ -45,6 +45,8 @@ public class FireBaseHandler implements DataHandler {
     private static final String MORNINGTIME = "morningTime";
     private static final String SHORTAGE = "ShortageSettings";
     private static final String EXPIRATION = "ExpirySettings";
+    private static final String OLDTREATMENTS = "oldTreatments";
+    private static final String CONTROL = "control";
     private final DatabaseReference mDatabase;
     private final FirebaseAuth mAuth;
 
@@ -103,7 +105,7 @@ public class FireBaseHandler implements DataHandler {
     }
 
     private void writeObjects(DatabaseReference dbr, ArrayList<? extends BaseModel> objs) {
-        dbr.setValue(null);
+//        dbr.setValue(null);
         Map<String, Object> childUpdates = new HashMap<>();
         for (BaseModel obj : objs) {
             String dbID = obj.getDbID();
@@ -152,7 +154,7 @@ public class FireBaseHandler implements DataHandler {
     }
 
     @Override
-    public void saveMedicationStats(MedicationStats medication) {
+    public void saveMedicationStats(MedicationStats medication, EmptyCallback callback) {
         DatabaseReference dbr = mDatabase.child(MEDICATIONS);
         dbr.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -249,6 +251,19 @@ public class FireBaseHandler implements DataHandler {
     //endregion
 
     //region getAll
+    @Override
+    public void getOldTreatments(TreatmentsCallback callback) {
+        DatabaseReference dbr = getUserDBR().child(OLDTREATMENTS);
+        dbr.get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<Treatment> treats = new ArrayList<>();
+            for (DataSnapshot child : result.getChildren()) {
+                Treatment treat = child.getValue(Treatment.class);
+                treats.add(treat);
+            }
+            callback.onCallback(treats);
+        });
+    }
 
     @Override
     public void getAllowedProfiles(String medicationID, AllowedProfilesCallback callback) {
@@ -291,6 +306,19 @@ public class FireBaseHandler implements DataHandler {
             ArrayList<Prescription> prescriptions = new ArrayList<>();
             for (DataSnapshot child : result.getChildren()) {
                 prescriptions.add(child.getValue(Prescription.class));
+            }
+            callback.onCallback(prescriptions);
+        });
+    }
+
+    @Override
+    public void getPrescriptions(PrescriptionsCallback callback) {
+        getUserDBR().child(PRESCRIPTIONS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            ArrayList<Prescription> prescriptions = new ArrayList<>();
+            for (DataSnapshot profile : result.getChildren()) {
+                for (DataSnapshot prescriptionRef : profile.getChildren())
+                    prescriptions.add(prescriptionRef.getValue(Prescription.class));
             }
             callback.onCallback(prescriptions);
         });
@@ -406,6 +434,15 @@ public class FireBaseHandler implements DataHandler {
             DataSnapshot result = task.getResult();
             Profile profile = result.getValue(Profile.class);
             callback.onCallback(profile);
+        });
+    }
+
+    @Override
+    public void getTreatment(String id, TreatmentCallback callback) {
+        getUserDBR().child(TREATMENTS).child(id).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            Treatment treatment = result.getValue(Treatment.class);
+            callback.onCallback(treatment);
         });
     }
 
@@ -526,6 +563,22 @@ public class FireBaseHandler implements DataHandler {
 //endregion
 
     //region notifications
+
+    @Override
+    public void saveOldTreatment(Treatment treatment) {
+        DatabaseReference dbr = getUserDBR().child(OLDTREATMENTS);
+        dbr.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        writeObject(dbr, treatment);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "addProfile:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
     @Override
     public void getNextMorningTime(CalendarCallback callback) {
         DatabaseReference dbr = getUserDBR().child(SETTINGS).child(MORNINGTIME);
@@ -567,12 +620,13 @@ public class FireBaseHandler implements DataHandler {
     }
 
     @Override
-    public void saveSettings(String morningTime, String expireTimeFrame,
+    public void saveSettings(String morningTime, Boolean control, String expireTimeFrame,
                              int expiryValue, String shortageMethod, int shortageValue) {
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("morningTime", morningTime);
-        childUpdates.put(EXPIRATION + "/expireTimeFrame", expireTimeFrame);
+        childUpdates.put(MORNINGTIME, morningTime);
+        childUpdates.put(CONTROL, control);
+        childUpdates.put(EXPIRATION + "/expiryTimeFrame", expireTimeFrame);
         childUpdates.put(EXPIRATION + "/expiryValue", expiryValue);
         childUpdates.put(SHORTAGE + "/shortageMethod", shortageMethod);
         childUpdates.put(SHORTAGE + "/shortageValue", shortageValue);
@@ -655,6 +709,7 @@ public class FireBaseHandler implements DataHandler {
         dbr.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        dbr.setValue(null);
                         writeObjects(dbr, treatments);
                     }
 
@@ -668,24 +723,15 @@ public class FireBaseHandler implements DataHandler {
     public void getExpiryData(StringCallback callback) {
         getExpirySettings((timeframe, value) ->
                 getMedications(medications -> {
-                    int daysToExpire = 0;
-                    switch (timeframe) {
-                        case "day":
-                            daysToExpire = value;
-                            break;
-                        case "week":
-                            daysToExpire = value * 7;
-                            break;
-                        case "month":
-                            daysToExpire = value * 30;
-                            break;
-                    }
                     StringBuilder text = new StringBuilder();
                     for (Medication med : medications) {
-                        if (med.doesExpire(daysToExpire))
+                        if (med.doesExpire(timeframe, value))
                             text.append(med.getExpiryMessage()).append("\n");
                     }
-                    callback.onCallback(text.toString());
+
+                    String message = text.toString();
+                    if (!message.isEmpty())
+                        callback.onCallback(message);
                 })
         );
     }
@@ -693,20 +739,19 @@ public class FireBaseHandler implements DataHandler {
     @Override
     public void getShortageData(StringCallback callback) {
         getShortageSettings((method, value) ->
-                getMedications(medications -> {
+                getTreatments(treatments -> getMedications(medications -> {
                     StringBuilder text = new StringBuilder();
                     for (Medication med : medications) {
-                        getTreatments(treatments -> {
-                            treatments = (ArrayList<Treatment>) treatments.stream().filter(
-                                            (treatment) -> treatment.getMedicationId().equals(med.getDbID()))
-                                    .collect(Collectors.toList());
-                            if (med.isShortage(method, value, treatments))
-                                text.append(med.getExpiryMessage()).append("\n");
-                        });
-
+                        Stream<Treatment> sorted = treatments.stream().filter((treatment) -> treatment.getMedicationId().equals(med.getDbID()));
+                        ArrayList<Treatment> filteredTreatments = (ArrayList<Treatment>) sorted.collect(Collectors.toList());
+                        if (med.isShortage(method, value, filteredTreatments))
+                            text.append(med.getShortageMessage());
                     }
-                    callback.onCallback(text.toString());
-                })
+
+                    String message = text.toString();
+                    if (!message.isEmpty())
+                        callback.onCallback(message);
+                }))
         );
     }
 
@@ -727,7 +772,6 @@ public class FireBaseHandler implements DataHandler {
             DataSnapshot result = task.getResult();
             String timeframe = result.child("expiryTimeframe").getValue(String.class);
             int value = result.child("expiryValue").getValue(Integer.class);
-
             callback.onCallback(timeframe, value);
         });
     }
@@ -740,31 +784,43 @@ public class FireBaseHandler implements DataHandler {
             callback.onCallback(morning);
         });
     }
+
+    @Override
+    public void getControlSettings(BoolCallback callback) {
+        getUserDBR().child(SETTINGS).get().addOnCompleteListener(task -> {
+            DataSnapshot result = task.getResult();
+            Boolean control = result.child(CONTROL).getValue(Boolean.class);
+            callback.onCallback(control);
+        });
+    }
     //endregion
 
     @Override
     public void checkEndedPrescriptions(StringCallback callback) {
         DatabaseReference dbr = getUserDBR().child(TREATMENTS);
         ArrayList<Prescription> endedPrescriptions = new ArrayList<>();
-        getProfiles(profiles -> {
-            for (Profile profile : profiles)
-                getPrescriptions(profile.getDbID(), prescriptions -> {
+        getTreatments(treatments -> getPrescriptions((prescriptions) -> {
                     for (Prescription prescription : prescriptions) {
-                        if (prescription.getAutoDisable() && prescription.ended())
-                            getTreatments(prescription.getDbID(),
-                                    treatments -> {
-                                        if (treatments.size() > 0) {
-                                            deleteObjects(dbr, treatments);
-                                            endedPrescriptions.add(prescription);
-                                        }
-                                    });
+                        if (prescription.getAutoDisable() && prescription.ended()) {
+                            Stream<Treatment> sorted = treatments.stream().filter(treatment -> treatment.getPrescriptionId().equals(prescription.getDbID()));
+                            ArrayList<Treatment> prescriptionTreatments = (ArrayList<Treatment>) sorted.collect(Collectors.toList());
+                            if (prescriptionTreatments.size() > 0) {
+                                deleteObjects(dbr, prescriptionTreatments);
+                                endedPrescriptions.add(prescription);
+                            }
+
+                        }
                     }
-                });
-        });
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Prescription prescription : endedPrescriptions)
-            stringBuilder.append(prescription.getName()).append(" схема лечения подошла к концу\n");
-        callback.onCallback(stringBuilder.toString());
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (Prescription endedPrescription : endedPrescriptions)
+                        stringBuilder.append(endedPrescription.getEndedMessage());
+
+                    String message = stringBuilder.toString();
+                    if (!message.isEmpty())
+                        callback.onCallback(message);
+
+                })
+        );
     }
 }
 

@@ -17,15 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.ui.adapters.ProfilesAdapter;
 import com.akzubarev.homedoctor.data.handlers.FireBaseHandler;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentProfilesListBinding;
+import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
 public class ProfilesListFragment extends Fragment {
-    private FireBaseHandler dataHandler;
     private FragmentProfilesListBinding binding;
     ArrayList<Profile> profiles = new ArrayList<>();
 
@@ -33,11 +36,16 @@ public class ProfilesListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         binding = FragmentProfilesListBinding.inflate(inflater, container, false);
-        dataHandler = new FireBaseHandler(getContext());//DataHandler.getInstance(getContext());
+        DataHandler dataHandler = DataHandler.getInstance(getContext());
         dataHandler.getProfiles(this::fill);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        binding.email.setText(user.getEmail());
+        binding.id.setText(user.getUid());
         NavController navController = NavHostFragment.findNavController(this);
         binding.fab.setOnClickListener(view -> navController.navigate(R.id.ProfileFragment));
+
+        new NotificationHelper(getContext()).createReminderNotification();
         return binding.getRoot();
     }
 
@@ -58,8 +66,8 @@ public class ProfilesListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
+        NavController navController = NavHostFragment.findNavController(this);
         if (menuItem.getItemId() == R.id.action_settings) {
-            NavController navController = NavHostFragment.findNavController(this);
             navController.navigate(R.id.SettingsFragment);
             return true;
         } else
@@ -70,6 +78,5 @@ public class ProfilesListFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        dataHandler.saveProfiles(profiles);
     }
 }

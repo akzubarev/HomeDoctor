@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
@@ -28,16 +30,20 @@ import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationBinding;
+import com.akzubarev.homedoctor.ui.adapters.MedicationStatsAdapter;
 import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class MedicationFragment extends Fragment implements View.OnClickListener {
+public class MedicationFragment extends Fragment {
     String TAG = "MedicationFragment";
     private FragmentMedicationBinding binding;
     DataHandler dataHandler;
@@ -68,20 +74,23 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
             boolean add = bundle.getBoolean("Add");
             if (add)
                 mode = Mode.add;
-            dataHandler.getMedicationStat(medicationStatID, this::fillStat);
+            if (medicationStatID == null && medicationID == null)
+                switchMode(Mode.create);
+            else {
+                dataHandler.getMedicationStat(medicationStatID, this::fillStat);
 //            configureSpinner(binding.durationSpinner, R.array.duration_dropdown, (int choice) -> {
 //                String[] options = getResources().getStringArray(R.array.duration_dropdown);
 //                String duration = options[choice];
 ////            DataReader.SaveInt(goal_minutes, "", getContext());
 //            }, 0); // DataReader.GetInt(DataReader.GOAL, getContext()) / 5 - 1);
-
-            binding.editButton.setOnClickListener(this);
-            binding.cancelButton.setOnClickListener(this);
-            binding.expiryDateEditText.setOnClickListener((View v) -> prepareDatePickerDialog());
-            binding.allowedProfiles.setOnClickListener((View v) -> builder.show());
-            binding.cancelButton.setVisibility(View.GONE);
+            }
         }
 
+        binding.editButton.setOnClickListener(view -> edit());
+        binding.cancelButton.setOnClickListener(view -> cancel());
+        binding.expiryDateEditText.setOnClickListener(view -> prepareDatePickerDialog());
+        binding.allowedProfiles.setOnClickListener(view -> builder.show());
+        binding.cancelButton.setVisibility(View.GONE);
         return binding.getRoot();
     }
 
@@ -95,30 +104,38 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         binding.nameEditText.setText(medicationStats.getName());
         binding.form.setText(medicationStats.getForm());
         binding.group.setText(medicationStats.getGroup());
-//        String[] course = medicationStats.getGroup().split(" ");
-//        binding.durationEditText.setText(course[0]);
-//        int index = 0;
-//        switch (course[1]) {
-//            case "дней":
-//                index = 0;
-//                break;
-//            case "недель":
-//                index = 1;
-//                break;
-//            case "месяцев":
-//                index = 2;
-//                break;
-//        }
-//        binding.durationSpinner.setSelection(index);
+        binding.idText.setText(medicationStats.getDbID());
         if (medicationID != null)
             dataHandler.getMedication(medicationID, this::fillMedication);
 
         switchMode(mode);
+        dataHandler.getMedicationStats(analogs -> {
+            Stream<MedicationStats> filtered = analogs.stream().filter(ms ->
+                    medicationStat.getRelationships().
+                            getOrDefault(ms.getDbID(), "None")
+                            .equals(MedicationStats.ANALOG)
+            );
+            Stream<MedicationStats> sorted = filtered.sorted(Comparator.comparing(MedicationStats::getName));
+            analogs = (ArrayList<MedicationStats>) sorted.collect(Collectors.toList());
+
+            if (analogs.size() > 0)
+                binding.noAnalogs.setVisibility(View.GONE);
+            else
+                binding.noAnalogs.setVisibility(View.VISIBLE);
+
+
+            RecyclerView medicationsList = binding.analogs;
+            medicationsList.setHasFixedSize(true);
+            LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
+            MedicationStatsAdapter medicationsAdapter = new MedicationStatsAdapter(analogs, getActivity());
+            medicationsList.setLayoutManager(medicationsLayoutManager);
+            medicationsList.setAdapter(medicationsAdapter);
+        });
     }
 
     private void fillMedication(Medication medication) {
         binding.medicationLayout.setVisibility(View.VISIBLE);
-        binding.tabletsEditText.setText(String.valueOf(medication.getAmount()));
+        binding.amount.setText(String.valueOf(medication.getAmount()));
         binding.expiryDateEditText.setText(medication.getExpiryDate());
         binding.notify.setChecked(medication.getReminders());
         allowed = new HashMap<>(medication.getAllowedProfiles());
@@ -127,18 +144,19 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
 
 
     private void switchMode(Mode mode) {
+        Log.d(TAG, mode.name());
         this.mode = mode;
         View[] statViews = new View[]{binding.nameEditText, binding.group,
-                binding.form,
+                binding.form, binding.idText
 //                binding.durationSpinner,binding.packEditText, binding.usageEditText
         };
-        View[] medViews = new View[]{binding.tabletsEditText, binding.expiryDateEditText,
+        View[] medViews = new View[]{binding.amount, binding.expiryDateEditText,
                 binding.allowedProfiles, binding.notify};
 
         switch (mode) {
             case add:
                 binding.medicationLayout.setVisibility(View.VISIBLE);
-                binding.editButton.setText("Добавить");
+                binding.editButton.setText("Сохранить");
                 for (View v : medViews) {
                     if (v instanceof EditText)
                         ((EditText) v).setText("");
@@ -147,6 +165,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
                 fillMedication(new Medication(medicationStat.getName(), medicationStatID));
                 break;
             case view:
+                binding.editButton.setText("Добавить");
                 for (View v : statViews)
                     v.setEnabled(false);
                 for (View v : medViews)
@@ -160,16 +179,17 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
             case edit:
                 for (View v : statViews)
                     v.setEnabled(false);
+                binding.medicationLayout.setVisibility(View.VISIBLE);
                 for (View v : medViews)
                     v.setEnabled(true);
                 break;
         }
-        if (medicationID == null && mode != Mode.add) {
+        binding.editButton.setVisibility(View.VISIBLE);
+        if (medicationID == null && mode != Mode.edit) {
             binding.medicationLayout.setVisibility(View.GONE);
-            binding.editButton.setVisibility(View.GONE);
+//            binding.editButton.setVisibility(View.GONE);
         } else {
             binding.medicationLayout.setVisibility(View.VISIBLE);
-            binding.editButton.setVisibility(View.VISIBLE);
             if (mode == Mode.view)
                 binding.editButton.setText("Редактировать");
             else if (mode == Mode.edit)
@@ -205,31 +225,52 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
     }
 
     private void saveMedication() {
-        Medication med = buildMedication();
-        if (med.validate()) {
-            dataHandler.saveMedication(med, this::onSuccessfulSave);
-            Toast.makeText(getContext(), "Успешно сохранено", Toast.LENGTH_LONG).show();
-        } else
-            Toast.makeText(getContext(), "Ошибка, провертье заполненные поля", Toast.LENGTH_LONG).show();
+        if (mode == Mode.create) {
+            MedicationStats medStat = buildMedicationStat();
+            if (medStat.validate()) {
+                dataHandler.saveMedicationStats(medStat, this::onSuccessfulSave);
+                Toast.makeText(getContext(), "Успешно сохранено", Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(getContext(), "Ошибка, проверьте заполненные поля", Toast.LENGTH_LONG).show();
+        } else {
+            Medication med = buildMedication();
+            if (med.validate()) {
+                dataHandler.saveMedication(med, this::onSuccessfulSave);
+                Toast.makeText(getContext(), "Успешно сохранено", Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(getContext(), "Ошибка, проверьте заполненные поля", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private MedicationStats buildMedicationStat() {
+        MedicationStats medicationStats = new MedicationStats();
+        medicationStats.setName(binding.nameEditText.getText().toString());
+        medicationStats.setForm(binding.form.getText().toString());
+        medicationStats.setGroup(binding.group.getText().toString());
+        return medicationStats;
     }
 
     private void onSuccessfulSave() {
         binding.cancelButton.setVisibility(View.GONE);
-        switchMode(Mode.view);
+        if (mode == Mode.create)
+            switchMode(Mode.add);
+        else
+            switchMode(Mode.view);
 
         NotificationHelper notificationHelper = new NotificationHelper(getContext());
         notificationHelper.setUpNotification(NotificationHelper.EXPIRY);
         notificationHelper.setUpNotification(NotificationHelper.SHORTAGE);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getTag().equals("Отмена")) {
-            refill();
-            switchMode(Mode.view);
-            binding.cancelButton.setVisibility(View.GONE);
-        } else if (mode == Mode.view) {
-            binding.editButton.setText("Сохранить изменения");
+    public void cancel() {
+        refill();
+        switchMode(Mode.view);
+        binding.cancelButton.setVisibility(View.GONE);
+    }
+
+    public void edit() {
+        if (mode == Mode.view) {
+            binding.editButton.setText("Сохранить");
             binding.cancelButton.setVisibility(View.VISIBLE);
             switchMode(Mode.edit);
         } else {
@@ -271,10 +312,10 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
 
     public void prepareDatePickerDialog() {
         DatePicker datePicker = (DatePicker) DatePicker.inflate(getContext(),
-                R.layout.date_selector, null);
+                R.layout.selector_date, null);
 
         AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setTitle("Введите время напоминания").setView(datePicker)
+                .setView(datePicker)
                 .setPositiveButton("Ок", (dialog1, which) ->
                         {
 
@@ -329,6 +370,7 @@ public class MedicationFragment extends Fragment implements View.OnClickListener
         Medication medication = new Medication();
         medication.setName(binding.nameEditText.getText().toString());
         medication.setExpiryDate(binding.expiryDateEditText.getText().toString());
+        medication.setAmount(Integer.parseInt(binding.amount.getText().toString()));
         medication.setMedicationStatsID(medicationStat.getDbID());
         medication.setReminders(binding.notify.isChecked());
         medication.setAllowedProfiles(allowed);

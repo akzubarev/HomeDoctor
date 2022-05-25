@@ -52,6 +52,10 @@
         <item name="android:dropDownVerticalOffset">30dp</item>
     </style>
 
+    <style name="DisabledEditText" parent="@style/EditText">
+        <item name="android:backgroundTint">@drawable/disabled_edit_text_tint_selector</item>
+    </style>
+
     <style name="NormalTextView" parent="@style/Widget.AppCompat.TextView">
         <item name="android:layout_width">275dp</item>
         <item name="android:layout_height">wrap_content</item>

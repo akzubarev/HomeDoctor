@@ -120,8 +120,14 @@ public class Treatment extends BaseModel {
         return num;
     }
 
+    @Override
+    public boolean validate() {
+        return !medicationId.equals("") && !prescriptionId.equals("") && !profileID.equals("")
+                && !day.equals("") && !time.equals("");
+    }
+
     @Exclude
-    public String getNotification() {
-        return getDbID();
+    public String getNotification(String profileName, String prescriptionName, String medicationName) {
+        return String.format("%s для профиля %s по схеме %s", medicationName, profileName, prescriptionName);
     }
 }

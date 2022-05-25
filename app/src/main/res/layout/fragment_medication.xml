@@ -23,7 +23,8 @@
 
             <EditText
                 android:id="@+id/name_edit_text"
-                style="@style/EditText"
+                style="@style/DisabledEditText"
+                android:layout_width="wrap_content"
                 android:hint="Название"
 
                 android:imeOptions="actionDone"
@@ -37,6 +38,18 @@
                 android:width="0dp" />
         </LinearLayout>
 
+        <LinearLayout style="@style/LinearLayout">
+
+            <TextView
+                android:id="@+id/id_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ididididididididididididididididididididididid"
+                android:textAlignment="center"
+                android:textColor="@color/shadowed"
+                android:textSize="@dimen/small" />
+
+        </LinearLayout>
         <!--        <LinearLayout-->
         <!--            style="@style/LinearLayout"-->
         <!--            android:layout_marginTop="@dimen/activity_vertical_margin">-->
@@ -81,16 +94,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|start"
-                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:gravity="center_vertical|start"
                 android:text="Группа"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
-            <TextView
+            <EditText
+                android:hint="Группа"
                 android:id="@+id/group"
-                style="@style/NormalTextView"
-                android:text="Противовирусное и имуностимилуруюшее средство" />
+                style="@style/DisabledEditText"
+                android:layout_weight="1"
+                android:text="Противовирусное и имуностимилуруюшее средство"
+                android:textAlignment="textEnd"
+                android:layout_width="0dp" />
         </LinearLayout>
 
         <!--        <LinearLayout-->
@@ -125,16 +142,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|start"
-                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:gravity="center_vertical|start"
                 android:includeFontPadding="false"
                 android:text="Форма"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
-            <TextView
+            <EditText
                 android:id="@+id/form"
-                style="@style/NormalTextView"
+                style="@style/DisabledEditText"
+                android:hint="Форма"
+                android:textAlignment="textEnd"
+                android:layout_weight="1"
                 android:text="Таблетки" />
         </LinearLayout>
     </LinearLayout>
@@ -174,7 +194,7 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:id="@+id/tablets_edit_text"
+                android:id="@+id/amount"
                 style="@style/EditText"
                 android:layout_width="wrap_content"
                 android:hint="4"
@@ -226,102 +246,75 @@
                 android:id="@+id/allowed_profiles"
                 style="@style/ClickableTextView"
                 android:text="Всем" />
+        </LinearLayout>
 
+        <LinearLayout style="@style/LinearLayout">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:labelFor="@id/notify"
+                android:text="Получать уведомления об окончании запасов и истечении срока годности"
+                android:textColor="@color/main"
+                android:textSize="@dimen/subheading" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/notify"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:textOff="×"
+                android:textOn="✓"
+                app:showText="true"
+                app:switchTextAppearance="@style/switchText"
+                app:thumbTint="@color/primary" />
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|start"
-            android:layout_weight="1"
-            android:gravity="center_vertical|start"
-            android:labelFor="@id/birthday"
-            android:text="Получать уведомления об окончании запасов и истечении срока годности"
-            android:textColor="@color/main"
-            android:textSize="@dimen/subheading" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/notify"
-            android:layout_width="75dp"
-            android:layout_height="match_parent"
-            android:checked="true"
-            android:textOff="×"
-            android:textOn="✓"
-            app:showText="true"
-            app:switchTextAppearance="@style/switchText"
-            app:thumbTint="@color/primary" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/LinearLayout"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:visibility="gone">
-
-        <ToggleButton
-            android:id="@+id/days_mon"
-            style="@style/WeekButtons"
-            android:buttonTint="@color/primary"
-            android:textOff="пн"
-            android:textOn="пн" />
-
-        <ToggleButton
-            android:id="@+id/days_tue"
-            style="@style/WeekButtons"
-            android:textOff="вт"
-            android:textOn="вт" />
-
-        <ToggleButton
-            android:id="@+id/days_wed"
-            style="@style/WeekButtons"
-            android:textOff="ср"
-            android:textOn="ср" />
-
-        <ToggleButton
-            android:id="@+id/days_thu"
-            style="@style/WeekButtons"
-            android:textOff="чт"
-            android:textOn="чт" />
-
-        <ToggleButton
-            android:id="@+id/days_fri"
-            style="@style/WeekButtons"
-            android:textOff="пт"
-            android:textOn="пт" />
-
-        <ToggleButton
-            android:id="@+id/days_sat"
-            style="@style/WeekButtons"
-            android:textOff="сб"
-            android:textOn="сб" />
-
-        <ToggleButton
-            android:id="@+id/days_sun"
-            style="@style/WeekButtons"
-            android:textOff="вс"
-            android:textOn="вс" />
-
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/remind_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="4dp"
-        android:scrollbars="vertical"
-        android:visibility="gone"
-        tools:itemCount="3"
-        tools:listitem="@layout/block_remind_time" />
 
     <View
-        android:id="@+id/empty_space"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
+        android:background="@color/shadowed" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
+        android:text="Аналоги"
+        android:textAlignment="center"
+        android:textColor="@color/main"
+        android:textSize="@dimen/subheading" />
+
+    <TextView
+        android:id="@+id/no_analogs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
+        android:text="(нет данных об аналогах)"
+        android:textAlignment="center"
+        android:textColor="@color/main"
+        android:textSize="@dimen/subheading"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/analogs"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="1" />
+        android:layout_below="@id/search"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_weight="1"
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        tools:itemCount="2"
+        tools:listitem="@layout/block_medication_stat" />
 
     <Button
         android:id="@+id/cancel_button"

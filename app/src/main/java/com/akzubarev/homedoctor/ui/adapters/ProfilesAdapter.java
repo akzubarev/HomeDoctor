@@ -2,6 +2,7 @@ package com.akzubarev.homedoctor.ui.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class ProfilesAdapter
                     NavController navController = Navigation.findNavController(userViewHolder.itemView);
                     Bundle bundle = new Bundle();
                     bundle.putString("Profile", profile.getDbID());
+                    Log.d("PROFILE", profile.getDbID());
                     navController.navigate(R.id.ProfileFragment, bundle);
                 }
         );

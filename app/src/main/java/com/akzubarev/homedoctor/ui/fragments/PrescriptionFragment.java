@@ -123,7 +123,6 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         dataHandler.savePrescription(prescription, profileID);
         prescriptionID = prescription.getDbID();
 
-        dataHandler.deleteTreatments(oldTreatments);
         HashMap<String, ArrayList<Pair<String, String>>> treatmentsMap = adapter.gatherTreatments();
         ArrayList<Treatment> treatments = new ArrayList<>();
         for (String medicationID : treatmentsMap.keySet()) {
@@ -131,6 +130,8 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             for (Pair<String, String> dayTime : dayTimes)
                 treatments.add(new Treatment(medicationID, prescriptionID, profileID, dayTime.first, dayTime.second, 1));
         }
+
+        dataHandler.deleteTreatments(oldTreatments);
         dataHandler.saveTreatments(treatments);
         setAlarm();
     }

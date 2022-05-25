@@ -68,6 +68,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             binding.toggleLoginSignUpTextView.setOnClickListener(this::toggleLoginMode);
             signUpModeActive = false;
             setModeUI();
+            binding.emailEditText.setText("alexkzubarev@gmail.com");
+            binding.passwordEditText.setText("enotoman1a!adsdasd");
         }
     }
 
@@ -131,9 +133,9 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                         Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
-                            sign();
+                            alreadySigned();
                         } else {
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Log.w(TAG, "signInWithEmailAndPassword:failure", task.getException());
                             Toast.makeText(getContext(), "Sign In Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -156,11 +158,12 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         dataHandler.createUser(fbUser, user);
 
         String morningTime = "10:00";
-        String expireTimeFrame = "week";
+        Boolean control = false;
+        String expireTimeFrame = "недели";
         int expiryValue = 3;
         String shortageMethod = "Количество";
         int shortageValue = 1;
-        dataHandler.saveSettings(morningTime, expireTimeFrame, expiryValue, shortageMethod, shortageValue);
+        dataHandler.saveSettings(morningTime, control, expireTimeFrame, expiryValue, shortageMethod, shortageValue);
     }
 
     private void alreadySigned() {

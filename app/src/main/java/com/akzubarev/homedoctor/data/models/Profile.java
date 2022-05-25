@@ -10,7 +10,7 @@ import java.util.Map;
 public class Profile extends BaseModel {
     private String name = "";
     private String gender = "Другой";
-    private String birthday;
+    private String birthday = "";
 
     public Profile(String name, String gender, String birthday, ArrayList<Prescription> prescriptions) {
         this.name = name;
@@ -51,4 +51,9 @@ public class Profile extends BaseModel {
         this.gender = gender;
     }
 
+    @Override
+    public boolean validate() {
+        return !name.equals("") && !getName().equals("")
+                && !birthday.equals("");
+    }
 }

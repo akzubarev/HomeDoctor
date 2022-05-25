@@ -242,12 +242,12 @@ public class TreatmentTimeAdapter
 
         public void reminderTimeDropDown(View v) {
             TimePicker timePicker = (TimePicker) TimePicker.inflate(v.getContext(),
-                    R.layout.time_selector, null);
+                    R.layout.selector_time, null);
 //        timePicker.setIs24HourView(DateFormat.is24HourFormat(context));
             timePicker.setIs24HourView(true);
 
             AlertDialog dialog = new AlertDialog.Builder(v.getContext())
-                    .setTitle("Введите время напоминания").setView(timePicker)
+                    .setView(timePicker)
                     .setPositiveButton("Ок", (dialog1, which) ->
                     {
                         String text = timeFromPicker(timePicker.getHour(), timePicker.getMinute());

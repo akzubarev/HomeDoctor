@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,10 +50,35 @@
 
         <TextView
             android:id="@+id/morning"
-            android:layout_width="wrap_content"
             style="@style/ClickableTextView"
+            android:layout_width="wrap_content"
             android:hint="4"
             android:text="10:00" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/LinearLayout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:labelFor="@id/notify"
+            android:text="Контроль за приемом"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/control"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:textOff="×"
+            android:textOn="✓"
+            app:showText="true"
+            app:switchTextAppearance="@style/switchText"
+            app:thumbTint="@color/primary" />
     </LinearLayout>
 
     <View
@@ -173,6 +199,7 @@
                 android:entries="@array/duration_dropdown"
                 tools:listitem="@layout/spinner_row" />
         </LinearLayout>
+
         <LinearLayout
             style="@style/LinearLayout"
             android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -206,4 +233,21 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:id="@+id/empty_space"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/background_second"
+        android:text="Выйти из аккаунта"
+        android:textColor="@color/primary" />
+
 </LinearLayout>

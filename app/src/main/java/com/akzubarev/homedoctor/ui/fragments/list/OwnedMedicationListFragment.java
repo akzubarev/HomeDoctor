@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,6 +22,7 @@ import com.akzubarev.homedoctor.ui.adapters.MedicationAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationListOwnedBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -66,6 +68,16 @@ public class OwnedMedicationListFragment extends Fragment {
             }
         });
         binding.search.setOnClickListener(v -> binding.search.setIconified(false));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        NavController navController = NavHostFragment.findNavController(this);
+        if (menuItem.getItemId() == R.id.action_settings) {
+            navController.navigate(R.id.SettingsFragment);
+            return true;
+        } else
+            return super.onOptionsItemSelected(menuItem);
     }
 
     @Override

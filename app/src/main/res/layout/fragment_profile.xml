@@ -62,16 +62,15 @@
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
-        <EditText
+        <TextView
             android:id="@+id/birthday"
             style="@style/EditText"
             android:hint="01.01.1968"
-            android:imeOptions="actionDone"
-            android:inputType="text"
             android:textSize="@dimen/subheading" />
     </LinearLayout>
 
-    <LinearLayout style="@style/LinearLayout"
+    <LinearLayout
+        style="@style/LinearLayout"
         android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <TextView
@@ -106,6 +105,30 @@
         android:scrollbars="vertical"
         tools:itemCount="2"
         tools:listitem="@layout/block_prescription" />
+
+    <LinearLayout
+        style="@style/LinearLayout"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/contradictions_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/name"
+            android:text="Противопоказания"
+            android:textAlignment="center"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
+
+        <TextView
+            android:id="@+id/contradictions"
+            style="@style/NormalTextView"
+            android:textAlignment="textStart"
+            android:layout_width="match_parent"
+            android:text="Парацетамол - Арпефлю"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/normal" />
+    </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
 

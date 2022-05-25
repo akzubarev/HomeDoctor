@@ -15,6 +15,11 @@
             app:destination="@id/ProfilesListFragment" />
     </fragment>
     <fragment
+        android:id="@+id/OldTreatmentListFragment"
+        android:name="com.akzubarev.homedoctor.ui.fragments.list.OldTreatmentListFragment"
+        android:label="Прошлые приемы"
+        tools:layout="@layout/fragment_old_treatments_list" />
+    <fragment
         android:id="@+id/InfoFragment"
         android:name="com.akzubarev.homedoctor.ui.fragments.InfoFragment"
         android:label="Информация"
@@ -54,6 +59,9 @@
         <action
             android:id="@+id/action_ProfilesListFragment_self"
             app:destination="@id/ProfilesListFragment" />
+        <action
+            android:id="@+id/action_ProfilesListFragment_to_old_treatments_list"
+            app:destination="@id/old_treatments_list" />
     </fragment>
     <fragment
         android:id="@+id/QRFragment"

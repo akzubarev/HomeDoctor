@@ -48,4 +48,6 @@ public abstract class BaseModel {
         }
         return null;
     }
+
+    public abstract boolean validate();
 }

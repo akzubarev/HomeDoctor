@@ -5,11 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.database.Exclude;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MedicationStats extends BaseModel {
+    @Exclude
+    public static String ANALOG = "аналог";
+    @Exclude
+    public static String CONTRADICTION = "противопоказания";
+
     private String name = "";
     private String group = "Нет данных";
     private String form = "Нет данных";
+    private Map<String, String> relationships = new HashMap<>();
 
 
     public String getName() {
@@ -67,5 +75,19 @@ public class MedicationStats extends BaseModel {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean validate() {
+        return !name.equals("") && !form.equals("")
+                && !group.equals("");
+    }
+
+    public Map<String, String> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(Map<String, String> relationships) {
+        this.relationships = relationships;
     }
 }

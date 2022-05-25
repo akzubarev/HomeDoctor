@@ -5,6 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.navigation.NavController;
+import androidx.navigation.NavHostController;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
@@ -24,7 +34,6 @@ public class NotificationReceiver extends BroadcastReceiver {
                 notificationHelper.delay();
                 break;
             case NotificationHelper.REMIND:
-                Log.d("notifications", "Received REMIND intent");
                 notificationHelper.createReminderNotification();
 //                notificationHelper.repeat();
                 break;
@@ -34,7 +43,25 @@ public class NotificationReceiver extends BroadcastReceiver {
             case NotificationHelper.SHORTAGE:
                 notificationHelper.createShortageNotification();
                 break;
+            case NotificationHelper.CONFIRM:
+                DataHandler dataHandler = DataHandler.getInstance(context);
+                String treatmentID = intent.getStringExtra("treatmentID");
+                Log.d("Received notification", treatmentID);
+                if (!treatmentID.isEmpty())
+                    dataHandler.getTreatment(treatmentID, treatment -> {
+                                dataHandler.getMedication(treatment.getMedicationId(), medication -> {
+                                    medication.take();
+                                    dataHandler.saveMedication(medication);
+                                });
+                                Calendar calendar = Calendar.getInstance();
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru"));
+                                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", new Locale("ru"));
+                                treatment.setDay(dateFormat.format(calendar.getTime()));
+                                treatment.setTime(timeFormat.format(calendar.getTime()));
+                                dataHandler.saveOldTreatment(treatment);
+                            }
+                    );
+                break;
         }
-
     }
 }

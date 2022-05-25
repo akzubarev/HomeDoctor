@@ -42,10 +42,14 @@
         <entry key="..\:/se/AndroidProjects/HomeDoctor/app/src/main/res/menu/main.xml" value="0.125" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.344" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/checkbox.xml" value="0.3675" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/disabled_edit_text_tint_selector.xml" value="0.3395" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/edit_text_selector.xml" value="0.3425" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/edit_text_tint_selector.xml" value="0.3425" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/ic_exit.xml" value="0.3395" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/ic_history.xml" value="0.189" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/ic_launcher_background.xml" value="0.344" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.2585" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/ic_qr_code_scanner.xml" value="0.3395" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/ic_user.xml" value="0.2205" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/drawable/side_nav_bar.xml" value="0.2205" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/activity_info.xml" value="0.23958333333333334" />
@@ -57,6 +61,7 @@
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_medication.xml" value="0.253125" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_medication_prescription.xml" value="0.253125" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_medication_stat.xml" value="0.36666666666666664" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_old_treatment.xml" value="0.5" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_prescription.xml" value="0.28940217391304346" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_prescriptions.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_profile.xml" value="0.36666666666666664" />
@@ -64,12 +69,16 @@
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_treatment.xml" value="0.33" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/block_user.xml" value="0.5" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/content_main.xml" value="0.18854166666666666" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/d.xml" value="0.18072916666666666" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/date_selector.xml" value="0.18072916666666666" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_home.xml" value="0.23958333333333334" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_info.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medication.xml" value="0.22" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medication_list.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medication_list_owned.xml" value="0.22" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_medications.xml" value="0.36666666666666664" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_oldTreatments_list.xml" value="0.18072916666666666" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_old_treatments_list.xml" value="0.18072916666666666" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_prescription.xml" value="0.5" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_prescription_list.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
@@ -82,6 +91,8 @@
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/next_reminder_med.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/old_prescription.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/owned_fragment_medication_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/selector_date.xml" value="0.18072916666666666" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/selector_time.xml" value="0.18072916666666666" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/spinner_row.xml" value="0.33" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/time_selector.xml" value="0.67" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />

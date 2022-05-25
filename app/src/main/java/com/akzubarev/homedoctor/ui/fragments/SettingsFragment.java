@@ -2,7 +2,6 @@ package com.akzubarev.homedoctor.ui.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,13 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -24,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.databinding.FragmentSettingsBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +31,7 @@ public class SettingsFragment extends Fragment {
 
     private static final String TAG = "SettingsFragment";
     private FragmentSettingsBinding binding;
+    boolean exit = false;
 
     @Nullable
     @Override
@@ -69,18 +67,20 @@ public class SettingsFragment extends Fragment {
         });
 
         dataHandler.getMorningSettings(morning -> binding.morning.setText(morning));
+        dataHandler.getControlSettings(control -> binding.control.setChecked(control));
 
 
         binding.morning.setOnClickListener((View v) -> morningSelector());
+        binding.exit.setOnClickListener((View v) -> logOut());
         return binding.getRoot();
     }
 
     private void morningSelector() {
-        TimePicker timePicker = (TimePicker) TimePicker.inflate(getContext(), R.layout.time_selector, null);
+        TimePicker timePicker = (TimePicker) TimePicker.inflate(getContext(), R.layout.selector_time, null);
         timePicker.setIs24HourView(true);
 
         AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setTitle("Введите время напоминания").setView(timePicker)
+                .setView(timePicker)
                 .setPositiveButton("Ок", (dialog1, which) ->
                         {
                             String text = timeFromPicker(timePicker.getHour(), timePicker.getMinute());
@@ -134,11 +134,20 @@ public class SettingsFragment extends Fragment {
 
         String shortageMethod = binding.shortageMethod.getSelectedItem().toString();
         int shortageValue = Integer.parseInt(binding.shortageValue.getText().toString());
-        dataHandler.saveSettings(morningTime,
+        Boolean control = binding.control.isChecked();
+        dataHandler.saveSettings(morningTime, control,
                 expireTimeFrame, expiryValue,
                 shortageMethod, shortageValue
         );
 
+    }
+
+    private void logOut() {
+        NavController navController = NavHostFragment.findNavController(this);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.signOut();
+        exit = true;
+        navController.navigate(R.id.SignInFragment);
     }
 
     @Override
@@ -161,7 +170,8 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onStop() {
-        saveSettings();
+        if (!exit)
+            saveSettings();
         super.onStop();
     }
 }

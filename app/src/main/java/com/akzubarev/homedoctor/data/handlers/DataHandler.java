@@ -40,6 +40,8 @@ public interface DataHandler {
 
     void getPrescriptions(String profileID, PrescriptionsCallback callback);
 
+    void getPrescriptions(PrescriptionsCallback callback);
+
     void getMedications(MedicationsCallback callback);
 
     void getMedications(String profileID, MedicationsCallback callback);
@@ -58,7 +60,9 @@ public interface DataHandler {
     //region get
     void getProfile(String name, ProfileCallback callback);
 
-    void getPrescription(String profileID, String id,PrescriptionCallback callback);
+    void getTreatment(String id, TreatmentCallback callback);
+
+    void getPrescription(String profileID, String id, PrescriptionCallback callback);
 
     void getMedication(String medicationName, MedicationCallback callback);
 
@@ -69,7 +73,7 @@ public interface DataHandler {
     //region save
     void saveProfile(Profile profile);
 
-    void saveMedicationStats(MedicationStats medication);
+    void saveMedicationStats(MedicationStats medication, EmptyCallback callback);
 
     void saveMedication(Medication medication);
 
@@ -114,11 +118,13 @@ public interface DataHandler {
 
     void getShortageData(StringCallback callback);
 
+    void saveOldTreatment(Treatment treatmentStr);
+
     void getNextMorningTime(CalendarCallback callback);
 
     void getNextReminderTime(CalendarCallback callback);
 
-    void saveSettings(String morningTime, String expireTimeFrame,
+    void saveSettings(String morningTime, Boolean control, String expireTimeFrame,
                       int expiryValue, String shortageMethod, int shortageValue);
 
     void getShortageSettings(ShortageSettingsCallback callback);
@@ -129,10 +135,13 @@ public interface DataHandler {
 
     void saveMedication(Medication buildMedication, EmptyCallback callback);
 
+    void getControlSettings(BoolCallback callback);
+
     void checkEndedPrescriptions(StringCallback callback);
 
     void createUser(FirebaseUser fbUser, User user);
 
+    void getOldTreatments(TreatmentsCallback callback);
 
     //endregion
 
@@ -146,8 +155,16 @@ public interface DataHandler {
         void onCallback(String method, int value);
     }
 
+    interface BoolCallback {
+        void onCallback(Boolean result);
+    }
+
     interface StringCallback {
         void onCallback(String message);
+    }
+
+    interface StringsCallback {
+        void onCallback(ArrayList<String> strings);
     }
 
     interface CalendarCallback {

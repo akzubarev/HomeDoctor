@@ -15,10 +15,12 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.akzubarev.homedoctor.R;
+import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.Prescription;
 import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.ui.activities.MainActivity;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
+import com.akzubarev.homedoctor.ui.fragments.QRFragment;
 
 import java.util.Calendar;
 
@@ -45,7 +47,7 @@ public class NotificationHelper {
     public static final String MAKE = "make";
     public static final String MAKEDELAYED = "makedelayed";
     public static final String OPEN = "open";
-    private static final String CONFIRM = "confirm";
+    public static final String CONFIRM = "confirm";
 
 
     DataHandler datahandler;
@@ -55,8 +57,8 @@ public class NotificationHelper {
         datahandler = DataHandler.getInstance(context);
     }
 
-    void createNotification(int id, String message) {
-        NotificationCompat.Builder mBuilder = configureBuilder(message, id);
+    void createNotification(int id, String message, String additionalInfo, Boolean open) {
+        NotificationCompat.Builder mBuilder = configureBuilder(message, id, additionalInfo, open);
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -75,28 +77,41 @@ public class NotificationHelper {
         Log.d("notifications", "Notified");
     }
 
-    private NotificationCompat.Builder configureBuilder(String message, int id) {
+    private NotificationCompat.Builder configureBuilder(String message, int id, String additionalInfo, Boolean open) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentText(message)
 //                        .setContentTitle("Напоминание")
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setAutoCancel(false);
 
 
         switch (id) {
             case REMINDER_ID:
             default:
-                builder.addAction(R.drawable.ic_alarm_on, "Подтвердить", makeIntent(id, CONFIRM))
-                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(id, CLOSE))
+                builder.setSubText("Напоминание о приеме")
+                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(id, CLOSE, ""))
 //                        .addAction(R.drawable.ic_alarm_on, "Отложить на 10 мин.", makeIntent(DELAY))
-                        .setContentIntent(makeIntent(id, OPEN))
-                        .setAutoCancel(false);
+                        .setContentIntent(makeIntent(id, OPEN, ""));
+                if (open)
+                    builder.addAction(R.drawable.ic_alarm_on, "Подтвердить", makeIntent(id, OPEN, additionalInfo));
+                else
+                    builder.addAction(R.drawable.ic_alarm_on, "Подтвердить", makeIntent(id, CONFIRM, additionalInfo));
                 break;
             case EXPIRY_ID:
+                builder.setSubText("Истекает срок годности")
+                        .addAction(R.drawable.ic_alarm_on, "Посмотреть", makeIntent(id, OPEN, ""))
+                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(id, CLOSE, ""));
+                break;
             case SHORTAGE_ID:
-                builder.addAction(R.drawable.ic_alarm_on, "Посмотреть", makeIntent(id, OPEN))
-                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(id, CLOSE));
+                builder.setSubText("Заканчиваются лекарства")
+                        .addAction(R.drawable.ic_alarm_on, "Посмотреть", makeIntent(id, OPEN, ""))
+                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(id, CLOSE, ""));
+                break;
+            case PRESCRIPTION_END_ID:
+                builder.setSubText("Закончилось лечение")
+                        .addAction(R.drawable.ic_alarm_on, "Закрыть", makeIntent(id, CLOSE, ""));
                 break;
         }
         return builder;
@@ -109,8 +124,7 @@ public class NotificationHelper {
         if (alarmManager != null) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(),
-                    makeIntent(-1, intentName));
-            Log.d("notifications", "ExactSet");
+                    makeIntent(-1, intentName, ""));
         }
     }
 
@@ -134,18 +148,26 @@ public class NotificationHelper {
     }
 
 
-    public PendingIntent makeIntent(int id, String name) {
+    public PendingIntent makeIntent(int id, String name, String additionalInfo) {
         Intent intent;
         switch (name) {
             case OPEN:
                 intent = new Intent(context, MainActivity.class);
                 intent.putExtra("id", id);
+                intent.putExtra("treatmentID", additionalInfo);
+                intent.putExtra("destination", "QR");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.setAction(name);
                 return PendingIntent.getActivity(context, 0, intent,
                         PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
             case CONFIRM:
+                intent = new Intent(context, NotificationReceiver.class);
+                intent.putExtra("id", id);
+                intent.putExtra("treatmentID", additionalInfo);
+                intent.setAction(name);
+                return PendingIntent.getBroadcast(context, 2 + id, intent,
+                        PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             case CLOSE:
             case DELAY:
             case REMIND:
@@ -170,16 +192,30 @@ public class NotificationHelper {
     public void createReminderNotification() {
         datahandler.getCurrentReminder(treatments -> {
             int count = 0;
-            for (Treatment treatment : treatments)
-                createNotification(REMINDER_ID + count++, treatment.getNotification());
-            datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
-            Log.d("notifications", "got current reminder " + treatments.get(0).getNotification());
+            for (Treatment treatment : treatments) {
+                int notificationID = REMINDER_ID + count++;
+                datahandler.getControlSettings(control ->
+                        datahandler.getProfile(treatment.getProfileID(), profile ->
+                                datahandler.getMedication(treatment.getMedicationId(), medication ->
+                                        datahandler.getPrescription(treatment.getProfileID(),
+                                                treatment.getPrescriptionId(),
+                                                prescription ->
+                                                {
+                                                    String message = treatment.getNotification(profile.getName(), prescription.getName(), medication.getName());
+                                                    createNotification(notificationID, message, treatment.getDbID(), control);
+                                                    Log.d("Creating notification", treatment.getDbID());
+                                                    datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
+                                                })
+                                )
+                        )
+                );
+            }
         });
 
     }
 
     public void createExpiryNotification() {
-        datahandler.getExpiryData(message -> createNotification(SHORTAGE_ID, message));
+        datahandler.getExpiryData(message -> createNotification(SHORTAGE_ID, message, "", false));
         datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
     }
 
@@ -207,17 +243,11 @@ public class NotificationHelper {
                 datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
                 break;
         }
-        datahandler.checkEndedPrescriptions(this::createPrescriptionEndNotification);
+        datahandler.checkEndedPrescriptions(message -> createNotification(PRESCRIPTION_END_ID, message, "", false));
     }
 
     public void createShortageNotification() {
-        datahandler.getShortageData(message -> createNotification(SHORTAGE_ID, message));
+        datahandler.getShortageData(message -> createNotification(SHORTAGE_ID, message, "", false));
         datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
     }
-
-    public void createPrescriptionEndNotification(String prescriptionsText) {
-        datahandler.getShortageData(message -> createNotification(PRESCRIPTION_END_ID, prescriptionsText));
-    }
 }
-
-
