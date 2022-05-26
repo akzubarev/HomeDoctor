@@ -118,9 +118,13 @@ public class Medication extends BaseModel {
         calendar.set(Calendar.MONTH, Integer.parseInt(dates[1]) - 1);
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dates[0]));
 
+
         Calendar expirationDate = Calendar.getInstance();
         expirationDate.add(Calendar.DAY_OF_YEAR, daysToExpire);
-        return calendar.after(expirationDate);
+        Log.d("EXPIRY " + name, String.valueOf(calendar.getTime()));
+        Log.d("EXPIRY " + name, String.valueOf(expirationDate.getTime()));
+        Log.d("EXPIRY " + name, String.valueOf(calendar.before(expirationDate)));
+        return calendar.before(expirationDate);
     }
 
     @Exclude
@@ -137,7 +141,7 @@ public class Medication extends BaseModel {
                 threshold = sum * value;
                 break;
         }
-        Log.d("Shortage threshold", String.valueOf(threshold));
+        Log.d("SHORTAGE threshold", String.valueOf(threshold));
         return amount <= threshold;
     }
 

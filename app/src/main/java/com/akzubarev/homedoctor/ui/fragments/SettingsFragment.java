@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.databinding.FragmentSettingsBinding;
+import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
@@ -63,8 +64,9 @@ public class SettingsFragment extends Fragment {
         });
 
         dataHandler.getExpirySettings((timeframe, value) -> {
-            ArrayList<String> options = new ArrayList<>(Arrays.asList("Системная", "Темная", "Светлая"));
+//            ArrayList<String> options = new ArrayList<>(Arrays.asList("Системная", "Темная", "Светлая"));
             //(Arrays.asList(getResources().getStringArray(R.array.theme_dropdown)));
+            ArrayList<String> options = new ArrayList<>(Arrays.asList("дни", "недели", "месяцы"));
             binding.expiryTimeframe.setSelection(options.indexOf(timeframe));
             binding.expiryValue.setText(Integer.toString(value));
         });
@@ -140,7 +142,11 @@ public class SettingsFragment extends Fragment {
         Boolean control = binding.control.isChecked();
         dataHandler.saveSettings(morningTime, control,
                 expireTimeFrame, expiryValue,
-                shortageMethod, shortageValue
+                shortageMethod, shortageValue,
+                () -> {
+                    NotificationHelper notificationHelper = new NotificationHelper(getContext());
+                    notificationHelper.updateMorning();
+                }
         );
 
     }
@@ -175,6 +181,7 @@ public class SettingsFragment extends Fragment {
     public void onStop() {
         if (working)
             saveSettings();
+        working = false;
         super.onStop();
     }
 }

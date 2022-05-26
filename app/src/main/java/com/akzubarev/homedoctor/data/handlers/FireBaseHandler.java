@@ -160,6 +160,7 @@ public class FireBaseHandler implements DataHandler {
                 new ValueEventListener() {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         writeObject(dbr, medication);
+                        callback.onCallback();
                     }
 
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -189,6 +190,7 @@ public class FireBaseHandler implements DataHandler {
                 new ValueEventListener() {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         writeObject(dbr, medication);
+                        callback.onCallback();
                     }
 
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -637,17 +639,19 @@ public class FireBaseHandler implements DataHandler {
 
     @Override
     public void saveSettings(String morningTime, Boolean control, String expireTimeFrame,
-                             int expiryValue, String shortageMethod, int shortageValue) {
+                             int expiryValue, String shortageMethod, int shortageValue,
+                             EmptyCallback callback) {
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(MORNINGTIME, morningTime);
         childUpdates.put(CONTROL, control);
-        childUpdates.put(EXPIRATION + "/expiryTimeFrame", expireTimeFrame);
+        childUpdates.put(EXPIRATION + "/expiryTimeframe", expireTimeFrame);
         childUpdates.put(EXPIRATION + "/expiryValue", expiryValue);
         childUpdates.put(SHORTAGE + "/shortageMethod", shortageMethod);
         childUpdates.put(SHORTAGE + "/shortageValue", shortageValue);
         DatabaseReference dbr = getUserDBR().child(SETTINGS);
         dbr.updateChildren(childUpdates);
+        callback.onCallback();
     }
 
 //    @Override
@@ -745,10 +749,9 @@ public class FireBaseHandler implements DataHandler {
                 getMedications(medications -> {
                     StringBuilder text = new StringBuilder();
                     for (Medication med : medications) {
-                        if (med.doesExpire(timeframe, value))
+                        if (med.getReminders() && med.doesExpire(timeframe, value))
                             text.append(med.getExpiryMessage()).append("\n");
                     }
-
                     String message = text.toString();
                     if (!message.isEmpty())
                         callback.onCallback(message);
@@ -764,7 +767,7 @@ public class FireBaseHandler implements DataHandler {
                     for (Medication med : medications) {
                         Stream<Treatment> sorted = treatments.stream().filter((treatment) -> treatment.getMedicationId().equals(med.getDbID()));
                         ArrayList<Treatment> filteredTreatments = (ArrayList<Treatment>) sorted.collect(Collectors.toList());
-                        if (med.isShortage(method, value, filteredTreatments))
+                        if (med.getReminders() && med.isShortage(method, value, filteredTreatments))
                             text.append(med.getShortageMessage());
                     }
 

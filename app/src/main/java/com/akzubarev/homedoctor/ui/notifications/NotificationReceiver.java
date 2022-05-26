@@ -54,7 +54,10 @@ public class NotificationReceiver extends BroadcastReceiver {
                                     dataHandler.getPrescription(treatment.getProfileID(), treatment.getPrescriptionId(), prescription ->
                                             dataHandler.getMedication(treatment.getMedicationId(), medication -> {
                                                         medication.take();
-                                                        dataHandler.saveMedication(medication);
+                                                        dataHandler.saveMedication(medication, () -> {
+                                                            notificationHelper.setUpNotification(NotificationHelper.EXPIRY);
+                                                            notificationHelper.setUpNotification(NotificationHelper.SHORTAGE);
+                                                        });
 
                                                         Calendar calendar = Calendar.getInstance();
                                                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru"));

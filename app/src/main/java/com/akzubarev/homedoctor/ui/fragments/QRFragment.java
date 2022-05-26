@@ -22,6 +22,7 @@ import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.databinding.FragmentQrBinding;
+import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -158,7 +159,12 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
                 dataHandler.getTreatment(treatmentID, treatment -> {
                             dataHandler.getMedication(treatment.getMedicationId(), medication -> {
                                 medication.take();
-                                dataHandler.saveMedication(medication);
+                                dataHandler.saveMedication(medication, () -> {
+                                    NotificationHelper notificationHelper = new NotificationHelper(getContext());
+                                    notificationHelper.setUpNotification(NotificationHelper.EXPIRY);
+                                    notificationHelper.setUpNotification(NotificationHelper.SHORTAGE);
+                                });
+
                             });
                             Calendar calendar = Calendar.getInstance();
                             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru"));

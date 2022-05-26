@@ -161,7 +161,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         int expiryValue = 3;
         String shortageMethod = "Количество";
         int shortageValue = 1;
-        dataHandler.saveSettings(morningTime, control, expireTimeFrame, expiryValue, shortageMethod, shortageValue);
+        dataHandler.saveSettings(morningTime, control, expireTimeFrame, expiryValue, shortageMethod, shortageValue, () -> {
+        });
     }
 
     private void alreadySigned() {

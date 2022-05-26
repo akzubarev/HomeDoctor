@@ -44,7 +44,9 @@ public class OldTreatmentListFragment extends Fragment {
 
     private void fill(ArrayList<Treatment> treatments) {
         if (working) {
-            treatments = (ArrayList<Treatment>) treatments.stream().sorted((Comparator.comparing(t -> (t.getTime() + " " + t.getDay())))).collect(Collectors.toList());
+            treatments = (ArrayList<Treatment>) treatments.stream().sorted(
+                    (x, y) -> -(x.getDay() + " " + x.getTime()).compareTo(y.getDay() + " " + y.getTime())
+            ).collect(Collectors.toList());
             RecyclerView medicationsList = binding.oldTreatmentsList;
             medicationsList.setHasFixedSize(true);
 //        medicationsList.addItemDecoration(new DividerItemDecoration(

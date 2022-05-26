@@ -125,7 +125,8 @@ public interface DataHandler {
     void getNextReminderTime(CalendarCallback callback);
 
     void saveSettings(String morningTime, Boolean control, String expireTimeFrame,
-                      int expiryValue, String shortageMethod, int shortageValue);
+                      int expiryValue, String shortageMethod, int shortageValue,
+                      EmptyCallback callback);
 
     void getShortageSettings(ShortageSettingsCallback callback);
 

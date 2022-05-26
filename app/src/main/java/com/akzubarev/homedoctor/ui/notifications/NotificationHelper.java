@@ -22,7 +22,9 @@ import com.akzubarev.homedoctor.ui.activities.MainActivity;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.ui.fragments.QRFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class NotificationHelper {
 
@@ -118,13 +120,12 @@ public class NotificationHelper {
     }
 
 
-    public void setReminder(Calendar calendar, String intentName) {
+    public void setReminder(Calendar calendar, String intentName, int id) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-
         if (alarmManager != null) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(),
-                    makeIntent(-1, intentName, ""));
+                    makeIntent(id, intentName, ""));
         }
     }
 
@@ -138,15 +139,14 @@ public class NotificationHelper {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        setReminder(calendar, MAKE);
+        setReminder(calendar, MAKE, -1);
     }
 
     public void delay() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 10);
-        setReminder(calendar, MAKEDELAYED);
+        setReminder(calendar, MAKEDELAYED, -1);
     }
-
 
     public PendingIntent makeIntent(int id, String name, String additionalInfo) {
         Intent intent;
@@ -182,7 +182,6 @@ public class NotificationHelper {
         }
     }
 
-
     public void cancel(int notificationId) {
         NotificationManager nm =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -193,7 +192,7 @@ public class NotificationHelper {
         datahandler.getCurrentReminder(treatments -> {
             int count = 0;
             if (treatments.size() == 0)
-                datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
+                datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND, REMINDER_ID));
             else
                 for (Treatment treatment : treatments) {
                     int notificationID = REMINDER_ID + count++;
@@ -207,7 +206,7 @@ public class NotificationHelper {
                                                         String message = treatment.getNotification(profile.getName(), prescription.getName(), medication.getName());
                                                         createNotification(notificationID, message, treatment.getDbID(), control);
                                                         Log.d("Creating notification", treatment.getDbID());
-                                                        datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
+                                                        datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND, REMINDER_ID));
                                                     })
                                     )
                             )
@@ -217,19 +216,37 @@ public class NotificationHelper {
 
     }
 
+    public void updateMorning() {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM HH:mm",
+                new Locale("ru", "RU"));
+        datahandler.getNextMorningTime(calendar -> {
+            setReminder(calendar, EXPIRY, -EXPIRY_ID);
+            setReminder(calendar, SHORTAGE, -SHORTAGE_ID);
+            Log.d("MORNING", format.format(calendar.getTime()));
+        });
+
+
+    }
+
     public void createExpiryNotification() {
-        datahandler.getExpiryData(message -> createNotification(SHORTAGE_ID, message, "", false));
-        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
+        datahandler.getExpiryData(message -> createNotification(EXPIRY_ID, message, "", false));
+        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY, -EXPIRY_ID));
+    }
+
+    public void createShortageNotification() {
+        datahandler.getShortageData(message -> createNotification(SHORTAGE_ID, message, "", false));
+        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY, -EXPIRY_ID));
     }
 
     public void setUpNotification(String intent) {
         switch (intent) {
             case EXPIRY:
                 datahandler.getExpiryData((message) -> {
+                    Log.d("EXPIRY", message);
                     if (message != null)
                         createExpiryNotification();
                     else {
-                        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
+                        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY, -EXPIRY_ID));
                     }
                 });
                 break;
@@ -238,19 +255,15 @@ public class NotificationHelper {
                     if (message != null)
                         createShortageNotification();
                     else {
-                        datahandler.getNextMorningTime(calendar -> setReminder(calendar, SHORTAGE));
+                        datahandler.getNextMorningTime(calendar -> setReminder(calendar, SHORTAGE, -SHORTAGE_ID));
                     }
                 });
                 break;
             case REMIND:
-                datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
+                datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND, REMINDER_ID));
                 break;
         }
         datahandler.checkEndedPrescriptions(message -> createNotification(PRESCRIPTION_END_ID, message, "", false));
     }
 
-    public void createShortageNotification() {
-        datahandler.getShortageData(message -> createNotification(SHORTAGE_ID, message, "", false));
-        datahandler.getNextMorningTime(calendar -> setReminder(calendar, EXPIRY));
-    }
 }
