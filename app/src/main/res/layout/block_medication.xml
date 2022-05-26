@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:gravity="center_vertical|start"
-            android:text="Парацетамол"
+            android:text="@string/medication_name_placeholder"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 

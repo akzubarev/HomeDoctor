@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical|start"
-            android:text="Аккаунт"
+            android:text="@string/label_account"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -34,7 +34,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:text="E-mail"
+                android:text="@string/label_email"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center_vertical|end"
-                android:text="example@gmail.com"
+                android:text="@string/email_placeholder"
                 android:textColor="@color/shadowed"
                 android:textSize="@dimen/subheading" />
         </LinearLayout>
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center_vertical|end"
-                android:text="zd;gfkjnnawer;aoiwe;j12"
+                android:text="@string/user_id_placeholder"
                 android:textColor="@color/shadowed"
                 android:textSize="@dimen/subheading" />
 
@@ -86,7 +86,6 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         style="@style/FloatingActionButton"
-        android:contentDescription="Add user"
         app:srcCompat="@drawable/ic_add_user" />
 
 </RelativeLayout>

@@ -33,12 +33,12 @@
             android:layout_marginStart="10dp"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:text="Бабушка"
+            android:text="@string/profile_name_placeholder"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 

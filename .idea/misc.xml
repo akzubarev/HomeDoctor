@@ -82,7 +82,7 @@
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_prescription.xml" value="0.22" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_prescription_list.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
-        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_profiles_list.xml" value="0.67" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_profiles_list.xml" value="0.22" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_qr.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/fragment_sign_in.xml" value="0.36666666666666664" />
@@ -94,6 +94,7 @@
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/selector_date.xml" value="0.18072916666666666" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/selector_time.xml" value="0.18072916666666666" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/spinner_row.xml" value="0.33" />
+        <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/spinner_row_unfolded.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/layout/time_selector.xml" value="0.67" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/HomeDoctor/app/src/main/res/menu/main.xml" value="0.18802083333333333" />

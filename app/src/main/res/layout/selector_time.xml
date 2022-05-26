@@ -7,4 +7,4 @@
     android:timePickerMode="spinner"
     android:headerBackground="@color/primary"
     android:textColor = "@color/main"
-    tools:targetApi="m" />
+     />

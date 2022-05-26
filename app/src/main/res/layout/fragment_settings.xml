@@ -38,13 +38,13 @@
         android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|start"
             android:layout_weight="1"
             android:gravity="center_vertical|start"
             android:labelFor="@id/morning"
-            android:text="Утреннее время"
+            android:text="@string/label_morning"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -52,8 +52,8 @@
             android:id="@+id/morning"
             style="@style/ClickableTextView"
             android:layout_width="wrap_content"
-            android:hint="4"
-            android:text="10:00" />
+            android:hint="@string/time_placeholder"
+            android:text="@string/time_placeholder" />
     </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
@@ -65,7 +65,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|start"
             android:labelFor="@id/notify"
-            android:text="Контроль за приемом"
+            android:text="@string/label_control"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -74,8 +74,8 @@
             android:layout_width="75dp"
             android:layout_height="match_parent"
             android:checked="true"
-            android:textOff="×"
-            android:textOn="✓"
+            android:textOff="@string/cross"
+            android:textOn="@string/check"
             app:showText="true"
             app:switchTextAppearance="@style/switchText"
             app:thumbTint="@color/primary" />
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:gravity="center"
-            android:text="Напоминания о заканчивающихся лекарствах"
+            android:text="@string/label_shortage_reminders"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -112,7 +112,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
                 android:includeFontPadding="false"
-                android:text="Способ определения"
+                android:text="@string/label_method"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
@@ -137,7 +137,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:text="Оставшиеся приемы"
+                android:text="@string/label_method_value"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
@@ -168,7 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:gravity="center"
-            android:text="Напоминания о истекающем сроке годности"
+            android:text="@string/label_expiry_reminders"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -182,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:gravity="center_vertical|start"
-                android:text="Единицы измерения"
+                android:text="@string/label_timeframe"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
@@ -210,7 +210,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:gravity="center_vertical|start"
-                android:text="Количество"
+                android:text="@string/label_timeframe_value"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
@@ -247,7 +247,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/background_second"
-        android:text="Выйти из аккаунта"
+        android:text="@string/exit"
         android:textColor="@color/primary" />
-
 </LinearLayout>

@@ -15,20 +15,95 @@
     <string name="medications_list">Список лекарств</string>
     <string name="owned_medications">Мои лекарства</string>
     <string name="medication">Лекарство</string>
+    <string name="label_allowed">Доступно профилям</string>
+    <string name="label_get_reminders">Получать уведомления об окончании запасов и истечении срока годности</string>
+
+    <!-- Labels -->
+    <string name="label_group">Группа</string>
+    <string name="label_form">Форма</string>
+    <string name="label_amount">Количество таблеток</string>
+    <string name="label_expiry">Срок годности</string>
+    <string name="label_name">Название</string>
+    <string name="label_diagnosis">Диагноз</string>
+    <string name="label_end_date">Конец приема</string>
+    <string name="label_auto_disable">Автоматическое отключение оповещений</string>
+    <string name="label_medications">Лекарства</string>
+    <string name="label_birthday">Дата рождения</string>
+    <string name="label_prescriptions">Схемы лечения</string>
+    <string name="label_contradictions">Противопоказания</string>
+    <string name="label_profile_name">Имя</string>
+    <string name="label_gender">Пол</string>
+    <string name="label_account">Аккаунт</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_morning">Утреннее время</string>
+    <string name="label_control">Контроль за приемом</string>
+    <string name="label_shortage_reminders">Напоминания о заканчивающихся лекарствах</string>
+    <string name="label_method">Способ определения</string>
+    <string name="label_method_value">Оставшиеся приемы</string>
+    <string name="label_expiry_reminders">Напоминания о истекающем сроке годности</string>
+    <string name="label_timeframe">Единицы измерения</string>
+    <string name="label_timeframe_value">Количество</string>
+    <string name="label_password">Пароль</string>
+    <string name="label_repeat_password">Повтор пароля</string>
+    <string name="label_entry">Нажмите для входа</string>
+
+    <!-- Placeholders -->
+    <string name="info_version_placeholder">Версия: 1.2.3</string>
+    <string name="medication_name_placeholder">Парацетамол</string>
+    <string name="week_day_placeholder">Понедельник</string>
+    <string name="time_placeholder">14:00</string>
+    <string name="prescription_name_placeholder">Простуда</string>
+    <string name="profile_name_placeholder">Мама</string>
+    <string name="datetime_placeholder">17:00 24.04.2022</string>
+    <string name="id_placeholder">ididididididididididididididididididididididid</string>
+    <string name="diagnosis_placeholder">Ангина</string>
+    <string name="date_placeholder">20.11.2022</string>
+    <string name="gender_placeholder">Женский</string>
+    <string name="contradictions_placeholder">Парацетамол - Арпефлю</string>
+    <string name="email_placeholder">example@gmail.com</string>
+    <string name="user_id_placeholder">zd;gfkjnnawer;aoiwe;j12</string>
+
+    <!-- SideBar -->
+    <string name="sidebar_profiles">Профили</string>
+    <string name="sidebar_my_medications">Мои лекарства</string>
+    <string name="sidebar_history">История приемов</string>
+    <string name="sidebar_qr">Добавить лекарство</string>
+
+    <!-- Buttons -->
+    <string name="cancel">Назад</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить изменения</string>
+    <string name="add">Добавить</string>
+    <string name="exit">Выйти из аккаунта</string>
+
+    <!-- Hints -->
+    <string name="hint_group">Группа</string>
+    <string name="hint_form">Форма</string>
+    <string name="profile_name_hint">Введите имя</string>
+    <string name="text_group">Противовирусное и имуностимилуруюшее средство</string>
+    <string name="text_form">Таблетки</string>
 
     <!-- InfoActivity -->
     <string name="info_app_name">Home Doctor</string>
     <string name="info_app_description">Приложение для помощи в приеме лекарств</string>
-    <string name="info_version_placeholder">Версия: 1.2.3</string>
     <string name="info_hse">Приложение создано как дипломный проект ПИ ФКН НИУ ВШЭ.</string>
     <string name="info_science_manager">Песоцкая Е.Ю.</string>
     <string name="info_owner">Зубарев Алексей\ntg: @PackageMan</string>
-    <string name="link">github.com/akzubarev</string>
+    <string name="info_developer">Разработчик</string>
+    <string name="info_link">github.com/akzubarev</string>
+
+    <!-- Misc -->
     <string name="action_info">info</string>
+    <string name="action_delete">delete</string>
     <string name="title_activity_medications">MedicationsActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="action_delete">delete</string>
     <string name="qr">QR</string>
+    <string name="disclaimer">Дисклеймер</string>
+    <string name="assistant">Научный руководитель</string>
+    <string name="cross">×</string>
+    <string name="check">✓</string>
+    <string name="analogs">Аналоги</string>
+    <string name="no_analogs_text">(нет данных об аналогах)</string>
 
 </resources>

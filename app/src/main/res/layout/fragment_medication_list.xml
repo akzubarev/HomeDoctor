@@ -26,6 +26,5 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         style="@style/FloatingActionButton"
-        android:contentDescription="Add medicationStat"
         app:srcCompat="@drawable/ic_add" />
 </RelativeLayout>

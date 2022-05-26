@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="10dp"
             android:gravity="center"
-            android:text="Ангина весна 2022"
+            android:text="@string/prescription_name_placeholder"
             android:textColor="@color/main"
             android:textSize="@dimen/normal" />
 

@@ -7,11 +7,11 @@
         <item
             android:id="@+id/ProfilesListFragment"
             android:icon="@drawable/ic_profiles"
-            android:title="Профили" />
+            android:title="@string/sidebar_profiles" />
         <item
             android:id="@+id/OwnedMedicationsListFragment"
             android:icon="@drawable/ic_owned"
-            android:title="Мои лекарства" />
+            android:title="@string/sidebar_my_medications" />
         <item
             android:id="@+id/MedicationsListFragment"
             android:icon="@drawable/ic_list"
@@ -20,10 +20,10 @@
         <item
             android:id="@+id/OldTreatmentListFragment"
             android:icon="@drawable/ic_history"
-            android:title="История приемов" />
+            android:title="@string/sidebar_history" />
         <item
             android:id="@+id/QRFragment"
             android:icon="@drawable/ic_qr_code_scanner"
-            android:title="Добавить лекарство" />
+            android:title="@string/sidebar_qr" />
     </group>
 </menu>

@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="E-mail"
+        android:hint="@string/label_email"
         android:inputType="textEmailAddress"
         android:textColor="@color/main"
         android:textColorHint="@color/main" />
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Пароль"
+        android:hint="@string/label_password"
         android:inputType="textPassword"
         android:textColor="@color/main"
         android:textColorHint="@color/main" />
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Повтор пароля"
+        android:hint="@string/label_repeat_password"
         android:inputType="textPassword"
         android:textColor="@color/main"
         android:textColorHint="@color/main" />
@@ -75,7 +75,7 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:text="Нажмите для входа"
+        android:text="@string/label_entry"
         android:textColor="@color/primary"
         android:textSize="16sp" />
 

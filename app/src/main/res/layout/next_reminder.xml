@@ -25,7 +25,7 @@
         android:layout_alignTop="@id/alarm"
         android:layout_toEndOf="@id/alarm"
         android:gravity="center"
-        android:text="Парацетамол"
+        android:text="@string/medication_name_placeholder"
         android:textColor="@color/primary"
         android:textSize="@dimen/small" />
 

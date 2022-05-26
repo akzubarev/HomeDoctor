@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:gravity="center"
-                android:text="Парацетамол"
+                android:text="@string/medication_name_placeholder"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
@@ -67,7 +67,7 @@
                     android:layout_gravity="center_vertical|start"
                     android:gravity="center_vertical|start"
                     android:labelFor="@id/birthday"
-                    android:text="Добавить"
+                    android:text="@string/add"
                     android:textColor="@color/main"
                     android:textSize="@dimen/normal" />
 
@@ -83,7 +83,7 @@
                     android:layout_marginEnd="5dp"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:text="Понедельник"
+                    android:text="@string/week_day_placeholder"
                     android:textColor="@color/primary"
                     android:textSize="@dimen/normal" />
 
@@ -92,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="14:00"
+                    android:text="@string/time_placeholder"
                     android:textAlignment="center"
                     android:textColor="@color/primary"
                     android:textSize="@dimen/normal" />

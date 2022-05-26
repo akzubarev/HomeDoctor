@@ -16,14 +16,14 @@
             android:layout_weight="1"
             android:gravity="center_vertical|start"
             android:labelFor="@id/name"
-            android:text="Имя"
+            android:text="@string/label_profile_name"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
         <EditText
             android:id="@+id/name"
             style="@style/EditText"
-            android:hint="Введите имя"
+            android:hint="@string/profile_name_hint"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:textSize="@dimen/subheading" />
@@ -38,14 +38,14 @@
             android:layout_weight="1"
             android:gravity="center_vertical|start"
             android:labelFor="@id/gender"
-            android:text="Пол"
+            android:text="@string/label_gender"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
         <TextView
             android:id="@+id/gender"
             style="@style/EditText"
-            android:text="Женский"
+            android:text="@string/gender_placeholder"
             android:textSize="@dimen/subheading" />
     </LinearLayout>
 
@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|start"
             android:labelFor="@id/birthday"
-            android:text="Дата рождения"
+            android:text="@string/label_birthday"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -80,7 +80,7 @@
             android:layout_gravity="center_vertical|start"
             android:gravity="center_vertical|start"
             android:labelFor="@id/prescriptions_list"
-            android:text="Схемы лечения"
+            android:text="@string/label_prescriptions"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -116,21 +116,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:labelFor="@id/name"
-            android:text="Противопоказания"
+            android:text="@string/label_contradictions"
             android:textAlignment="center"
-            android:visibility="gone"
             android:textColor="@color/main"
-            android:textSize="@dimen/subheading" />
+            android:textSize="@dimen/subheading"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/contradictions"
             style="@style/NormalTextView"
-            android:textAlignment="textStart"
             android:layout_width="match_parent"
-            android:visibility="gone"
-            android:text="Парацетамол - Арпефлю"
+            android:text="@string/contradictions_placeholder"
+            android:textAlignment="textStart"
             android:textColor="@color/secondary"
-            android:textSize="@dimen/normal" />
+            android:textSize="@dimen/normal"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout style="@style/LinearLayout">
@@ -141,7 +141,7 @@
             android:layout_gravity="center_vertical|start"
             android:gravity="center_vertical|start"
             android:labelFor="@id/medications_list"
-            android:text="Лекарства"
+            android:text="@string/label_medications"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -181,7 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/background_second"
-        android:text="Сохранить изменения"
+        android:text="@string/save"
         android:textColor="@color/primary" />
 
 </LinearLayout>

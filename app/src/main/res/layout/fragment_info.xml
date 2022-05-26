@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Разработчик"
+                android:text="@string/info_developer"
                 android:textColor="@color/shadowed"
                 android:textSize="@dimen/subheading" />
 
@@ -74,8 +74,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="all"
                 android:gravity="center"
-                android:onClick="goToWeb"
-                android:text="@string/link"
+                android:text="@string/info_link"
                 android:textColorLink="@color/primary"
                 android:textSize="@dimen/subheading" />
 
@@ -85,7 +84,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:gravity="center"
-                android:text="Дисклеймер"
+                android:text="@string/disclaimer"
                 android:textColor="@color/shadowed"
                 android:textSize="@dimen/subheading" />
 
@@ -104,7 +103,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:gravity="center"
-                android:text="Научный руководитель"
+                android:text="@string/assistant"
                 android:textColor="@color/shadowed"
                 android:textSize="@dimen/subheading" />
 

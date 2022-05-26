@@ -25,7 +25,7 @@
                 android:id="@+id/name_edit_text"
                 style="@style/DisabledEditText"
                 android:layout_width="wrap_content"
-                android:hint="Название"
+                android:hint="@string/medication_name_placeholder"
 
                 android:imeOptions="actionDone"
                 android:inputType="text"
@@ -44,47 +44,11 @@
                 android:id="@+id/id_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="ididididididididididididididididididididididid"
+                android:hint="@string/id_placeholder"
                 android:textAlignment="center"
                 android:textColor="@color/shadowed"
                 android:textSize="@dimen/small" />
-
         </LinearLayout>
-        <!--        <LinearLayout-->
-        <!--            style="@style/LinearLayout"-->
-        <!--            android:layout_marginTop="@dimen/activity_vertical_margin">-->
-
-        <!--            <TextView-->
-        <!--                android:layout_width="150dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_gravity="center_vertical|start"-->
-        <!--                android:gravity="center_vertical|start"-->
-        <!--                android:text="Длительность курса"-->
-        <!--                android:textColor="@color/main"-->
-        <!--                android:textSize="@dimen/subheading" />-->
-
-        <!--            <View-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:width="0dp" />-->
-
-        <!--            <EditText-->
-        <!--                android:id="@+id/duration_edit_text"-->
-        <!--                style="@style/EditText"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:width="50dp"-->
-        <!--                android:hint="4"-->
-        <!--                android:imeOptions="actionDone"-->
-        <!--                android:inputType="number" />-->
-
-        <!--            <Spinner-->
-        <!--                android:id="@+id/duration_spinner"-->
-        <!--                style="@style/Spinner"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:entries="@array/duration_dropdown"-->
-        <!--                tools:listitem="@layout/spinner_row" />-->
-        <!--        </LinearLayout>-->
 
         <LinearLayout
             style="@style/LinearLayout"
@@ -96,42 +60,19 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:gravity="center_vertical|start"
-                android:text="Группа"
+                android:text="@string/label_group"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
             <EditText
-                android:hint="Группа"
+                android:hint="@string/hint_group"
                 android:id="@+id/group"
                 style="@style/DisabledEditText"
                 android:layout_weight="1"
-                android:text="Противовирусное и имуностимилуруюшее средство"
+                android:text="@string/text_group"
                 android:textAlignment="textEnd"
                 android:layout_width="0dp" />
         </LinearLayout>
-
-        <!--        <LinearLayout-->
-        <!--            style="@style/LinearLayout"-->
-        <!--            android:layout_marginTop="@dimen/activity_vertical_margin">-->
-
-        <!--            <TextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:layout_gravity="center_vertical|start"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center_vertical|start"-->
-        <!--                android:text="Таблеток в пачке"-->
-        <!--                android:textColor="@color/main"-->
-        <!--                android:textSize="@dimen/subheading" />-->
-
-        <!--            <EditText-->
-        <!--                android:id="@+id/pack_edit_text"-->
-        <!--                style="@style/EditText"-->
-        <!--                android:hint="4"-->
-        <!--                android:imeOptions="actionDone"-->
-        <!--                android:inputType="number"-->
-        <!--                android:text="3" />-->
-        <!--        </LinearLayout>-->
 
         <LinearLayout
             style="@style/LinearLayout"
@@ -145,17 +86,17 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:gravity="center_vertical|start"
                 android:includeFontPadding="false"
-                android:text="Форма"
+                android:text="@string/label_form"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
             <EditText
                 android:id="@+id/form"
                 style="@style/DisabledEditText"
-                android:hint="Форма"
+                android:hint="@string/hint_form"
                 android:textAlignment="textEnd"
                 android:layout_weight="1"
-                android:text="Таблетки" />
+                android:text="@string/text_form" />
         </LinearLayout>
     </LinearLayout>
 
@@ -184,7 +125,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:text="Количество таблеток"
+                android:text="@string/label_amount"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
@@ -208,22 +149,20 @@
             android:layout_marginTop="@dimen/activity_vertical_margin">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:text="Срок годности"
+                android:text="@string/label_expiry"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
             <TextView
                 android:id="@+id/expiry_date_edit_text"
                 style="@style/ClickableTextView"
-                android:hint="20.11.2022"
-                android:imeOptions="actionDone"
-                android:inputType="date"
-                android:text="20.11.2022" />
+                android:hint="@string/date_placeholder"
+                android:text="@string/date_placeholder" />
 
         </LinearLayout>
 
@@ -232,15 +171,14 @@
             android:layout_marginTop="@dimen/activity_vertical_margin">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:text="Доступно профилям"
+                android:text="@string/label_allowed"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
-
 
             <TextView
                 android:id="@+id/allowed_profiles"
@@ -257,7 +195,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
                 android:labelFor="@id/notify"
-                android:text="Получать уведомления об окончании запасов и истечении срока годности"
+                android:text="@string/label_get_reminders"
                 android:textColor="@color/main"
                 android:textSize="@dimen/subheading" />
 
@@ -266,8 +204,8 @@
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:checked="true"
-                android:textOff="×"
-                android:textOn="✓"
+                android:textOff="@string/cross"
+                android:textOn="@string/check"
                 app:showText="true"
                 app:switchTextAppearance="@style/switchText"
                 app:thumbTint="@color/primary" />
@@ -287,7 +225,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:layout_marginVertical="@dimen/activity_vertical_margin"
-        android:text="Аналоги"
+        android:text="@string/analogs"
         android:textAlignment="center"
         android:textColor="@color/main"
         android:textSize="@dimen/subheading" />
@@ -298,7 +236,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:layout_marginVertical="@dimen/activity_vertical_margin"
-        android:text="(нет данных об аналогах)"
+        android:text="@string/no_analogs_text"
         android:textAlignment="center"
         android:textColor="@color/main"
         android:textSize="@dimen/subheading"
@@ -308,7 +246,6 @@
         android:id="@+id/analogs"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/search"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:layout_weight="1"
         android:padding="4dp"
@@ -323,7 +260,7 @@
         android:layout_gravity="bottom"
         android:backgroundTint="@color/background_second"
         android:tag="Отмена"
-        android:text="Назад"
+        android:text="@string/cancel"
         android:textColor="@color/primary" />
 
     <Button
@@ -333,7 +270,7 @@
         android:layout_gravity="bottom"
         android:backgroundTint="@color/background_second"
         android:tag="Редактирование"
-        android:text="Редактировать"
+        android:text="@string/edit"
         android:textColor="@color/primary" />
 
 </LinearLayout>
