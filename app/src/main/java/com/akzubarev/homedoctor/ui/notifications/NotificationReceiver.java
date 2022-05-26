@@ -46,7 +46,8 @@ public class NotificationReceiver extends BroadcastReceiver {
             case NotificationHelper.CONFIRM:
                 DataHandler dataHandler = DataHandler.getInstance(context);
                 String treatmentID = intent.getStringExtra("treatmentID");
-                Log.d("Received notification", treatmentID);
+                Log.d("Received treatmentID", treatmentID);
+                notificationHelper.cancel(id);
                 if (!treatmentID.isEmpty())
                     dataHandler.getTreatment(treatmentID, treatment ->
                             dataHandler.getProfile(treatment.getProfileID(), profile ->
@@ -63,7 +64,6 @@ public class NotificationReceiver extends BroadcastReceiver {
                                                         treatment.setPrescriptionId(prescription.getName());
                                                         treatment.setProfileID(profile.getName());
                                                         dataHandler.saveOldTreatment(treatment);
-                                                        notificationHelper.cancel(id);
                                                     }
                                             )
                                     )

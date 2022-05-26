@@ -73,6 +73,8 @@ public class MedicationFragment extends Fragment {
             medicationStatID = bundle.getString("MedicationStat");
             medicationID = bundle.getString("Medication");
             boolean add = bundle.getBoolean("Add");
+            Log.d(TAG, medicationStatID + "");
+            Log.d(TAG, medicationID + "");
             if (add)
                 mode = Mode.add;
             if (medicationStatID == null && medicationID == null)
@@ -101,8 +103,8 @@ public class MedicationFragment extends Fragment {
     }
 
     private void fillStat(MedicationStats medicationStats) {
+        this.medicationStat = medicationStats;
         if (working) {
-            this.medicationStat = medicationStats;
             binding.nameEditText.setText(medicationStats.getName());
             binding.form.setText(medicationStats.getForm());
             binding.group.setText(medicationStats.getGroup());

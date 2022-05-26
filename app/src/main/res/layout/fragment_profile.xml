@@ -64,7 +64,8 @@
 
         <TextView
             android:id="@+id/birthday"
-            style="@style/EditText"
+            style="@style/ClickableTextView"
+            android:layout_width="250dp"
             android:hint="01.01.1968"
             android:textSize="@dimen/subheading" />
     </LinearLayout>

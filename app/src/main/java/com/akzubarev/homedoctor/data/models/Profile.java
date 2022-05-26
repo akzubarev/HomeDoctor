@@ -1,11 +1,6 @@
 package com.akzubarev.homedoctor.data.models;
 
-import com.google.firebase.database.Exclude;
-
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Profile extends BaseModel {
     private String name = "";

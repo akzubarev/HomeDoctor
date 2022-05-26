@@ -138,8 +138,15 @@ public class ProfileFragment extends Fragment {
             binding.name.setText(profile.getName());
             binding.gender.setText(profile.getGender());
             binding.birthday.setText(profile.getBirthday());
-            dataHandler.getPrescriptions(profile.getDbID(), this::fillPrescriptions);
-            dataHandler.getMedications(profile.getDbID(), this::fillMedications);
+            if (profileID != null) {
+                dataHandler.getPrescriptions(profile.getDbID(), this::fillPrescriptions);
+                dataHandler.getMedications(profile.getDbID(), this::fillMedications);
+            }
+            else
+            {
+                binding.prescriptionsList.setAdapter(new PrescriptionAdapter(new ArrayList<>(), buildProfile(), getActivity()));
+                binding.medicationsList.setAdapter(new MedicationAdapter(new ArrayList<>(), getActivity()));
+            }
         }
     }
 

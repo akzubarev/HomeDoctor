@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,9 +30,12 @@ import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.databinding.FragmentPrescriptionBinding;
 import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class PrescriptionFragment extends Fragment implements View.OnClickListener {
@@ -70,6 +74,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
         binding.editButton.setOnClickListener(this);
         binding.addMedicationButton.setOnClickListener(this);
+        binding.endDate.setOnClickListener(view -> prepareDatePickerDialog());
         return binding.getRoot();
     }
 
@@ -171,6 +176,29 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             else
                 Toast.makeText(getContext(), "Нет доступных лекарств", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void prepareDatePickerDialog() {
+        DatePicker datePicker = (DatePicker) DatePicker.inflate(getContext(),
+                R.layout.selector_date, null);
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setView(datePicker)
+                .setPositiveButton("Ок", (dialog1, which) ->
+                        {
+
+                            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy",
+                                    new Locale("ru", "RU"));
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(datePicker.getYear(),
+                                    datePicker.getMonth(),
+                                    datePicker.getDayOfMonth()
+                            );
+                            String text = format.format(calendar.getTime());
+                            binding.endDate.setText(text);
+                        }
+                ).setNegativeButton("Отмена", (dialog1, which) -> {
+                }).show();
     }
 
     private String[] arrayListToArray(List<String> allMedications) {

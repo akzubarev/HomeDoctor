@@ -68,8 +68,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             binding.toggleLoginSignUpTextView.setOnClickListener(this::toggleLoginMode);
             signUpModeActive = false;
             setModeUI();
-            binding.emailEditText.setText("alexkzubarev@gmail.com");
-            binding.passwordEditText.setText("enotoman1a!adsdasd");
         }
     }
 

@@ -64,11 +64,10 @@
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
-        <EditText
+        <TextView
             android:id="@+id/end_date"
-            style="@style/EditText"
-            android:imeOptions="actionDone"
-            android:inputType="text"
+            style="@style/ClickableTextView"
+            android:layout_width="250dp"
             android:text="20.05.2022"
             android:textSize="@dimen/subheading" />
     </LinearLayout>
