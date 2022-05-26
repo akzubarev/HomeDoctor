@@ -47,7 +47,9 @@ public class MedicationFragment extends Fragment {
     String medicationID, medicationStatID;
     Mode mode = Mode.view;
     private boolean working = true;
+
     enum Mode {view, create, edit, add}
+
     private MedicationStats medicationStat;
 
     ArrayList<Profile> profiles = new ArrayList<>();
@@ -105,7 +107,7 @@ public class MedicationFragment extends Fragment {
             dataHandler.getMedicationStats(analogs -> {
                 Stream<MedicationStats> filtered = analogs.stream().filter(ms ->
                         Objects.requireNonNull(medicationStat.getRelationships()
-                                                .getOrDefault(ms.getDbID(), "None"))
+                                        .getOrDefault(ms.getDbID(), "None"))
                                 .equals(MedicationStats.ANALOG)
                 );
                 Stream<MedicationStats> sorted = filtered.sorted(Comparator.comparing(MedicationStats::getName));
@@ -221,14 +223,18 @@ public class MedicationFragment extends Fragment {
 
     private void onSuccessfulSave() {
         binding.cancelButton.setVisibility(View.GONE);
-        if (mode == Mode.create)
-            switchMode(Mode.add);
-        else
-            switchMode(Mode.view);
 
         NotificationHelper notificationHelper = new NotificationHelper(getContext());
         notificationHelper.setUpNotification(NotificationHelper.EXPIRY);
         notificationHelper.setUpNotification(NotificationHelper.SHORTAGE);
+
+        if (mode == Mode.create)
+            switchMode(Mode.add);
+        else if (mode == Mode.edit && medicationID == null) {
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.OwnedMedicationsListFragment);
+        } else
+            switchMode(Mode.view);
     }
 
     public void cancel() {
