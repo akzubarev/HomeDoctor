@@ -20,13 +20,12 @@ import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.data.models.Treatment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MedicationAdapter
         extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
 
-    private ArrayList<Medication> medications;
-    private ArrayList<Medication> medicationsAll;
+    private final ArrayList<Medication> medications;
+    private final ArrayList<Medication> medicationsAll;
     NavController navController;
     private Context context;
 

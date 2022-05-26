@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class ProfilesAdapter
         extends RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder> {
 
-    private ArrayList<Profile> profiles;
+    private final ArrayList<Profile> profiles;
     private Context context;
 
     public Context getContext() {

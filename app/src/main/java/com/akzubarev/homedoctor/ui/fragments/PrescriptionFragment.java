@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PrescriptionFragment extends Fragment implements View.OnClickListener {
@@ -116,7 +117,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
                 if (treatment.getPrescriptionId().equals(prescriptionID)) {
                     if (!treatments.containsKey(treatment.getMedicationId()))
                         treatments.put(treatment.getMedicationId(), new ArrayList<>());
-                    treatments.get(treatment.getMedicationId()).add(treatment);
+                    Objects.requireNonNull(treatments.get(treatment.getMedicationId())).add(treatment);
                     oldTreatments.add(treatment);
                 }
             }
@@ -143,7 +144,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         ArrayList<Treatment> treatments = new ArrayList<>();
         for (String medicationID : treatmentsMap.keySet()) {
             ArrayList<Pair<String, String>> dayTimes = treatmentsMap.get(medicationID);
-            for (Pair<String, String> dayTime : dayTimes)
+            for (Pair<String, String> dayTime : Objects.requireNonNull(dayTimes))
                 treatments.add(new Treatment(medicationID, prescriptionID, profileID, dayTime.first, dayTime.second, 1));
         }
         dataHandler.deleteTreatments(oldTreatments);
@@ -170,9 +171,8 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
                             dialog.dismiss();
                             int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                             addMedication(allMedications.get(selectedPosition));
-                        }).setNegativeButton("Отмена", (dialog, whichButton) -> {
-                            dialog.dismiss();
-                        }).show();
+                        }).setNegativeButton("Отмена", (dialog, whichButton) -> dialog.dismiss())
+                        .show();
             else
                 Toast.makeText(getContext(), "Нет доступных лекарств", Toast.LENGTH_LONG).show();
         }
@@ -182,11 +182,8 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         DatePicker datePicker = (DatePicker) DatePicker.inflate(getContext(),
                 R.layout.selector_date, null);
 
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setView(datePicker)
-                .setPositiveButton("Ок", (dialog1, which) ->
-                        {
-
+        new AlertDialog.Builder(getContext()).setView(datePicker)
+                .setPositiveButton("Ок", (dialog1, which) -> {
                             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy",
                                     new Locale("ru", "RU"));
                             Calendar calendar = Calendar.getInstance();

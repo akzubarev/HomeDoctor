@@ -25,8 +25,8 @@ import java.util.ArrayList;
 public class PrescriptionAdapter
         extends RecyclerView.Adapter<PrescriptionAdapter.PrescriptionViewHolder> {
 
-    private ArrayList<Prescription> prescriptions;
-    private Profile profile;
+    private final ArrayList<Prescription> prescriptions;
+    private final Profile profile;
     private Context context;
 
     public Context getContext() {

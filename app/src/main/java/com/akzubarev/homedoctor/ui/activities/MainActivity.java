@@ -3,24 +3,16 @@ package com.akzubarev.homedoctor.ui.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.databinding.ActivityMainBinding;
-import com.akzubarev.homedoctor.ui.fragments.QRFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {

@@ -15,12 +15,9 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.models.Medication;
-import com.akzubarev.homedoctor.data.models.Prescription;
+import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Treatment;
 import com.akzubarev.homedoctor.ui.activities.MainActivity;
-import com.akzubarev.homedoctor.data.handlers.DataHandler;
-import com.akzubarev.homedoctor.ui.fragments.QRFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,9 +42,6 @@ public class NotificationHelper {
     private static final int PRESCRIPTION_END_ID = 3;
 
     public static final String CLOSE = "close";
-    public static final String DELAY = "delay";
-    public static final String MAKE = "make";
-    public static final String MAKEDELAYED = "makedelayed";
     public static final String OPEN = "open";
     public static final String CONFIRM = "confirm";
 
@@ -83,7 +77,6 @@ public class NotificationHelper {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentText(message)
-//                        .setContentTitle("Напоминание")
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setAutoCancel(false);
@@ -129,25 +122,6 @@ public class NotificationHelper {
         }
     }
 
-    public void repeat() {
-        String[] time = DataHandler.getInstance(context).get("14:00", context).toString().split(":");
-        int hour = Integer.parseInt(time[0]);
-        int minute = Integer.parseInt(time[0]);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
-        setReminder(calendar, MAKE, -1);
-    }
-
-    public void delay() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 10);
-        setReminder(calendar, MAKEDELAYED, -1);
-    }
-
     public PendingIntent makeIntent(int id, String name, String additionalInfo) {
         Intent intent;
         switch (name) {
@@ -169,7 +143,6 @@ public class NotificationHelper {
                 return PendingIntent.getBroadcast(context, 2 + id, intent,
                         PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             case CLOSE:
-            case DELAY:
             case REMIND:
             case SHORTAGE:
             case EXPIRY:

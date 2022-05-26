@@ -16,13 +16,14 @@ import com.akzubarev.homedoctor.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class RemindTimeAdapter
         extends RecyclerView.Adapter<RemindTimeAdapter.RemindTimeViewHolder> {
 
-    private ArrayList<String> dates;
+    private final ArrayList<String> dates;
     private Context context;
-    private ArrayList<RemindTimeViewHolder> viewholders = new ArrayList<>();
+    private final ArrayList<RemindTimeViewHolder> viewholders = new ArrayList<>();
 
     public Context getContext() {
         return context;
@@ -99,7 +100,7 @@ public class RemindTimeAdapter
 //        timePicker.setIs24HourView(StringFormat.is24HourFormat(context));
             timePicker.setIs24HourView(true);
 
-            AlertDialog dialog = new AlertDialog.Builder(v.getContext())
+            new AlertDialog.Builder(v.getContext())
                     .setView(timePicker)
                     .setPositiveButton("Ок", (dialog1, which) ->
                             {
@@ -107,9 +108,8 @@ public class RemindTimeAdapter
                                 remindTime.setText(text);
                             }
                     ).setNeutralButton("Отмена", (dialog1, which) -> {
-                    }).setNegativeButton("Удалить напоминание", (dialog1, which) -> {
-                        deletionCallback.deleteItemFromRV(getAdapterPosition());
-                    }).show();
+                    }).setNegativeButton("Удалить напоминание", (dialog1, which) -> deletionCallback.deleteItemFromRV(getAdapterPosition()))
+                    .show();
         }
 
         private String timeFromPicker(int hour, int minute) {
@@ -117,7 +117,7 @@ public class RemindTimeAdapter
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", new Locale("ru", "ru"));
             return sdf.format(calendar.getTime());
         }
 

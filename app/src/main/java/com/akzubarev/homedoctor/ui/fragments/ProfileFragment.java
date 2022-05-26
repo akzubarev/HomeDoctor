@@ -19,23 +19,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.data.models.MedicationStats;
-import com.akzubarev.homedoctor.ui.adapters.MedicationAdapter;
-import com.akzubarev.homedoctor.ui.adapters.PrescriptionAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
+import com.akzubarev.homedoctor.data.models.MedicationStats;
 import com.akzubarev.homedoctor.data.models.Prescription;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentProfileBinding;
+import com.akzubarev.homedoctor.ui.adapters.MedicationAdapter;
+import com.akzubarev.homedoctor.ui.adapters.PrescriptionAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ProfileFragment extends Fragment {
     String TAG = "ProfileFragment";
@@ -114,7 +110,7 @@ public class ProfileFragment extends Fragment {
         DatePicker datePicker = (DatePicker) DatePicker.inflate(getContext(),
                 R.layout.selector_date, null);
 
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(getContext())
                 .setView(datePicker)
                 .setPositiveButton("Ок", (dialog1, which) ->
                         {
@@ -187,9 +183,8 @@ public class ProfileFragment extends Fragment {
                 .setPositiveButton("Ок", (dialog, whichButton) -> {
                     int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                     binding.gender.setText(genders[selectedPosition]);
-                }).setNegativeButton("Отмена", (dialog, whichButton) -> {
-                    dialog.dismiss();
-                }).show();
+                }).setNegativeButton("Отмена", (dialog, whichButton) -> dialog.dismiss())
+                .show();
     }
 
     @Override

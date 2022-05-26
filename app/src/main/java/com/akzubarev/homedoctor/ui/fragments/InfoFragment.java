@@ -13,19 +13,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewbinding.BuildConfig;
 
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.databinding.FragmentInfoBinding;
-import com.akzubarev.homedoctor.databinding.FragmentSignInBinding;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class InfoFragment extends Fragment {
 
@@ -42,15 +36,9 @@ public class InfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        TextView donate = findViewById(R.id.github);
-//        SpannableString ss = new SpannableString("");
-//        ss.setSpan(new URLSpan(getString(R.string.link)), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        donate.setText(ss);
-//        donate.setMovementMethod(LinkMovementMethod.getInstance());
         try {
             Activity activity = getActivity();
-            PackageManager pcm = activity.getPackageManager();
+            PackageManager pcm = Objects.requireNonNull(activity).getPackageManager();
             String versionName = pcm.getPackageInfo(activity.getPackageName(), 0).versionName;
             TextView versionTV = binding.version;
             String versionTag = "";
@@ -74,12 +62,5 @@ public class InfoFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         return super.onOptionsItemSelected(menuItem);
-    }
-
-
-    public void goToWeb(View view) {
-//        Intent intent = new Intent(this, WebActivity.class);
-//        startActivity(intent);
-//        finish();
     }
 }

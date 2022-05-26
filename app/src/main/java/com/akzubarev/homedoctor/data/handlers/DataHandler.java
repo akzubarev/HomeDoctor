@@ -1,9 +1,6 @@
 package com.akzubarev.homedoctor.data.handlers;
 
 import android.content.Context;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.akzubarev.homedoctor.data.models.BaseModel;
 import com.akzubarev.homedoctor.data.models.Medication;
@@ -17,23 +14,17 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public interface DataHandler {
     static DataHandler getInstance(Context context) {
-        FireBaseHandler fireBaseHandler = new FireBaseHandler(context);
+        FireBaseHandler fireBaseHandler = new FireBaseHandler();
         return fireBaseHandler;
 //        if (fireBaseHandler.initialized())
 //            return fireBaseHandler;
 //        else
 //            return new LocalHandler();
     }
-
-    void save(Object value, String name, Context context);
-
-    Object get(String name, Context context);
-
 
     //region getAll
     void getProfiles(ProfilesCallback callback);
@@ -54,7 +45,6 @@ public interface DataHandler {
 
     void getMedicationStats(MedicationStatsCallback callback);
 
-    void getAllowedProfiles(String medicationID, AllowedProfilesCallback callback);
     //endregion
 
     //region get
@@ -75,13 +65,8 @@ public interface DataHandler {
 
     void saveMedicationStats(MedicationStats medication, EmptyCallback callback);
 
-    void saveMedication(Medication medication);
-
     void savePrescription(Prescription prescription, String profileID);
 
-    void saveTreatments(ArrayList<Treatment> treatments);
-
-    void saveAllowed(String medicationID, ArrayList<String> profileIDs);
     //endregion
 
     //region delete
@@ -166,10 +151,6 @@ public interface DataHandler {
         void onCallback(String message);
     }
 
-    interface StringsCallback {
-        void onCallback(ArrayList<String> strings);
-    }
-
     interface CalendarCallback {
         void onCallback(Calendar calendar);
     }
@@ -212,14 +193,6 @@ public interface DataHandler {
 
     interface ProfilesCallback {
         void onCallback(ArrayList<Profile> profiles);
-    }
-
-    interface UserCallback {
-        void onCallback(User user);
-    }
-
-    interface AllowedProfilesCallback {
-        void onCallback(ArrayList<String> profiles);
     }
 
     interface EmptyCallback {

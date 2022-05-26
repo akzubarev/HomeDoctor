@@ -2,8 +2,6 @@ package com.akzubarev.homedoctor.ui.fragments.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
-import com.akzubarev.homedoctor.ui.adapters.ProfilesAdapter;
-import com.akzubarev.homedoctor.data.handlers.FireBaseHandler;
 import com.akzubarev.homedoctor.data.models.Profile;
 import com.akzubarev.homedoctor.databinding.FragmentProfilesListBinding;
-import com.akzubarev.homedoctor.ui.notifications.NotificationHelper;
+import com.akzubarev.homedoctor.ui.adapters.ProfilesAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ProfilesListFragment extends Fragment {
     private FragmentProfilesListBinding binding;
@@ -42,7 +38,7 @@ public class ProfilesListFragment extends Fragment {
         dataHandler.getProfiles(this::fill);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        binding.email.setText(user.getEmail());
+        binding.email.setText(Objects.requireNonNull(user).getEmail());
         binding.id.setText(user.getUid());
         NavController navController = NavHostFragment.findNavController(this);
         binding.fab.setOnClickListener(view -> navController.navigate(R.id.ProfileFragment));
@@ -56,8 +52,6 @@ public class ProfilesListFragment extends Fragment {
             profiles = profilesData;
             RecyclerView userList = binding.profilesList;
             userList.setHasFixedSize(true);
-//        userList.addItemDecoration(new DividerItemDecoration(
-//                userList.getContext(), DividerItemDecoration.VERTICAL));
             LinearLayoutManager userLayoutManager = new LinearLayoutManager(getContext());
 
             ProfilesAdapter profilesAdapter = new ProfilesAdapter(profiles, getContext());

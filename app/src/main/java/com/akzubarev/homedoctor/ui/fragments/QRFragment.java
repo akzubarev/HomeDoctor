@@ -56,8 +56,8 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
             dataHandler.getTreatment(treatmentID, treatment ->
                     medicationIDToApprove = treatment.getMedicationId());
         }
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 123);
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, 123);
         }
         return binding.getRoot();
     }

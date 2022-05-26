@@ -7,6 +7,7 @@ import com.google.firebase.database.Exclude;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Medication extends BaseModel {
@@ -87,11 +88,6 @@ public class Medication extends BaseModel {
         return allowedProfiles;
     }
 
-    //endregion
-    public void addAllowedProfile(String allowed_profile) {
-        this.allowedProfiles.put(allowed_profile, true);
-    }
-
     @Exclude
     public String getExpiryMessage() {
         return String.format("У %s истекает срок годности (%s)", name, expiryDate);
@@ -99,7 +95,7 @@ public class Medication extends BaseModel {
 
     @Exclude
     public boolean doesExpire(String timeframe, int value) {
-        int daysToExpire = 0;
+        int daysToExpire;
         switch (timeframe) {
             case "дни":
             default:
@@ -165,6 +161,6 @@ public class Medication extends BaseModel {
 
     @Exclude
     public String getShortageMessage() {
-        return String.format("Заканчивается %s, осталось на %d приемов\n", name, amount);
+        return String.format(new Locale("ru", "ru"), "Заканчивается %s, осталось на %d приемов\n", name, amount);
     }
 }

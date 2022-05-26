@@ -1,23 +1,9 @@
 package com.akzubarev.homedoctor.data.models;
 
-import java.util.ArrayList;
-
 public class Profile extends BaseModel {
     private String name = "";
     private String gender = "Другой";
     private String birthday = "";
-
-    public Profile(String name, String gender, String birthday, ArrayList<Prescription> prescriptions) {
-        this.name = name;
-        this.gender = gender;
-        this.birthday = birthday;
-    }
-
-    public Profile(String name, String gender, String birthday) {
-        this.name = name;
-        this.gender = gender;
-        this.birthday = birthday;
-    }
 
     public Profile() {
     }

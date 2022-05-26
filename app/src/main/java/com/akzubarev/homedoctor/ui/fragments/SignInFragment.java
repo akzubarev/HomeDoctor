@@ -22,25 +22,16 @@ import com.akzubarev.homedoctor.data.models.User;
 import com.akzubarev.homedoctor.databinding.FragmentSignInBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class SignInFragment extends Fragment implements View.OnClickListener {
 
-    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private static final String TAG = "SignInFragment";
 
     private boolean signUpModeActive;
     private FragmentSignInBinding binding;
-
-//    private FirebaseDatabase database;
-//    private DatabaseReference usersDatabaseReference;
-
 
     @Nullable
     @Override
@@ -52,7 +43,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
         binding.loginSignUpButton.setOnClickListener(this);
@@ -112,12 +102,12 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
         if (signUpModeActive)
             mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(getActivity(), task -> {
+                    .addOnCompleteListener(requireActivity(), task -> {
                         Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
                             FirebaseUser user = task.getResult().getUser();
-                            String username = usernameFromEmail(user.getEmail());
+                            String username = usernameFromEmail(Objects.requireNonNull(Objects.requireNonNull(user).getEmail()));
                             writeNewUser(user, username, user.getEmail());
                             sign();
                         } else {
@@ -127,7 +117,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                     });
         else
             mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(getActivity(), task -> {
+                    .addOnCompleteListener(requireActivity(), task -> {
                         Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
@@ -155,13 +145,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         DataHandler dataHandler = DataHandler.getInstance(getContext());
         dataHandler.createUser(fbUser, user);
 
-        String morningTime = "10:00";
-        Boolean control = false;
-        String expireTimeFrame = "недели";
-        int expiryValue = 3;
-        String shortageMethod = "Количество";
-        int shortageValue = 1;
-        dataHandler.saveSettings(morningTime, control, expireTimeFrame, expiryValue, shortageMethod, shortageValue, () -> {
+        dataHandler.saveSettings("10:00", false, "недели", 3, "Количество", 1, () -> {
         });
     }
 

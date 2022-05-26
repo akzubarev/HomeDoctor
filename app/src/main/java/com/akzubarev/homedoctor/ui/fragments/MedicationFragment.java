@@ -3,18 +3,14 @@ package com.akzubarev.homedoctor.ui.fragments;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +36,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,10 +47,7 @@ public class MedicationFragment extends Fragment {
     String medicationID, medicationStatID;
     Mode mode = Mode.view;
     private boolean working = true;
-
     enum Mode {view, create, edit, add}
-
-    //    Medication medication;
     private MedicationStats medicationStat;
 
     ArrayList<Profile> profiles = new ArrayList<>();
@@ -81,11 +75,6 @@ public class MedicationFragment extends Fragment {
                 switchMode(Mode.create);
             else {
                 dataHandler.getMedicationStat(medicationStatID, this::fillStat);
-//            configureSpinner(binding.durationSpinner, R.array.duration_dropdown, (int choice) -> {
-//                String[] options = getResources().getStringArray(R.array.duration_dropdown);
-//                String duration = options[choice];
-////            DataReader.SaveInt(goal_minutes, "", getContext());
-//            }, 0); // DataReader.GetInt(DataReader.GOAL, getContext()) / 5 - 1);
             }
         }
 
@@ -115,8 +104,8 @@ public class MedicationFragment extends Fragment {
             switchMode(mode);
             dataHandler.getMedicationStats(analogs -> {
                 Stream<MedicationStats> filtered = analogs.stream().filter(ms ->
-                        medicationStat.getRelationships().
-                                getOrDefault(ms.getDbID(), "None")
+                        Objects.requireNonNull(medicationStat.getRelationships()
+                                                .getOrDefault(ms.getDbID(), "None"))
                                 .equals(MedicationStats.ANALOG)
                 );
                 Stream<MedicationStats> sorted = filtered.sorted(Comparator.comparing(MedicationStats::getName));
@@ -204,33 +193,6 @@ public class MedicationFragment extends Fragment {
         }
     }
 
-    public interface SpinnerCallback {
-        void onCallback(int choice);
-    }
-
-    private void configureSpinner(Spinner spinner, int arrayID, SpinnerCallback callback, int choice_index) {
-        String[] state = getResources().getStringArray(arrayID);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                R.layout.spinner_row, R.id.spinner_row_text, state);
-        spinner.setGravity(Gravity.END);
-        adapter.setDropDownViewResource(R.layout.spinner_row_unfolded);
-
-        spinner.setAdapter(adapter);
-        spinner.setSelection(choice_index);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
-                callback.onCallback(selectedItemPosition);
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-//        int offset = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -80, getResources().getDisplayMetrics());
-//        spinner.setDropDownHorizontalOffset(offset);
-
-    }
-
     private void saveMedication() {
         if (mode == Mode.create) {
             MedicationStats medStat = buildMedicationStat();
@@ -312,7 +274,6 @@ public class MedicationFragment extends Fragment {
                 handleDialogResult();
                 for (int i = 0; i < profiles.size(); i++)
                     allowed.put(profiles.get(i).getDbID(), allowedIdx.contains(i));
-//            dataHandler.saveAllowed(medicationID, allowed);
             });
         }));
     }
@@ -321,7 +282,7 @@ public class MedicationFragment extends Fragment {
         DatePicker datePicker = (DatePicker) DatePicker.inflate(getContext(),
                 R.layout.selector_date, null);
 
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(getContext())
                 .setView(datePicker)
                 .setPositiveButton("Ок", (dialog1, which) ->
                         {

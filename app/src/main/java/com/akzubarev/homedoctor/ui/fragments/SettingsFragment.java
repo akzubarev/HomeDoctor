@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class SettingsFragment extends Fragment {
 
@@ -45,7 +46,6 @@ public class SettingsFragment extends Fragment {
         dataHandler.getShortageSettings((method, value) -> {
             if (working) {
                 ArrayList<String> options = new ArrayList<>(Arrays.asList("Количество", "По неделям"));
-                //(Arrays.asList(getResources().getStringArray(R.array.method_dropdown)));
                 binding.shortageMethod.setSelection(options.indexOf(method));
                 binding.shortageMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
@@ -55,7 +55,6 @@ public class SettingsFragment extends Fragment {
                             binding.shortageText.setText("Недель до конца приемов");
                         saveSettings();
                     }
-
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
@@ -64,8 +63,6 @@ public class SettingsFragment extends Fragment {
         });
 
         dataHandler.getExpirySettings((timeframe, value) -> {
-//            ArrayList<String> options = new ArrayList<>(Arrays.asList("Системная", "Темная", "Светлая"));
-            //(Arrays.asList(getResources().getStringArray(R.array.theme_dropdown)));
             ArrayList<String> options = new ArrayList<>(Arrays.asList("дни", "недели", "месяцы"));
             binding.expiryTimeframe.setSelection(options.indexOf(timeframe));
             binding.expiryValue.setText(Integer.toString(value));
@@ -84,8 +81,7 @@ public class SettingsFragment extends Fragment {
         TimePicker timePicker = (TimePicker) TimePicker.inflate(getContext(), R.layout.selector_time, null);
         timePicker.setIs24HourView(true);
 
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setView(timePicker)
+        new AlertDialog.Builder(getContext()).setView(timePicker)
                 .setPositiveButton("Ок", (dialog1, which) ->
                         {
                             String text = timeFromPicker(timePicker.getHour(), timePicker.getMinute());
@@ -100,35 +96,13 @@ public class SettingsFragment extends Fragment {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", new Locale("ru", "ru"));
         return sdf.format(calendar.getTime());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        configureSpinner(binding.themeSpinner, R.array.theme_dropdown, (int choice) -> {
-//            String[] options = getResources().getStringArray(R.array.theme_dropdown);
-//            String theme;
-////            saveSettings();
-//            switch (choice) {
-//                case 0:
-//                    theme = "system";
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-//                    break;
-//                case 1:
-//                    theme = "dark";
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                    break;
-//                case 2:
-//                    theme = "light";
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                    break;
-//
-//            }
-//        }, 0);
-
     }
 
     void saveSettings() {

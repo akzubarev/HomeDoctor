@@ -2,19 +2,14 @@ package com.akzubarev.homedoctor.ui.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,13 +22,12 @@ import com.akzubarev.homedoctor.data.models.MedicationStats;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class MedicationStatsAdapter
         extends RecyclerView.Adapter<MedicationStatsAdapter.MedicationStatsViewHolder> {
     private static final String TAG = "MedicationStatsAdapter";
-    private ArrayList<MedicationStats> medicationStats;
-    private ArrayList<MedicationStats> medicationStatsAll;
+    private final ArrayList<MedicationStats> medicationStats;
+    private final ArrayList<MedicationStats> medicationStatsAll;
     HashMap<String, String> actualMeds = new HashMap<>();
     NavController navController;
     private Context context;

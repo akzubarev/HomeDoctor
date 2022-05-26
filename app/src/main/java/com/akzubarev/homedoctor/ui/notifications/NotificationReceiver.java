@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.fragment.NavHostFragment;
-
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 
 import java.text.SimpleDateFormat;
@@ -27,15 +23,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         switch (action) {
             case NotificationHelper.CLOSE:
                 notificationHelper.cancel(id);
-                notificationHelper.repeat();
-                break;
-            case NotificationHelper.DELAY:
-                notificationHelper.cancel(id);
-                notificationHelper.delay();
                 break;
             case NotificationHelper.REMIND:
                 notificationHelper.createReminderNotification();
-//                notificationHelper.repeat();
                 break;
             case NotificationHelper.EXPIRY:
                 notificationHelper.createExpiryNotification();

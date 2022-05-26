@@ -1,10 +1,7 @@
 package com.akzubarev.homedoctor.data.models;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.database.Exclude;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,36 +42,6 @@ public class MedicationStats extends BaseModel {
     }
 
     public MedicationStats() {
-    }
-
-    public MedicationStats(String name, String group, String form) {
-        this.name = name;
-        this.group = group;
-        this.form = form;
-    }
-
-
-    public String serialize() {
-        String json = "";
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            json = objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return json;
-    }
-
-    public static MedicationStats deserialize(String json) {
-        if (!json.isEmpty()) {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                return objectMapper.readValue(json, MedicationStats.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
     }
 
     @Override

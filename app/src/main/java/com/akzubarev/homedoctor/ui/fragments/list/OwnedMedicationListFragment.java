@@ -2,8 +2,6 @@ package com.akzubarev.homedoctor.ui.fragments.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +12,14 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akzubarev.homedoctor.R;
-import com.akzubarev.homedoctor.ui.adapters.MedicationAdapter;
 import com.akzubarev.homedoctor.data.handlers.DataHandler;
 import com.akzubarev.homedoctor.data.models.Medication;
 import com.akzubarev.homedoctor.databinding.FragmentMedicationListOwnedBinding;
-import com.google.firebase.auth.FirebaseAuth;
+import com.akzubarev.homedoctor.ui.adapters.MedicationAdapter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -58,8 +54,6 @@ public class OwnedMedicationListFragment extends Fragment {
             medications = (ArrayList<Medication>) medications.stream().sorted(Comparator.comparing(Medication::getName)).collect(Collectors.toList());
             RecyclerView medicationsList = binding.medicationsList;
             medicationsList.setHasFixedSize(true);
-//        medicationsList.addItemDecoration(new DividerItemDecoration(
-//                medicationsList.getContext(), DividerItemDecoration.VERTICAL));
             LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
 
             MedicationAdapter medicationsAdapter = new MedicationAdapter(medications, getActivity());
