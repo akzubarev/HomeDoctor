@@ -143,6 +143,8 @@ public interface DataHandler {
 
     void getOldTreatments(TreatmentsCallback callback);
 
+    void saveTreatments(ArrayList<Treatment> treatments, EmptyCallback callback);
+
     //endregion
 
     //region callbacksget

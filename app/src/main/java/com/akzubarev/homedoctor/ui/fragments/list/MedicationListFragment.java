@@ -33,9 +33,11 @@ import java.util.stream.Collectors;
 public class MedicationListFragment extends Fragment {
     private final String TAG = "MedicationListFragment";
     private FragmentMedicationListBinding binding;
+    private boolean working = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        working = true;
         binding = FragmentMedicationListBinding.inflate(inflater, container, false);
         DataHandler.getInstance(getContext()).getMedicationStats(this::fill);
         NavController navController = NavHostFragment.findNavController(this);
@@ -47,33 +49,35 @@ public class MedicationListFragment extends Fragment {
     }
 
     private void fill(ArrayList<MedicationStats> medications) {
-        medications = (ArrayList<MedicationStats>) medications.stream().sorted(Comparator.comparing(MedicationStats::getName)).collect(Collectors.toList());
-        RecyclerView medicationsList = binding.medicationsList;
-        medicationsList.setHasFixedSize(true);
+        if (working) {
+            medications = (ArrayList<MedicationStats>) medications.stream().sorted(Comparator.comparing(MedicationStats::getName)).collect(Collectors.toList());
+            RecyclerView medicationsList = binding.medicationsList;
+            medicationsList.setHasFixedSize(true);
 //        medicationsList.addItemDecoration(new DividerItemDecoration(
 //                medicationsList.getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
+            LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
 
-        MedicationStatsAdapter medicationsAdapter = new MedicationStatsAdapter(medications, getActivity());
-        medicationsList.setLayoutManager(medicationsLayoutManager);
-        medicationsList.setAdapter(medicationsAdapter);
+            MedicationStatsAdapter medicationsAdapter = new MedicationStatsAdapter(medications, getActivity());
+            medicationsList.setLayoutManager(medicationsLayoutManager);
+            medicationsList.setAdapter(medicationsAdapter);
 
-        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                medicationsAdapter.filter(query);
-                return true;
-            }
+            binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    medicationsAdapter.filter(query);
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String query) {
-                Log.d(TAG, query);
-                medicationsAdapter.filter(query);
-                return true;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    Log.d(TAG, query);
+                    medicationsAdapter.filter(query);
+                    return true;
+                }
+            });
 
-        binding.search.setOnClickListener(v -> binding.search.setIconified(false));
+            binding.search.setOnClickListener(v -> binding.search.setIconified(false));
+        }
     }
 
     @Override
@@ -88,6 +92,7 @@ public class MedicationListFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        working = false;
         super.onDestroyView();
         binding = null;
     }

@@ -13,7 +13,7 @@
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:padding="4dp"
         android:scrollbars="vertical"
-        tools:itemCount="3"
+        tools:itemCount="0"
         tools:listitem="@layout/block_old_treatment" />
 
 </LinearLayout>

@@ -55,7 +55,9 @@ public class OldTreatmentsAdapter
         Treatment treat = treatments.get(idx);
 
         viewHolder.name.setText(treat.getMedicationId());
-        viewHolder.datetime.setText(treat.getTime() + " " + treat.getDay());
+        viewHolder.datetime.setText(treat.getTime() + " " + treat.getDay().replaceAll("-", "."));
+        viewHolder.prescription.setText(treat.getPrescriptionId());
+        viewHolder.profile.setText(treat.getProfileID());
     }
 
     @Override
@@ -67,11 +69,16 @@ public class OldTreatmentsAdapter
 
         TextView name;
         TextView datetime;
+        TextView prescription;
+        TextView profile;
+
 
         public OldTreatmentViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.med_name);
             datetime = itemView.findViewById(R.id.treat_datetime);
+            prescription = itemView.findViewById(R.id.prescription_name);
+            profile = itemView.findViewById(R.id.profile_name);
         }
 
     }

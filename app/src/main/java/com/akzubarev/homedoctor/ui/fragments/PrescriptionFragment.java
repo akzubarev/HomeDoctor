@@ -45,8 +45,11 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     HashMap<String, Medication> medicationsMap;
     TreatmentTimeAdapter adapter;
 
+    private boolean working = true;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        working = true;
         setHasOptionsMenu(true);
         binding = FragmentPrescriptionBinding.inflate(inflater, container, false);
 
@@ -55,8 +58,10 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             profileID = bundle.getString("Profile");
             prescriptionID = bundle.getString("Prescription");
             dataHandler = DataHandler.getInstance(getContext());
-            Log.d(TAG, profileID);
-            Log.d(TAG, prescriptionID);
+            if (prescriptionID != null)
+                Log.d(TAG, profileID);
+            if (prescriptionID != null)
+                Log.d(TAG, prescriptionID);
             if (prescriptionID != null)
                 dataHandler.getPrescription(profileID, prescriptionID, this::fill);
             else
@@ -76,36 +81,42 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     }
 
     private void fill(Prescription prescription) {
-        binding.name.setText(prescription.getName());
-        binding.endDate.setText(prescription.getEndDate());
-        binding.diagnosis.setText(prescription.getDiagnosis());
-        binding.autoOff.setChecked(prescription.getAutoDisable());
+        if (working) {
+            binding.name.setText(prescription.getName());
+            binding.endDate.setText(prescription.getEndDate());
+            binding.diagnosis.setText(prescription.getDiagnosis());
+            binding.autoOff.setChecked(prescription.getAutoDisable());
 
-        dataHandler.getTreatments(prescriptionID, this::fillTreatments);
+            dataHandler.getTreatments(prescriptionID, this::fillTreatments);
+        }
     }
 
     private void fillMedications(ArrayList<Medication> medications) {
-        allMedications = medications;
-        medicationsMap = new HashMap<>();
-        for (Medication med : dataHandler.filter(medications, new ArrayList<>(treatments.keySet())))
-            medicationsMap.put(med.getDbID(), med);
+        if (working) {
+            allMedications = medications;
+            medicationsMap = new HashMap<>();
+            for (Medication med : dataHandler.filter(medications, new ArrayList<>(treatments.keySet())))
+                medicationsMap.put(med.getDbID(), med);
 
-        configureRecyclerView(binding.medicationsList);
-        adapter = new TreatmentTimeAdapter(treatments, medicationsMap, getActivity());
-        binding.medicationsList.setAdapter(adapter);
+            configureRecyclerView(binding.medicationsList);
+            adapter = new TreatmentTimeAdapter(treatments, medicationsMap, getActivity());
+            binding.medicationsList.setAdapter(adapter);
+        }
     }
 
     private void fillTreatments(ArrayList<Treatment> treatmentsList) {
-        treatments = new HashMap<>();
-        for (Treatment treatment : treatmentsList) {
-            if (treatment.getPrescriptionId().equals(prescriptionID)) {
-                if (!treatments.containsKey(treatment.getMedicationId()))
-                    treatments.put(treatment.getMedicationId(), new ArrayList<>());
-                treatments.get(treatment.getMedicationId()).add(treatment);
-                oldTreatments.add(treatment);
+        if (working) {
+            treatments = new HashMap<>();
+            for (Treatment treatment : treatmentsList) {
+                if (treatment.getPrescriptionId().equals(prescriptionID)) {
+                    if (!treatments.containsKey(treatment.getMedicationId()))
+                        treatments.put(treatment.getMedicationId(), new ArrayList<>());
+                    treatments.get(treatment.getMedicationId()).add(treatment);
+                    oldTreatments.add(treatment);
+                }
             }
+            dataHandler.getMedications(profileID, this::fillMedications);
         }
-        dataHandler.getMedications(profileID, this::fillMedications);
     }
 
     private Prescription buildPrescription() {
@@ -130,9 +141,9 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             for (Pair<String, String> dayTime : dayTimes)
                 treatments.add(new Treatment(medicationID, prescriptionID, profileID, dayTime.first, dayTime.second, 1));
         }
-
         dataHandler.deleteTreatments(oldTreatments);
-        dataHandler.saveTreatments(treatments);
+        dataHandler.saveTreatments(treatments, this::setAlarm);
+        oldTreatments = treatments;
         setAlarm();
     }
 
@@ -200,6 +211,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onDestroyView() {
+        working = false;
         super.onDestroyView();
         binding = null;
     }

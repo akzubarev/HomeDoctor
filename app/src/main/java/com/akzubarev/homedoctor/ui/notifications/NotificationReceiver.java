@@ -48,18 +48,26 @@ public class NotificationReceiver extends BroadcastReceiver {
                 String treatmentID = intent.getStringExtra("treatmentID");
                 Log.d("Received notification", treatmentID);
                 if (!treatmentID.isEmpty())
-                    dataHandler.getTreatment(treatmentID, treatment -> {
-                                dataHandler.getMedication(treatment.getMedicationId(), medication -> {
-                                    medication.take();
-                                    dataHandler.saveMedication(medication);
-                                });
-                                Calendar calendar = Calendar.getInstance();
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru"));
-                                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", new Locale("ru"));
-                                treatment.setDay(dateFormat.format(calendar.getTime()));
-                                treatment.setTime(timeFormat.format(calendar.getTime()));
-                                dataHandler.saveOldTreatment(treatment);
-                            }
+                    dataHandler.getTreatment(treatmentID, treatment ->
+                            dataHandler.getProfile(treatment.getProfileID(), profile ->
+                                    dataHandler.getPrescription(treatment.getProfileID(), treatment.getPrescriptionId(), prescription ->
+                                            dataHandler.getMedication(treatment.getMedicationId(), medication -> {
+                                                        medication.take();
+                                                        dataHandler.saveMedication(medication);
+
+                                                        Calendar calendar = Calendar.getInstance();
+                                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru"));
+                                                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", new Locale("ru"));
+                                                        treatment.setDay(dateFormat.format(calendar.getTime()));
+                                                        treatment.setTime(timeFormat.format(calendar.getTime()));
+                                                        treatment.setPrescriptionId(prescription.getName());
+                                                        treatment.setProfileID(profile.getName());
+                                                        dataHandler.saveOldTreatment(treatment);
+                                                        notificationHelper.cancel(id);
+                                                    }
+                                            )
+                                    )
+                            )
                     );
                 break;
         }

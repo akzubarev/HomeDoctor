@@ -28,6 +28,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Optional;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -37,6 +40,7 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
     private NavController navController;
     private ZXingScannerView mScannerView;
     private String medicationIDToApprove;
+    private String treatmentID;
     DataHandler dataHandler;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,7 +51,8 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
         navController = NavHostFragment.findNavController(this);
         if (bundle != null) {
             Log.d(TAG, bundle.getString("treatmentID"));
-            dataHandler.getTreatment(bundle.getString("treatmentID"), treatment ->
+            treatmentID = bundle.getString("treatmentID");
+            dataHandler.getTreatment(treatmentID, treatment ->
                     medicationIDToApprove = treatment.getMedicationId());
         }
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
@@ -145,35 +150,49 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
         }
     }
 
-    private void checkIdOk(Optional<MedicationStats> medStat, Optional<Medication> medication, AlertDialog.Builder builder) {
-        if (medStat.isPresent() && medication.isPresent()) {
-            Medication med = medication.get();
+    private void checkIdOk(Optional<MedicationStats> medStatOps, Optional<Medication> medOps, AlertDialog.Builder builder) {
+        if (medStatOps.isPresent() && medOps.isPresent()) {
+            MedicationStats medStat = medStatOps.get();
+            Medication med = medOps.get();
             if (med.getDbID().equals(medicationIDToApprove)) {
-                med.take();
-                dataHandler.saveMedication(med);
-                builder.setTitle(medStat.get().getName())
-                        .setMessage("Лекарство подтверждено")
-                        .setPositiveButton("Открыть лекарство", (dialog, id) -> {
-                            String medID = medStat.get().getDbID();
-                            navController = NavHostFragment.findNavController(this);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("Medication", med.getDbID());
-                            bundle.putBoolean("Add", false);
-                            bundle.putString("MedicationStat", medID);
-                            navController.navigate(R.id.MedicationFragment, bundle);
-                        })
-                        .setNegativeButton("На главную", (dialog, id) -> {
-                            dialog.dismiss();
-                            navController.navigate(R.id.profiles_list);
-                        });
-            }
-            else {
+                dataHandler.getTreatment(treatmentID, treatment -> {
+                            dataHandler.getMedication(treatment.getMedicationId(), medication -> {
+                                medication.take();
+                                dataHandler.saveMedication(medication);
+                            });
+                            Calendar calendar = Calendar.getInstance();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", new Locale("ru"));
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", new Locale("ru"));
+                            treatment.setDay(dateFormat.format(calendar.getTime()));
+                            treatment.setTime(timeFormat.format(calendar.getTime()));
+                            dataHandler.saveOldTreatment(treatment);
+
+                            builder.setTitle(medStat.getName())
+                                    .setMessage("Лекарство подтверждено")
+                                    .setPositiveButton("Открыть лекарство", (dialog, id) -> {
+                                        String medID = medStat.getDbID();
+                                        navController = NavHostFragment.findNavController(this);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("Medication", med.getDbID());
+                                        bundle.putBoolean("Add", false);
+                                        bundle.putString("MedicationStat", medID);
+                                        navController.navigate(R.id.MedicationFragment, bundle);
+                                    })
+                                    .setNegativeButton("На главную", (dialog, id) -> {
+                                        dialog.dismiss();
+                                        navController.navigate(R.id.profiles_list);
+                                    });
+                            builder.show();
+                        }
+                );
+            } else {
                 builder.setTitle("Ошибка")
                         .setMessage("Лекарство отсканировано не верно")
-                        .setPositiveButton("Поробовать снова", (dialog, id) -> {
+                        .setPositiveButton("Попробовать снова", (dialog, id) -> {
                             dialog.dismiss();
                             mScannerView.resumeCameraPreview(this);
                         });
+                builder.show();
             }
         } else {
             builder.setTitle("Ошибка")
@@ -182,8 +201,8 @@ public class QRFragment extends Fragment implements ZXingScannerView.ResultHandl
                         dialog.dismiss();
                         mScannerView.resumeCameraPreview(this);
                     });
+            builder.show();
         }
-        builder.show();
     }
 
 

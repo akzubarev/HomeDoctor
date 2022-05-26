@@ -1,5 +1,7 @@
 package com.akzubarev.homedoctor.data.models;
 
+import android.util.Log;
+
 import com.google.firebase.database.Exclude;
 
 import java.text.SimpleDateFormat;
@@ -107,8 +109,9 @@ public class Treatment extends BaseModel {
         calendar.set(Calendar.MINUTE, minutes);
         calendar.set(Calendar.SECOND, 0);
 
-        if (calendar.getTime().compareTo(new Date()) < 0)
+        if (calendar.getTime().compareTo(new Date()) <= 0)
             calendar.add(Calendar.DAY_OF_MONTH, 7);
+        Log.d("ABSOLUTE_TIME " + getTime(), String.valueOf(calendar.getTime()));
         return calendar;
     }
 
@@ -128,6 +131,6 @@ public class Treatment extends BaseModel {
 
     @Exclude
     public String getNotification(String profileName, String prescriptionName, String medicationName) {
-        return String.format("%s для профиля %s по схеме %s", medicationName, profileName, prescriptionName);
+        return String.format("%s для профиля %s по схеме %s: %s", medicationName, profileName, prescriptionName, time);
     }
 }

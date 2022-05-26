@@ -31,10 +31,12 @@ import java.util.ArrayList;
 public class ProfilesListFragment extends Fragment {
     private FragmentProfilesListBinding binding;
     ArrayList<Profile> profiles = new ArrayList<>();
+    private boolean working = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        working = true;
         binding = FragmentProfilesListBinding.inflate(inflater, container, false);
         DataHandler dataHandler = DataHandler.getInstance(getContext());
         dataHandler.getProfiles(this::fill);
@@ -45,24 +47,24 @@ public class ProfilesListFragment extends Fragment {
         NavController navController = NavHostFragment.findNavController(this);
         binding.fab.setOnClickListener(view -> navController.navigate(R.id.ProfileFragment));
 
-        new NotificationHelper(getContext()).createReminderNotification();
         return binding.getRoot();
     }
 
 
     private void fill(ArrayList<Profile> profilesData) {
-        profiles = profilesData;
-        RecyclerView userList = binding.profilesList;
-        userList.setHasFixedSize(true);
+        if (working) {
+            profiles = profilesData;
+            RecyclerView userList = binding.profilesList;
+            userList.setHasFixedSize(true);
 //        userList.addItemDecoration(new DividerItemDecoration(
 //                userList.getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager userLayoutManager = new LinearLayoutManager(getContext());
+            LinearLayoutManager userLayoutManager = new LinearLayoutManager(getContext());
 
-        ProfilesAdapter profilesAdapter = new ProfilesAdapter(profiles, getContext());
-        userList.setLayoutManager(userLayoutManager);
-        userList.setAdapter(profilesAdapter);
+            ProfilesAdapter profilesAdapter = new ProfilesAdapter(profiles, getContext());
+            userList.setLayoutManager(userLayoutManager);
+            userList.setAdapter(profilesAdapter);
+        }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -74,8 +76,10 @@ public class ProfilesListFragment extends Fragment {
             return super.onOptionsItemSelected(menuItem);
     }
 
+
     @Override
     public void onDestroyView() {
+        working = false;
         super.onDestroyView();
         binding = null;
     }

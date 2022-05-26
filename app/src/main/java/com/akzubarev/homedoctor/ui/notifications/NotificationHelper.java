@@ -192,24 +192,27 @@ public class NotificationHelper {
     public void createReminderNotification() {
         datahandler.getCurrentReminder(treatments -> {
             int count = 0;
-            for (Treatment treatment : treatments) {
-                int notificationID = REMINDER_ID + count++;
-                datahandler.getControlSettings(control ->
-                        datahandler.getProfile(treatment.getProfileID(), profile ->
-                                datahandler.getMedication(treatment.getMedicationId(), medication ->
-                                        datahandler.getPrescription(treatment.getProfileID(),
-                                                treatment.getPrescriptionId(),
-                                                prescription ->
-                                                {
-                                                    String message = treatment.getNotification(profile.getName(), prescription.getName(), medication.getName());
-                                                    createNotification(notificationID, message, treatment.getDbID(), control);
-                                                    Log.d("Creating notification", treatment.getDbID());
-                                                    datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
-                                                })
-                                )
-                        )
-                );
-            }
+            if (treatments.size() == 0)
+                datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
+            else
+                for (Treatment treatment : treatments) {
+                    int notificationID = REMINDER_ID + count++;
+                    datahandler.getControlSettings(control ->
+                            datahandler.getProfile(treatment.getProfileID(), profile ->
+                                    datahandler.getMedication(treatment.getMedicationId(), medication ->
+                                            datahandler.getPrescription(treatment.getProfileID(),
+                                                    treatment.getPrescriptionId(),
+                                                    prescription ->
+                                                    {
+                                                        String message = treatment.getNotification(profile.getName(), prescription.getName(), medication.getName());
+                                                        createNotification(notificationID, message, treatment.getDbID(), control);
+                                                        Log.d("Creating notification", treatment.getDbID());
+                                                        datahandler.getNextReminderTime(calendar -> setReminder(calendar, REMIND));
+                                                    })
+                                    )
+                            )
+                    );
+                }
         });
 
     }

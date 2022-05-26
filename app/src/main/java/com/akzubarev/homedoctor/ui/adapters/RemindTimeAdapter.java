@@ -73,6 +73,7 @@ public class RemindTimeAdapter
 
     private void deleteItem(int position) {
         dates.remove(position);
+        viewholders.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, dates.size());
     }

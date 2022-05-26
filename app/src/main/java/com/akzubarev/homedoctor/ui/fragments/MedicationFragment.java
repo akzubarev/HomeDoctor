@@ -49,6 +49,7 @@ public class MedicationFragment extends Fragment {
     DataHandler dataHandler;
     String medicationID, medicationStatID;
     Mode mode = Mode.view;
+    private boolean working = true;
 
     enum Mode {view, create, edit, add}
 
@@ -62,7 +63,7 @@ public class MedicationFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        working = true;
         binding = FragmentMedicationBinding.inflate(inflater, container, false);
         dataHandler = DataHandler.getInstance(getContext());
         setHasOptionsMenu(true);
@@ -100,46 +101,50 @@ public class MedicationFragment extends Fragment {
     }
 
     private void fillStat(MedicationStats medicationStats) {
-        this.medicationStat = medicationStats;
-        binding.nameEditText.setText(medicationStats.getName());
-        binding.form.setText(medicationStats.getForm());
-        binding.group.setText(medicationStats.getGroup());
-        binding.idText.setText(medicationStats.getDbID());
-        if (medicationID != null)
-            dataHandler.getMedication(medicationID, this::fillMedication);
+        if (working) {
+            this.medicationStat = medicationStats;
+            binding.nameEditText.setText(medicationStats.getName());
+            binding.form.setText(medicationStats.getForm());
+            binding.group.setText(medicationStats.getGroup());
+            binding.idText.setText(medicationStats.getDbID());
+            if (medicationID != null)
+                dataHandler.getMedication(medicationID, this::fillMedication);
 
-        switchMode(mode);
-        dataHandler.getMedicationStats(analogs -> {
-            Stream<MedicationStats> filtered = analogs.stream().filter(ms ->
-                    medicationStat.getRelationships().
-                            getOrDefault(ms.getDbID(), "None")
-                            .equals(MedicationStats.ANALOG)
-            );
-            Stream<MedicationStats> sorted = filtered.sorted(Comparator.comparing(MedicationStats::getName));
-            analogs = (ArrayList<MedicationStats>) sorted.collect(Collectors.toList());
+            switchMode(mode);
+            dataHandler.getMedicationStats(analogs -> {
+                Stream<MedicationStats> filtered = analogs.stream().filter(ms ->
+                        medicationStat.getRelationships().
+                                getOrDefault(ms.getDbID(), "None")
+                                .equals(MedicationStats.ANALOG)
+                );
+                Stream<MedicationStats> sorted = filtered.sorted(Comparator.comparing(MedicationStats::getName));
+                analogs = (ArrayList<MedicationStats>) sorted.collect(Collectors.toList());
 
-            if (analogs.size() > 0)
-                binding.noAnalogs.setVisibility(View.GONE);
-            else
-                binding.noAnalogs.setVisibility(View.VISIBLE);
+                if (analogs.size() > 0)
+                    binding.noAnalogs.setVisibility(View.GONE);
+                else
+                    binding.noAnalogs.setVisibility(View.VISIBLE);
 
 
-            RecyclerView medicationsList = binding.analogs;
-            medicationsList.setHasFixedSize(true);
-            LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
-            MedicationStatsAdapter medicationsAdapter = new MedicationStatsAdapter(analogs, getActivity());
-            medicationsList.setLayoutManager(medicationsLayoutManager);
-            medicationsList.setAdapter(medicationsAdapter);
-        });
+                RecyclerView medicationsList = binding.analogs;
+                medicationsList.setHasFixedSize(true);
+                LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
+                MedicationStatsAdapter medicationsAdapter = new MedicationStatsAdapter(analogs, getActivity());
+                medicationsList.setLayoutManager(medicationsLayoutManager);
+                medicationsList.setAdapter(medicationsAdapter);
+            });
+        }
     }
 
     private void fillMedication(Medication medication) {
-        binding.medicationLayout.setVisibility(View.VISIBLE);
-        binding.amount.setText(String.valueOf(medication.getAmount()));
-        binding.expiryDateEditText.setText(medication.getExpiryDate());
-        binding.notify.setChecked(medication.getReminders());
-        allowed = new HashMap<>(medication.getAllowedProfiles());
-        prepareProfileChoiceDialog();
+        if (working) {
+            binding.medicationLayout.setVisibility(View.VISIBLE);
+            binding.amount.setText(String.valueOf(medication.getAmount()));
+            binding.expiryDateEditText.setText(medication.getExpiryDate());
+            binding.notify.setChecked(medication.getReminders());
+            allowed = new HashMap<>(medication.getAllowedProfiles());
+            prepareProfileChoiceDialog();
+        }
     }
 
 
@@ -388,6 +393,7 @@ public class MedicationFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        working = false;
         super.onDestroyView();
         binding = null;
     }

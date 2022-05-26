@@ -32,25 +32,29 @@ import java.util.stream.Collectors;
 public class OldTreatmentListFragment extends Fragment {
     private final String TAG = "FragmentOldTreatmentsList";
     private FragmentOldTreatmentsListBinding binding;
+    private boolean working = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        working = true;
         binding = FragmentOldTreatmentsListBinding.inflate(inflater, container, false);
         DataHandler.getInstance(getContext()).getOldTreatments(this::fill);
         return binding.getRoot();
     }
 
     private void fill(ArrayList<Treatment> treatments) {
-        treatments = (ArrayList<Treatment>) treatments.stream().sorted((Comparator.comparing(t -> (t.getTime() + " " + t.getDay())))).collect(Collectors.toList());
-        RecyclerView medicationsList = binding.oldTreatmentsList;
-        medicationsList.setHasFixedSize(true);
+        if (working) {
+            treatments = (ArrayList<Treatment>) treatments.stream().sorted((Comparator.comparing(t -> (t.getTime() + " " + t.getDay())))).collect(Collectors.toList());
+            RecyclerView medicationsList = binding.oldTreatmentsList;
+            medicationsList.setHasFixedSize(true);
 //        medicationsList.addItemDecoration(new DividerItemDecoration(
 //                medicationsList.getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager lm = new LinearLayoutManager(getContext());
+            LinearLayoutManager lm = new LinearLayoutManager(getContext());
 
-        OldTreatmentsAdapter treatmentsAdapter = new OldTreatmentsAdapter(treatments, getActivity());
-        medicationsList.setLayoutManager(lm);
-        medicationsList.setAdapter(treatmentsAdapter);
+            OldTreatmentsAdapter treatmentsAdapter = new OldTreatmentsAdapter(treatments, getActivity());
+            medicationsList.setLayoutManager(lm);
+            medicationsList.setAdapter(treatmentsAdapter);
+        }
     }
 
     @Override
@@ -65,6 +69,7 @@ public class OldTreatmentListFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        working = false;
         super.onDestroyView();
         binding = null;
     }

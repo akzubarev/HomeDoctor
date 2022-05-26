@@ -31,32 +31,35 @@ public class SettingsFragment extends Fragment {
 
     private static final String TAG = "SettingsFragment";
     private FragmentSettingsBinding binding;
-    boolean exit = false;
+    boolean working = true;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        working = true;
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
         DataHandler dataHandler = DataHandler.getInstance(getContext());
 
         dataHandler.getShortageSettings((method, value) -> {
-            ArrayList<String> options = new ArrayList<>(Arrays.asList("Количество", "По неделям"));
-            //(Arrays.asList(getResources().getStringArray(R.array.method_dropdown)));
-            binding.shortageMethod.setSelection(options.indexOf(method));
-            binding.shortageMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
-                    if (selectedItemPosition == 0)
-                        binding.shortageText.setText("Оставшиеся приемы");
-                    else
-                        binding.shortageText.setText("Недель до конца приемов");
-                    saveSettings();
-                }
+            if (working) {
+                ArrayList<String> options = new ArrayList<>(Arrays.asList("Количество", "По неделям"));
+                //(Arrays.asList(getResources().getStringArray(R.array.method_dropdown)));
+                binding.shortageMethod.setSelection(options.indexOf(method));
+                binding.shortageMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent, View itemSelected, int selectedItemPosition, long selectedId) {
+                        if (selectedItemPosition == 0)
+                            binding.shortageText.setText("Оставшиеся приемы");
+                        else
+                            binding.shortageText.setText("Недель до конца приемов");
+                        saveSettings();
+                    }
 
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-            binding.shortageValue.setText(Integer.toString(value));
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+                binding.shortageValue.setText(Integer.toString(value));
+            }
         });
 
         dataHandler.getExpirySettings((timeframe, value) -> {
@@ -146,7 +149,7 @@ public class SettingsFragment extends Fragment {
         NavController navController = NavHostFragment.findNavController(this);
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signOut();
-        exit = true;
+        working = false;
         navController.navigate(R.id.SignInFragment);
     }
 
@@ -170,7 +173,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onStop() {
-        if (!exit)
+        if (working)
             saveSettings();
         super.onStop();
     }

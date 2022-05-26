@@ -23,7 +23,7 @@
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:padding="4dp"
         android:scrollbars="vertical"
-        tools:itemCount="3"
+        tools:itemCount="@integer/recycle_item_count"
         tools:listitem="@layout/block_medication" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

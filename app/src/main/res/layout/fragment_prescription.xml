@@ -129,7 +129,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
-        tools:itemCount="3"
+        tools:itemCount="@integer/recycle_item_count"
         tools:listitem="@layout/block_medication_prescription" />
 
     <Button

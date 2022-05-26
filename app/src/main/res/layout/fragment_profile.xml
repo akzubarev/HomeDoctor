@@ -103,7 +103,7 @@
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:padding="4dp"
         android:scrollbars="vertical"
-        tools:itemCount="2"
+        tools:itemCount="@integer/recycle_item_count"
         tools:listitem="@layout/block_prescription" />
 
     <LinearLayout
@@ -117,6 +117,7 @@
             android:labelFor="@id/name"
             android:text="Противопоказания"
             android:textAlignment="center"
+            android:visibility="gone"
             android:textColor="@color/main"
             android:textSize="@dimen/subheading" />
 
@@ -125,6 +126,7 @@
             style="@style/NormalTextView"
             android:textAlignment="textStart"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:text="Парацетамол - Арпефлю"
             android:textColor="@color/secondary"
             android:textSize="@dimen/normal" />
@@ -162,7 +164,7 @@
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:padding="4dp"
         android:scrollbars="vertical"
-        tools:itemCount="3"
+        tools:itemCount="@integer/recycle_item_count"
         tools:listitem="@layout/block_medication" />
 
     <View

@@ -42,9 +42,11 @@ public class ProfileFragment extends Fragment {
     private String profileID = null;
     private FragmentProfileBinding binding;
     DataHandler dataHandler;
+    private boolean working = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        working = true;
         setHasOptionsMenu(true);
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         Bundle bundle = this.getArguments();
@@ -76,24 +78,26 @@ public class ProfileFragment extends Fragment {
         ArrayList<String> contradictions = new ArrayList<>();
         dataHandler.getMedicationStats(medicationStats ->
         {
-            MedicationStats medStat;
-            for (Medication med : medications) {
-                medStat = medicationStats.stream().filter(ms -> ms.getDbID().equals(med.getMedicationStatsID())).findFirst().get();
-                for (Medication other : medications)
-                    if (medStat.getRelationships().getOrDefault(other.getMedicationStatsID(), "None").equals(MedicationStats.CONTRADICTION) &&
-                            !contradictions.contains(other.getName() + " - " + med.getName()))
-                        contradictions.add(med.getName() + " - " + other.getName());
-            }
-            if (contradictions.size() > 0) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (String contradiction : contradictions)
-                    stringBuilder.append(contradiction).append("; ");
-                binding.contradictions.setText(stringBuilder.toString());
-                binding.contradictionsTitle.setVisibility(View.VISIBLE);
-                binding.contradictions.setVisibility(View.VISIBLE);
-            } else {
-                binding.contradictionsTitle.setVisibility(View.GONE);
-                binding.contradictions.setVisibility(View.GONE);
+            if (working) {
+                MedicationStats medStat;
+                for (Medication med : medications) {
+                    medStat = medicationStats.stream().filter(ms -> ms.getDbID().equals(med.getMedicationStatsID())).findFirst().get();
+                    for (Medication other : medications)
+                        if (medStat.getRelationships().getOrDefault(other.getMedicationStatsID(), "None").equals(MedicationStats.CONTRADICTION) &&
+                                !contradictions.contains(other.getName() + " - " + med.getName()))
+                            contradictions.add(med.getName() + " - " + other.getName());
+                }
+                if (contradictions.size() > 0) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String contradiction : contradictions)
+                        stringBuilder.append(contradiction).append("; ");
+                    binding.contradictions.setText(stringBuilder.toString());
+                    binding.contradictionsTitle.setVisibility(View.VISIBLE);
+                    binding.contradictions.setVisibility(View.VISIBLE);
+                } else {
+                    binding.contradictionsTitle.setVisibility(View.GONE);
+                    binding.contradictions.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -130,22 +134,28 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fill(Profile profile) {
-        binding.name.setText(profile.getName());
-        binding.gender.setText(profile.getGender());
-        binding.birthday.setText(profile.getBirthday());
-        dataHandler.getPrescriptions(profile.getDbID(), this::fillPrescriptions);
-        dataHandler.getMedications(profile.getDbID(), this::fillMedications);
+        if (working) {
+            binding.name.setText(profile.getName());
+            binding.gender.setText(profile.getGender());
+            binding.birthday.setText(profile.getBirthday());
+            dataHandler.getPrescriptions(profile.getDbID(), this::fillPrescriptions);
+            dataHandler.getMedications(profile.getDbID(), this::fillMedications);
+        }
     }
 
     private void fillPrescriptions(ArrayList<Prescription> prescriptions) {
-        configureRecyclerView(binding.prescriptionsList);
-        binding.prescriptionsList.setAdapter(new PrescriptionAdapter(prescriptions, buildProfile(), getActivity()));
+        if (working) {
+            configureRecyclerView(binding.prescriptionsList);
+            binding.prescriptionsList.setAdapter(new PrescriptionAdapter(prescriptions, buildProfile(), getActivity()));
+        }
     }
 
     private void fillMedications(ArrayList<Medication> medications) {
-        configureRecyclerView(binding.medicationsList);
-        binding.medicationsList.setAdapter(new MedicationAdapter(medications, getActivity()));
-        contradictions(medications);
+        if (working) {
+            configureRecyclerView(binding.medicationsList);
+            binding.medicationsList.setAdapter(new MedicationAdapter(medications, getActivity()));
+            contradictions(medications);
+        }
     }
 
     private void saveProfile(View view) {
@@ -211,6 +221,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        working = false;
         super.onDestroyView();
         binding = null;
     }

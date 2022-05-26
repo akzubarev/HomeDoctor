@@ -96,7 +96,7 @@ public class FireBaseHandler implements DataHandler {
     private void writeObject(DatabaseReference dbr, BaseModel obj) {
         Map<String, Object> childUpdates = new HashMap<>();
         String dbID = obj.getDbID();
-        if (dbID.isEmpty()) {
+        if (dbID == null || dbID.isEmpty()) {
             dbID = dbr.push().getKey();
             obj.setDbID(dbID);
         }
@@ -109,7 +109,7 @@ public class FireBaseHandler implements DataHandler {
         Map<String, Object> childUpdates = new HashMap<>();
         for (BaseModel obj : objs) {
             String dbID = obj.getDbID();
-            if (dbID.isEmpty()) {
+            if (dbID == null || dbID.isEmpty()) {
                 dbID = dbr.push().getKey();
                 obj.setDbID(dbID);
             }
@@ -219,6 +219,22 @@ public class FireBaseHandler implements DataHandler {
                 new ValueEventListener() {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         writeObjects(dbr, treatments);
+                    }
+
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.w(TAG, "saveTreatments:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+    @Override
+    public void saveTreatments(ArrayList<Treatment> treatments, EmptyCallback callback) {
+        DatabaseReference dbr = getUserDBR().child(TREATMENTS);
+        dbr.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        writeObjects(dbr, treatments);
+                        callback.onCallback();
                     }
 
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -653,8 +669,12 @@ public class FireBaseHandler implements DataHandler {
             if (sorted.size() > 0) {
                 ArrayList<Treatment> treats = new ArrayList<>();
                 Treatment next = sorted.get(0);
+                treats.add(next);
+                Log.d(TAG, String.valueOf(next.getTime()));
+
+                sorted.remove(0);
                 for (Treatment t : sorted)
-                    if (t.getAbsoluteTime().equals(next.getAbsoluteTime()))
+                    if (t.getTime().equals(next.getTime()) && t.getDay().equals(next.getDay()))
                         treats.add(t);
                 callback.onCallback(treats);
             }

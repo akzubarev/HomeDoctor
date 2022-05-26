@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -31,43 +32,55 @@ import java.util.stream.Collectors;
 public class OwnedMedicationListFragment extends Fragment {
 
     private FragmentMedicationListOwnedBinding binding;
+    private boolean working = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        working = true;
         binding = FragmentMedicationListOwnedBinding.inflate(inflater, container, false);
         DataHandler.getInstance(getContext()).getMedications(this::fill);
 
         NavController navController = NavHostFragment.findNavController(this);
         binding.fab.setOnClickListener(view -> navController.navigate(R.id.MedicationsListFragment));
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
         return binding.getRoot();
     }
 
     private void fill(ArrayList<Medication> medications) {
-        medications = (ArrayList<Medication>) medications.stream().sorted(Comparator.comparing(Medication::getName)).collect(Collectors.toList());
-        RecyclerView medicationsList = binding.medicationsList;
-        medicationsList.setHasFixedSize(true);
+        if (working) {
+            medications = (ArrayList<Medication>) medications.stream().sorted(Comparator.comparing(Medication::getName)).collect(Collectors.toList());
+            RecyclerView medicationsList = binding.medicationsList;
+            medicationsList.setHasFixedSize(true);
 //        medicationsList.addItemDecoration(new DividerItemDecoration(
 //                medicationsList.getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
+            LinearLayoutManager medicationsLayoutManager = new LinearLayoutManager(getContext());
 
-        MedicationAdapter medicationsAdapter = new MedicationAdapter(medications, getActivity());
-        medicationsList.setLayoutManager(medicationsLayoutManager);
-        medicationsList.setAdapter(medicationsAdapter);
+            MedicationAdapter medicationsAdapter = new MedicationAdapter(medications, getActivity());
+            medicationsList.setLayoutManager(medicationsLayoutManager);
+            medicationsList.setAdapter(medicationsAdapter);
 
-        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                medicationsAdapter.filter(query);
-                return true;
-            }
+            binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    medicationsAdapter.filter(query);
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String query) {
-                medicationsAdapter.filter(query);
-                return true;
-            }
-        });
-        binding.search.setOnClickListener(v -> binding.search.setIconified(false));
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    medicationsAdapter.filter(query);
+                    return true;
+                }
+            });
+            binding.search.setOnClickListener(v -> binding.search.setIconified(false));
+        }
     }
 
     @Override
@@ -82,6 +95,7 @@ public class OwnedMedicationListFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        working = false;
         super.onDestroyView();
         binding = null;
     }

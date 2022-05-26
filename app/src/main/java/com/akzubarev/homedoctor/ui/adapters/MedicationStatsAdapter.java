@@ -74,7 +74,7 @@ public class MedicationStatsAdapter
         } else {
             text = text.toLowerCase();
             for (MedicationStats med : medicationStatsAll) {
-                Log.d(TAG, med.getName());
+//                Log.d(TAG, med.getName());
                 if (med.getName().toLowerCase().contains(text)) {
                     medicationStats.add(med);
                 }
