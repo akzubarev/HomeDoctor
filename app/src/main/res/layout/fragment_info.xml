@@ -1,119 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_main"
-        android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_main"
+    android:orientation="vertical">
 
 
     <LinearLayout
-            style="@style/LinearLayout"
+        style="@style/LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_main"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="@string/info_app_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info_app_description"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info_version_placeholder"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/main"
+            android:textSize="@dimen/normal" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background_main"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info_developer"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/subheading" />
 
         <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:gravity="center"
-                android:text="@string/info_app_name"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/main"
-                android:textSize="@dimen/subheading" />
-
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/info_app_description"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/shadowed"
-                android:textSize="@dimen/normal" />
-
-        <TextView
-                android:id="@+id/version"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/info_version_placeholder"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/shadowed"
-                android:textSize="@dimen/normal" />
-
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/main"
-                android:textSize="@dimen/normal" />
-
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/info_developer"
-                android:textColor="@color/shadowed"
-                android:textSize="@dimen/subheading" />
-
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/info_owner"
-                android:textColor="@color/main"
-                android:textSize="@dimen/subheading" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/info_owner"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
 
 
         <TextView
-                android:id="@+id/github"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:gravity="center"
-                android:text="@string/info_link"
-                android:textColorLink="@color/primary"
-                android:textSize="@dimen/subheading" />
+            android:id="@+id/github"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:gravity="center"
+            android:text="@string/info_link"
+            android:textColorLink="@color/primary"
+            android:textSize="@dimen/subheading" />
+
+<!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_weight="1" />-->
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:gravity="center"
-                android:text="@string/disclaimer"
-                android:textColor="@color/shadowed"
-                android:textSize="@dimen/subheading" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="@string/disclaimer"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/subheading" />
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:gravity="center"
-                android:text="@string/info_hse"
-                android:textColor="@color/main"
-                android:textSize="@dimen/subheading" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:text="@string/info_hse"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:gravity="center"
-                android:text="@string/assistant"
-                android:textColor="@color/shadowed"
-                android:textSize="@dimen/subheading" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="@string/assistant"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/subheading" />
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:gravity="center"
-                android:text="@string/info_science_manager"
-                android:textColor="@color/main"
-                android:textSize="@dimen/subheading" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:text="@string/info_science_manager"
+            android:textColor="@color/main"
+            android:textSize="@dimen/subheading" />
     </LinearLayout>
 </LinearLayout>

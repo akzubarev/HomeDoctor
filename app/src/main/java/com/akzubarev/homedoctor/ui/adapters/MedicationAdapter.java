@@ -3,6 +3,7 @@ package com.akzubarev.homedoctor.ui.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 public class MedicationAdapter
         extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
 
+    private static final String TAG = "MedicationAdapter";
     private final ArrayList<Medication> medications;
     private final ArrayList<Medication> medicationsAll;
     NavController navController;
@@ -63,6 +65,7 @@ public class MedicationAdapter
         medicationViewHolder.setNextTime(medication);
         medicationViewHolder.itemView.setOnClickListener(v -> {
                     Bundle bundle = new Bundle();
+                    Log.d(TAG, medication.getMedicationStatsID());
                     bundle.putString("Medication", medication.getDbID());
                     bundle.putString("MedicationStat", medication.getMedicationStatsID());
                     navController.navigate(R.id.MedicationFragment, bundle);

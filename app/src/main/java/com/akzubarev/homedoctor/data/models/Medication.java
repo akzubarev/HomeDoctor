@@ -65,7 +65,6 @@ public class Medication extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
-        medicationStatsID = name;
     }
 
     //endregion
